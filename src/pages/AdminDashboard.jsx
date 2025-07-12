@@ -17,27 +17,6 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-// Enhanced logging utility for AdminDashboard
-const logAdminAction = (action, data = null, error = null) => {
-  const timestamp = new Date().toISOString();
-  console.group(`👨‍💼 [${timestamp}] ADMIN ${action}`);
-  
-  if (data) {
-    console.log('📤 Data:', data);
-  }
-  
-  if (error) {
-    console.error('❌ Error:', error);
-    console.error('🔍 Error Details:', {
-      message: error.message,
-      status: error.response?.status,
-      data: error.response?.data
-    });
-  }
-  
-  console.groupEnd();
-};
-
 const initialForm = {
   name: '',
   image: '',
@@ -69,58 +48,34 @@ export default function AdminDashboard() {
   const [bikeFormOpen, setBikeFormOpen] = useState(false);
 
   useEffect(() => {
-    console.log('👨‍💼 [AdminDashboard] Component mounted, fetching data');
     const token = localStorage.getItem('token');
-    
-    if (!token) {
-      console.warn('🔐 [AdminDashboard] No token found, redirecting to login');
-      return;
-    }
-    
-    fetch('/api/admin/dashboard', {
+    fetch(getApiUrl('/api/admin/dashboard'), {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
       .then(res => {
-        if (res.message) {
-          console.log('👨‍💼 [AdminDashboard] Dashboard data fetched successfully');
-          setData(res);
-        } else {
-          console.warn('👨‍💼 [AdminDashboard] Dashboard access denied');
-          setError(res.message || 'Unauthorized');
-        }
+        if (res.message) setData(res);
+        else setError(res.message || 'Unauthorized');
       })
-      .catch(err => {
-        console.error('👨‍💼 [AdminDashboard] Dashboard fetch error:', err);
-        setError('Failed to fetch dashboard');
-      });
-      
+      .catch(() => setError('Failed to fetch dashboard'));
     fetchBikes();
     fetchUsers();
   }, []);
 
   const fetchBikes = async () => {
-    console.log('🚲 [AdminDashboard] Fetching bikes');
     try {
       const res = await api.get('/api/bikes');
-      console.log('🚲 [AdminDashboard] Bikes fetched successfully:', res.data.length, 'bikes');
       setBikes(res.data);
-    } catch (err) {
-      console.error('🚲 [AdminDashboard] Failed to fetch bikes:', err);
-      logAdminAction('FETCH_BIKES_FAILED', null, err);
+    } catch {
       setSnackbar({ open: true, message: 'Failed to fetch bikes', severity: 'error' });
     }
   };
 
   const fetchUsers = async () => {
-    console.log('👥 [AdminDashboard] Fetching users');
     try {
       const res = await api.get('/api/admin/users');
-      console.log('👥 [AdminDashboard] Users fetched successfully:', res.data.length, 'users');
       setUsers(res.data);
-    } catch (err) {
-      console.error('👥 [AdminDashboard] Failed to fetch users:', err);
-      logAdminAction('FETCH_USERS_FAILED', null, err);
+    } catch {
       // ignore for now
     }
   };
@@ -128,7 +83,6 @@ export default function AdminDashboard() {
   const handleChange = e => {
     const { name, value, type, checked, files } = e.target;
     if (name === 'image' && files && files[0]) {
-      console.log('🖼️ [AdminDashboard] Image selected:', files[0].name);
       setForm(f => ({ ...f, image: files[0] }));
       setImagePreview(URL.createObjectURL(files[0]));
     } else if (type === 'checkbox') {
@@ -140,8 +94,6 @@ export default function AdminDashboard() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    console.log('🚲 [AdminDashboard] Submitting bike form:', { editId, form: { ...form, image: form.image instanceof File ? form.image.name : form.image } });
-    
     setLoading(true);
     const token = localStorage.getItem('token');
     const formData = new FormData();
@@ -159,36 +111,23 @@ export default function AdminDashboard() {
     } else if (editId && typeof form.image === 'string') {
       formData.append('image', form.image);
     }
-    
     try {
       if (editId) {
-        console.log('✏️ [AdminDashboard] Updating bike:', editId);
-        logAdminAction('UPDATE_BIKE_ATTEMPT', { bikeId: editId, formData: Object.fromEntries(formData) });
-        
         await api.put(`/api/bikes/${editId}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        
-        logAdminAction('UPDATE_BIKE_SUCCESS', { bikeId: editId });
         setSnackbar({ open: true, message: 'Bike updated!', severity: 'success' });
       } else {
-        console.log('➕ [AdminDashboard] Adding new bike');
-        logAdminAction('ADD_BIKE_ATTEMPT', { formData: Object.fromEntries(formData) });
-        
         await api.post('/api/bikes', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        
-        logAdminAction('ADD_BIKE_SUCCESS');
         setSnackbar({ open: true, message: 'Bike added!', severity: 'success' });
       }
       setForm(initialForm);
       setEditId(null);
       setImagePreview('');
       fetchBikes();
-    } catch (err) {
-      console.error('🚲 [AdminDashboard] Bike save error:', err);
-      logAdminAction(editId ? 'UPDATE_BIKE_FAILED' : 'ADD_BIKE_FAILED', null, err);
+    } catch {
       setSnackbar({ open: true, message: 'Failed to save bike', severity: 'error' });
     } finally {
       setLoading(false);
@@ -196,7 +135,6 @@ export default function AdminDashboard() {
   };
 
   const handleEdit = bike => {
-    console.log('✏️ [AdminDashboard] Editing bike:', bike._id);
     setEditId(bike._id);
     setForm({
       name: bike.name || '',
@@ -214,25 +152,16 @@ export default function AdminDashboard() {
   };
 
   const handleDelete = (id, event) => {
-    console.log('🗑️ [AdminDashboard] Delete bike requested:', id);
     setDeleteDialog({ open: true, bikeId: id, anchorEl: event.currentTarget });
   };
 
   const confirmDelete = async () => {
-    console.log('🗑️ [AdminDashboard] Confirming delete for bike:', deleteDialog.bikeId);
     setSnackbar({ open: true, message: 'Deleting bike...', severity: 'info' });
-    
     try {
-      logAdminAction('DELETE_BIKE_ATTEMPT', { bikeId: deleteDialog.bikeId });
-      
       await api.delete(`/api/bikes/${deleteDialog.bikeId}`);
-      
-      logAdminAction('DELETE_BIKE_SUCCESS', { bikeId: deleteDialog.bikeId });
       setSnackbar({ open: true, message: 'Bike deleted!', severity: 'success' });
       fetchBikes();
-    } catch (err) {
-      console.error('🗑️ [AdminDashboard] Delete bike error:', err);
-      logAdminAction('DELETE_BIKE_FAILED', null, err);
+    } catch {
       setSnackbar({ open: true, message: 'Failed to delete bike', severity: 'error' });
     } finally {
       setDeleteDialog({ open: false, bikeId: null, anchorEl: null });
@@ -240,49 +169,32 @@ export default function AdminDashboard() {
   };
 
   const cancelDelete = () => {
-    console.log('❌ [AdminDashboard] Delete cancelled');
     setDeleteDialog({ open: false, bikeId: null, anchorEl: null });
   };
 
   // Booking status dialog logic
   const openBookingDialog = (bike) => {
-    console.log('📅 [AdminDashboard] Opening booking dialog for bike:', bike._id);
     setBookingDialog({ open: true, bike });
     setBookingFrom(bike.bookingPeriod?.from ? dayjs(bike.bookingPeriod.from) : null);
     setBookingTo(bike.bookingPeriod?.to ? dayjs(bike.bookingPeriod.to) : null);
   };
-  
   const closeBookingDialog = () => {
-    console.log('❌ [AdminDashboard] Closing booking dialog');
     setBookingDialog({ open: false, bike: null });
     setBookingFrom(null);
     setBookingTo(null);
   };
-  
   const handleBookingUpdate = async () => {
     if (!bookingDialog.bike) return;
-    
-    console.log('📅 [AdminDashboard] Updating booking for bike:', bookingDialog.bike._id);
     try {
-      logAdminAction('UPDATE_BOOKING_ATTEMPT', { 
-        bikeId: bookingDialog.bike._id, 
-        bookingFrom, 
-        bookingTo 
-      });
-      
       await api.patch(`/api/bikes/${bookingDialog.bike._id}/booking`, {
         isBooked: !!(bookingFrom && bookingTo),
         bookingPeriod: bookingFrom && bookingTo ? { from: bookingFrom, to: bookingTo } : { from: null, to: null },
         bookedDays: bookingFrom && bookingTo ? dayjs(bookingTo).diff(dayjs(bookingFrom), 'day') + 1 : 0,
       });
-      
-      logAdminAction('UPDATE_BOOKING_SUCCESS', { bikeId: bookingDialog.bike._id });
       setSnackbar({ open: true, message: 'Booking status updated!', severity: 'success' });
       fetchBikes();
       closeBookingDialog();
-    } catch (err) {
-      console.error('📅 [AdminDashboard] Update booking error:', err);
-      logAdminAction('UPDATE_BOOKING_FAILED', null, err);
+    } catch {
       setSnackbar({ open: true, message: 'Failed to update booking status', severity: 'error' });
     }
   };
