@@ -4,6 +4,26 @@ import api from '../utils/api';
 import Navbar from '../components/Navbar';
 import dayjs from 'dayjs';
 
+// Enhanced logging utility for Bikes page
+const logBikesAction = (action, data = null, error = null) => {
+  const timestamp = new Date().toISOString();
+  console.group(`🚲 [${timestamp}] BIKES ${action}`);
+  
+  if (data) {
+    console.log('📤 Data:', data);
+  }
+  
+  if (error) {
+    console.error('❌ Error:', error);
+    console.error('🔍 Error Details:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data
+    });
+  }
+  
+  console.groupEnd();
+};
 
 const Bikes = () => {
   const [bikes, setBikes] = useState([]);
@@ -17,10 +37,19 @@ const Bikes = () => {
 
   // Fetch all available bikes initially to get all locations
   useEffect(() => {
+    console.log('🚲 [Bikes] Component mounted, fetching initial bikes');
     const fetchBikes = async () => {
       try {
         setLoading(true);
+        logBikesAction('FETCH_INITIAL_ATTEMPT', { isBooked: false });
+        
         const res = await api.get('/api/bikes', { params: { isBooked: false } });
+        
+        logBikesAction('FETCH_INITIAL_SUCCESS', { 
+          bikeCount: res.data.length,
+          locations: Array.from(new Set(res.data.map(b => b.location).filter(Boolean)))
+        });
+        
         setBikes(res.data);
         // Extract unique locations for dropdown
         const locations = Array.from(new Set(res.data.map(b => b.location).filter(Boolean)));
@@ -29,6 +58,8 @@ const Bikes = () => {
         const prices = res.data.map(b => b.price).filter(Boolean);
         // setMaxPrice(prices.length ? Math.max(...prices) : 100000); // This line is removed as maxPrice is now fixed
       } catch (err) {
+        console.error('🚲 [Bikes] Failed to load initial bikes:', err);
+        logBikesAction('FETCH_INITIAL_FAILED', null, err);
         setError('Failed to load bikes.');
       } finally {
         setLoading(false);
@@ -39,6 +70,7 @@ const Bikes = () => {
 
   // Auto-filter bikes when any filter changes
   useEffect(() => {
+    console.log('🔍 [Bikes] Filters changed:', { location, bikeName, price });
     const fetchFilteredBikes = async () => {
       setLoading(true);
       setError(null);
@@ -48,9 +80,20 @@ const Bikes = () => {
         if (bikeName) params.name = bikeName;
         if (price > 0) params.price = price;
         // pickupTime filter is removed, so this line is removed
+        
+        logBikesAction('FETCH_FILTERED_ATTEMPT', { params });
+        
         const res = await api.get('/api/bikes', { params });
+        
+        logBikesAction('FETCH_FILTERED_SUCCESS', { 
+          bikeCount: res.data.length,
+          filters: params
+        });
+        
         setBikes(res.data);
       } catch (err) {
+        console.error('🚲 [Bikes] Failed to load filtered bikes:', err);
+        logBikesAction('FETCH_FILTERED_FAILED', null, err);
         setError('Failed to load bikes.');
       } finally {
         setLoading(false);
@@ -65,88 +108,128 @@ const Bikes = () => {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen h-screen bg-gray-50">
-        {/* Filters */}
-        <aside className="w-80 p-4 bg-white border-r hidden md:block sticky top-0 h-screen shadow-lg rounded-r-3xl" style={{ alignSelf: 'flex-start' }}>
-          <div className="flex flex-col gap-2">
-            <h2 className="text-xl font-extrabold mb-2 text-sky-700 tracking-wide flex items-center gap-2">
-              <span className="inline-block bg-sky-100 p-2 rounded-full shadow-sm"><svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 text-sky-500' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z' /></svg></span>
-              Find Your Ride
-            </h2>
-            <form className="space-y-4 mt-2">
-              {/* City Filter */}
-              <div className="flex flex-col gap-1">
-                <label className="font-semibold text-sky-700 text-sm mb-1">City</label>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Available Bikes</h1>
+            <p className="text-gray-600">Find the perfect bike for your journey</p>
+          </div>
+
+          {/* Filters */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {/* Location Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
                 <select
-                  className="w-full border border-sky-200 rounded-lg p-2 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-sm shadow-sm font-medium text-sky-800"
                   value={location}
-                  onChange={e => setLocation(e.target.value)}
+                  onChange={(e) => {
+                    console.log('📍 [Bikes] Location filter changed:', e.target.value);
+                    setLocation(e.target.value);
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">All Cities</option>
-                  {allLocations.map(loc => (
+                  <option value="">All Locations</option>
+                  {allLocations.map((loc) => (
                     <option key={loc} value={loc}>{loc}</option>
                   ))}
                 </select>
               </div>
+
               {/* Bike Name Filter */}
-              <div className="flex flex-col gap-1">
-                <label className="font-semibold text-sky-700 text-sm flex items-center gap-1">
-                  <svg className="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-                  Bike Name
-                </label>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Bike Name</label>
                 <input
                   type="text"
-                  className="w-full border border-sky-200 rounded-xl p-2 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-sky-50 text-sm shadow-sm"
-                  placeholder="e.g. Honda, Yamaha..."
                   value={bikeName}
-                  onChange={e => setBikeName(e.target.value)}
+                  onChange={(e) => {
+                    console.log('🚲 [Bikes] Bike name filter changed:', e.target.value);
+                    setBikeName(e.target.value);
+                  }}
+                  placeholder="Search by bike name..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              {/* Price Slider Filter */}
-              <div className="flex flex-col gap-1">
-                <label className="font-semibold text-sky-700 text-sm flex items-center gap-1">
-                  <svg className="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 0V4m0 16v-4" /></svg>
-                  Max Price (₹)
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max={maxPrice}
-                    value={price}
-                    onChange={e => setPrice(Number(e.target.value))}
-                    className="w-full accent-sky-500 slider-thumb-glow h-2"
-                    style={{
-                      background: `linear-gradient(90deg, #0ea5e9 ${(price / maxPrice) * 100}%, #e0f2fe ${(price / maxPrice) * 100}%)`,
-                      borderRadius: '6px',
-                    }}
-                  />
-                  <span className="font-bold text-sky-600 text-sm min-w-[40px]">{price > 0 ? `₹${price}` : 'Any'}</span>
-                </div>
-                <div className="flex justify-between text-xs text-sky-400 mt-0.5">
-                  <span>0</span>
-                  <span>{maxPrice}</span>
-                </div>
+
+              {/* Price Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Max Price: ₹{price}</label>
+                <input
+                  type="range"
+                  min="0"
+                  max={maxPrice}
+                  value={price}
+                  onChange={(e) => {
+                    console.log('💰 [Bikes] Price filter changed:', e.target.value);
+                    setPrice(Number(e.target.value));
+                  }}
+                  className="w-full"
+                />
               </div>
-            </form>
+
+              {/* Clear Filters */}
+              <div className="flex items-end">
+                <button
+                  onClick={() => {
+                    console.log('🔄 [Bikes] Clearing all filters');
+                    setLocation('');
+                    setBikeName('');
+                    setPrice(0);
+                  }}
+                  className="w-full px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            </div>
           </div>
-        </aside>
-        {/* Bike List */}
-        <main className="flex-1 p-6 overflow-y-auto" style={{ maxHeight: '100vh' }}>
-          <h1 className="text-2xl font-bold mb-6">Available Bikes</h1>
-          {loading && <div>Loading bikes...</div>}
-          {error && <div className="text-red-500">{error}</div>}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {!loading && !error && sortedBikes.length === 0 && (
-              <div>No bikes available.</div>
-            )}
-            {sortedBikes.map(bike => (
-              <BikeCard key={bike._id} bike={bike} />
-            ))}
+
+          {/* Results */}
+          <div className="mb-4">
+            <p className="text-gray-600">
+              {loading ? 'Loading bikes...' : `Found ${sortedBikes.length} bike${sortedBikes.length !== 1 ? 's' : ''}`}
+            </p>
           </div>
-        </main>
+
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              {error}
+            </div>
+          )}
+
+          {/* Bikes Grid */}
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {sortedBikes.map((bike) => (
+                <BikeCard key={bike._id} bike={bike} />
+              ))}
+            </div>
+          )}
+
+          {/* No Results */}
+          {!loading && sortedBikes.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No bikes found matching your criteria.</p>
+              <button
+                onClick={() => {
+                  console.log('🔄 [Bikes] Resetting filters from no results');
+                  setLocation('');
+                  setBikeName('');
+                  setPrice(0);
+                }}
+                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              >
+                Clear Filters
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-      
     </>
   );
 };

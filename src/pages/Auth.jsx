@@ -19,6 +19,27 @@ import api, { getApiUrl } from '../utils/api';
 const SKY_BLUE = '#12B6FA';
 const NAVY_BLUE = '#1B314D';
 
+// Enhanced logging utility for Auth page
+const logAuthAction = (action, data = null, error = null) => {
+  const timestamp = new Date().toISOString();
+  console.group(`🔐 [${timestamp}] AUTH ${action}`);
+  
+  if (data) {
+    console.log('📤 Data:', data);
+  }
+  
+  if (error) {
+    console.error('❌ Error:', error);
+    console.error('🔍 Error Details:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data
+    });
+  }
+  
+  console.groupEnd();
+};
+
 export default function Auth() {
   const [tab, setTab] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +49,7 @@ export default function Auth() {
   const [auth, setAuth] = useState({ token: null, user: null });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,54 +57,94 @@ export default function Auth() {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
     if (token && user) {
+      console.log('🔍 [Auth] Found existing token, setting auth state');
       setAuth({ token, user: JSON.parse(user) });
+    } else {
+      console.log('🔍 [Auth] No existing token found');
     }
   }, []);
 
   if (auth.token) {
+    console.log('🔐 [Auth] User authenticated, redirecting to home');
     return <Navigate to="/" replace />;
   }
 
-  const handleTabChange = (event, newValue) => setTab(newValue);
+  const handleTabChange = (event, newValue) => {
+    console.log(`📑 [Auth] Tab changed from ${tab} to ${newValue}`);
+    setTab(newValue);
+  };
 
-  const handleLoginChange = (e) => setLogin({ ...login, [e.target.name]: e.target.value });
-  const handleSignupChange = (e) => setSignup({ ...signup, [e.target.name]: e.target.value });
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLogin(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSignupChange = (e) => {
+    const { name, value } = e.target;
+    setSignup(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    console.log('🔐 [Auth] Login attempt for:', login.email);
+    
     setError('');
     setSuccess('');
+    setLoading(true);
+    
     try {
+      logAuthAction('LOGIN_ATTEMPT', { email: login.email });
+      
       const res = await fetch(getApiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(login)
       });
+      
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Login failed');
+      
+      if (!res.ok) {
+        logAuthAction('LOGIN_FAILED', { email: login.email }, { message: data.message, status: res.status });
+        throw new Error(data.message || 'Login failed');
+      }
+      
+      logAuthAction('LOGIN_SUCCESS', { email: login.email, user: data.user });
+      
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setAuth({ token: data.token, user: data.user });
       toast.success('Login successful!');
       navigate('/');
     } catch (err) {
+      console.error('🔐 [Auth] Login error:', err);
       setError(err.message);
       setSuccess('');
       toast.error(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
+    console.log('📝 [Auth] Signup attempt for:', signup.email);
+    
     setError('');
     setSuccess('');
+    setLoading(true);
+    
     if (signup.password !== signup.confirmPassword) {
+      console.warn('🔐 [Auth] Password mismatch during signup');
       setError('Passwords do not match');
       setSuccess('');
       toast.error('Passwords do not match');
+      setLoading(false);
       return;
     }
+    
     try {
+      logAuthAction('SIGNUP_ATTEMPT', { email: signup.email, name: signup.name });
+      
       const res = await fetch(getApiUrl('/api/auth/signup'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,21 +155,33 @@ export default function Auth() {
           password: signup.password
         })
       });
+      
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Signup failed');
+      
+      if (!res.ok) {
+        logAuthAction('SIGNUP_FAILED', { email: signup.email }, { message: data.message, status: res.status });
+        throw new Error(data.message || 'Signup failed');
+      }
+      
+      logAuthAction('SIGNUP_SUCCESS', { email: signup.email });
+      
       setTab(0); // Switch to login tab
       setSignup({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
       setSuccess('Signup successful! Please login.');
       setError('');
       toast.success('Signup successful! Please login.');
     } catch (err) {
+      console.error('🔐 [Auth] Signup error:', err);
       setError(err.message);
       setSuccess('');
       toast.error(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleLogout = () => {
+    console.log('🔐 [Auth] User logout');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setAuth({ token: null, user: null });
