@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, TextField, Button, Checkbox, FormControlLabel, Snackbar, Alert, IconButton, Avatar, Tabs, Tab, Dialog, DialogTitle, DialogContent, DialogActions, Popover } from '@mui/material';
 import Navbar from '../components/Navbar';
-import axios from 'axios';
+import api, { getApiUrl } from '../utils/api';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -49,7 +49,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch('/api/admin/dashboard', {
+    fetch(getApiUrl('/api/admin/dashboard'), {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
 
   const fetchBikes = async () => {
     try {
-      const res = await axios.get('/api/bikes');
+      const res = await api.get('/api/bikes');
       setBikes(res.data);
     } catch {
       setSnackbar({ open: true, message: 'Failed to fetch bikes', severity: 'error' });
@@ -73,8 +73,7 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get('/api/admin/users', { headers: { Authorization: `Bearer ${token}` } });
+      const res = await api.get('/api/admin/users');
       setUsers(res.data);
     } catch {
       // ignore for now
@@ -114,13 +113,13 @@ export default function AdminDashboard() {
     }
     try {
       if (editId) {
-        await axios.put(`/api/bikes/${editId}`, formData, {
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
+        await api.put(`/api/bikes/${editId}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
         });
         setSnackbar({ open: true, message: 'Bike updated!', severity: 'success' });
       } else {
-        await axios.post('/api/bikes', formData, {
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
+        await api.post('/api/bikes', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
         });
         setSnackbar({ open: true, message: 'Bike added!', severity: 'success' });
       }
@@ -158,9 +157,8 @@ export default function AdminDashboard() {
 
   const confirmDelete = async () => {
     setSnackbar({ open: true, message: 'Deleting bike...', severity: 'info' });
-    const token = localStorage.getItem('token');
     try {
-      await axios.delete(`/api/bikes/${deleteDialog.bikeId}`, { headers: { Authorization: `Bearer ${token}` } });
+      await api.delete(`/api/bikes/${deleteDialog.bikeId}`);
       setSnackbar({ open: true, message: 'Bike deleted!', severity: 'success' });
       fetchBikes();
     } catch {
@@ -187,13 +185,12 @@ export default function AdminDashboard() {
   };
   const handleBookingUpdate = async () => {
     if (!bookingDialog.bike) return;
-    const token = localStorage.getItem('token');
     try {
-      await axios.patch(`/api/bikes/${bookingDialog.bike._id}/booking`, {
+      await api.patch(`/api/bikes/${bookingDialog.bike._id}/booking`, {
         isBooked: !!(bookingFrom && bookingTo),
         bookingPeriod: bookingFrom && bookingTo ? { from: bookingFrom, to: bookingTo } : { from: null, to: null },
         bookedDays: bookingFrom && bookingTo ? dayjs(bookingTo).diff(dayjs(bookingFrom), 'day') + 1 : 0,
-      }, { headers: { Authorization: `Bearer ${token}` } });
+      });
       setSnackbar({ open: true, message: 'Booking status updated!', severity: 'success' });
       fetchBikes();
       closeBookingDialog();

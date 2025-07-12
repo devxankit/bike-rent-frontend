@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@mui/material';
 import Navbar from '../components/Navbar';
-import axios from 'axios';
+import api from '../utils/api';
 import MenuIcon from '@mui/icons-material/Menu';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -20,8 +20,7 @@ export default function Customers() {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    axios.get('/api/admin/users', { headers: { Authorization: `Bearer ${token}` } })
+    api.get('/api/admin/users')
       .then(res => setUsers(res.data))
       .catch(() => setError('Failed to fetch users'))
       .finally(() => setLoading(false));

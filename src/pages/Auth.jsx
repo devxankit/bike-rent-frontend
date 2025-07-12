@@ -14,6 +14,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
 import { useNavigate, Navigate } from 'react-router-dom';
+import api, { getApiUrl } from '../utils/api';
 
 const SKY_BLUE = '#12B6FA';
 const NAVY_BLUE = '#1B314D';
@@ -52,7 +53,7 @@ export default function Auth() {
     setError('');
     setSuccess('');
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(getApiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(login)
@@ -82,7 +83,7 @@ export default function Auth() {
       return;
     }
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch(getApiUrl('/api/auth/signup'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BikeCard from '../components/BikeCard';
-import axios from 'axios';
+import api from '../utils/api';
 import Navbar from '../components/Navbar';
 import dayjs from 'dayjs';
 
@@ -20,7 +20,7 @@ const Bikes = () => {
     const fetchBikes = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('/api/bikes', { params: { isBooked: false } });
+        const res = await api.get('/api/bikes', { params: { isBooked: false } });
         setBikes(res.data);
         // Extract unique locations for dropdown
         const locations = Array.from(new Set(res.data.map(b => b.location).filter(Boolean)));
@@ -48,7 +48,7 @@ const Bikes = () => {
         if (bikeName) params.name = bikeName;
         if (price > 0) params.price = price;
         // pickupTime filter is removed, so this line is removed
-        const res = await axios.get('/api/bikes', { params });
+        const res = await api.get('/api/bikes', { params });
         setBikes(res.data);
       } catch (err) {
         setError('Failed to load bikes.');

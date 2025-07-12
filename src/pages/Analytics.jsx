@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import Navbar from '../components/Navbar';
 import { Box, Typography, Paper } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -50,7 +50,7 @@ export default function Analytics() {
   useEffect(() => {
     const fetchBikes = async () => {
       try {
-        const res = await axios.get('/api/bikes');
+        const res = await api.get('/api/bikes');
         setBikes(res.data);
       } catch {
         setBikes([]);
