@@ -28,10 +28,10 @@ export default function Navbar() {
   };
 
   const drawerContent = (
-    <Box sx={{ width: 250, p: 2 }} role="presentation" onClick={() => setDrawerOpen(false)}>
+    <Box sx={{ width: 250, p: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} role="presentation" onClick={() => setDrawerOpen(false)}>
       <Typography
         variant="h6"
-        sx={{ color: NAVY_BLUE, fontWeight: 700, letterSpacing: 1, mb: 2, cursor: 'pointer' }}
+        sx={{ color: NAVY_BLUE, fontWeight: 700, letterSpacing: 1, mb: 2, cursor: 'pointer', textAlign: 'left', width: '100%' }}
         onClick={() => navigate('/')}
       >
         bike rent
@@ -51,15 +51,16 @@ export default function Navbar() {
           borderRadius: 2,
           '&:hover': { bgcolor: '#0eaee6' },
           mb: 1,
-          fontWeight: 400
+          fontWeight: 400,
+          alignSelf: 'flex-start'
         }}
       >
         +91 979875 74681
       </Button>
-      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1 }} onClick={() => navigate('/bikes')}>Bikes</Button>
-      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1 }} onClick={() => navigate('/')}>Home</Button>
-      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1 }} onClick={() => navigate('/contact')}>Contact Us</Button>
-      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16 }} onClick={() => navigate('/login')}>Login / Register</Button>
+      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/bikes')}>Bikes</Button>
+      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/')}>Home</Button>
+      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/contact')}>Contact Us</Button>
+      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, justifyContent: 'flex-start' }} onClick={() => navigate('/login')}>Login / Register</Button>
     </Box>
   );
 
