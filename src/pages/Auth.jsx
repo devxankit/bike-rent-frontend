@@ -196,14 +196,25 @@ export default function Auth() {
                   <form onSubmit={handleSignupSubmit}>
                     <Typography variant="h5" fontWeight={700} color={NAVY_BLUE} mb={2} align="center">Sign Up</Typography>
                     <Box display="flex" flexDirection="column" gap={2} pt={1} pb={1}>
-                      <TextField
-                        label="Name"
-                        name="name"
-                        value={signup.name}
-                        onChange={handleSignupChange}
-                        fullWidth
-                        required
-                      />
+                      <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+                        <TextField
+                          label="Name"
+                          name="name"
+                          value={signup.name}
+                          onChange={handleSignupChange}
+                          fullWidth
+                          required
+                        />
+                        <TextField
+                          label="Phone"
+                          name="phone"
+                          type="tel"
+                          value={signup.phone}
+                          onChange={handleSignupChange}
+                          fullWidth
+                          required
+                        />
+                      </Box>
                       <TextField
                         label="Email"
                         name="email"
@@ -213,51 +224,44 @@ export default function Auth() {
                         fullWidth
                         required
                       />
-                      <TextField
-                        label="Phone"
-                        name="phone"
-                        type="tel"
-                        value={signup.phone}
-                        onChange={handleSignupChange}
-                        fullWidth
-                        required
-                      />
-                      <TextField
-                        label="Password"
-                        name="password"
-                        type={showPassword ? 'text' : 'password'}
-                        value={signup.password}
-                        onChange={handleSignupChange}
-                        fullWidth
-                        required
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton onClick={() => setShowPassword((s) => !s)} edge="end">
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                              </IconButton>
-                            </InputAdornment>
-                          )
-                        }}
-                      />
-                      <TextField
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        value={signup.confirmPassword}
-                        onChange={handleSignupChange}
-                        fullWidth
-                        required
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton onClick={() => setShowConfirmPassword((s) => !s)} edge="end">
-                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                              </IconButton>
-                            </InputAdornment>
-                          )
-                        }}
-                      />
+                      <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+                        <TextField
+                          label="Password"
+                          name="password"
+                          type={showPassword ? 'text' : 'password'}
+                          value={signup.password}
+                          onChange={handleSignupChange}
+                          fullWidth
+                          required
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton onClick={() => setShowPassword((s) => !s)} edge="end">
+                                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          }}
+                        />
+                        <TextField
+                          label="Confirm Password"
+                          name="confirmPassword"
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          value={signup.confirmPassword}
+                          onChange={handleSignupChange}
+                          fullWidth
+                          required
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton onClick={() => setShowConfirmPassword((s) => !s)} edge="end">
+                                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          }}
+                        />
+                      </Box>
                     </Box>
                     <Button
                       type="submit"

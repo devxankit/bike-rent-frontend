@@ -60,7 +60,14 @@ export default function Navbar() {
       <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/bikes')}>Bikes</Button>
       <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/')}>Home</Button>
       <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/contact')}>Contact Us</Button>
-      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, justifyContent: 'flex-start' }} onClick={() => navigate('/login')}>Login / Register</Button>
+      {user && user.isAdmin && (
+        <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/admin/dashboard')}>Dashboard</Button>
+      )}
+      {user ? (
+        <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={handleLogout}>Logout</Button>
+      ) : (
+        <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, justifyContent: 'flex-start' }} onClick={() => navigate('/login')}>Login / Register</Button>
+      )}
     </Box>
   );
 
