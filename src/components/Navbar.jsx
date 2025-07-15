@@ -1,218 +1,106 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import PhoneIcon from '@mui/icons-material/Phone';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import MenuIcon from '@mui/icons-material/Menu';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { MdDashboard, MdMenu, MdClose } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
-const SKY_BLUE = '#12B6FA';
-const NAVY_BLUE = '#1B314D';
+const Navbar = () => {
+  // Check login state from localStorage
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem('user'));
+  } catch (e) {}
+  const isLoggedIn = !!user;
 
-export default function Navbar() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    navigate('/login');
-    window.location.reload(); // To update Navbar state
+    window.location.reload();
   };
 
-  const drawerContent = (
-    <Box sx={{ width: 250, p: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} role="presentation" onClick={() => setDrawerOpen(false)}>
-      <Typography
-        variant="h6"
-        sx={{ color: NAVY_BLUE, fontWeight: 700, letterSpacing: 1, mb: 2, cursor: 'pointer', textAlign: 'left', width: '100%' }}
-        onClick={() => navigate('/')}
-      >
-        bike rent
-      </Typography>
-      <Button
-        startIcon={<PhoneIcon />}
-        variant="contained"
-        sx={{
-          bgcolor: SKY_BLUE,
-          color: 'white',
-          minWidth: 0,
-          px: 1,
-          py: 0.5,
-          fontSize: 13,
-          height: 28,
-          boxShadow: 1,
-          borderRadius: 2,
-          '&:hover': { bgcolor: '#0eaee6' },
-          mb: 1,
-          fontWeight: 400,
-          alignSelf: 'flex-start'
-        }}
-      >
-        +91 979875 74681
-      </Button>
-      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/bikes')}>Bikes</Button>
-      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/')}>Home</Button>
-      <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/contact')}>Contact Us</Button>
-      {user && user.isAdmin && (
-        <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={() => navigate('/admin/dashboard')}>Dashboard</Button>
+  // Drawer content
+  const drawerLinks = (
+    <nav className="flex flex-col gap-4 mt-8">
+      <a href="/" className="text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>Home</a>
+      <a href="/bikes" className="text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>Bikes</a>
+      {isLoggedIn && (
+        <a href="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>
+          <MdDashboard className="w-5 h-5" /> Dashboard
+        </a>
       )}
-      {user ? (
-        <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, mb: 1, justifyContent: 'flex-start' }} onClick={handleLogout}>Logout</Button>
+      {!isLoggedIn ? (
+        <>
+          <Link to="/login" className="bg-blue-500 text-white text-base font-semibold rounded-md px-4 py-1.5 hover:bg-blue-600 text-center transition-all" onClick={() => setDrawerOpen(false)}>Login</Link>
+          <Link to="/signup" className="bg-gray-100 text-[#111518] text-base font-semibold rounded-md px-4 py-1.5 hover:bg-gray-200 text-center transition-all" onClick={() => setDrawerOpen(false)}>Sign Up</Link>
+        </>
       ) : (
-        <Button fullWidth sx={{ color: NAVY_BLUE, textTransform: 'none', fontWeight: 500, fontSize: 16, justifyContent: 'flex-start' }} onClick={() => navigate('/login')}>Login / Register</Button>
+        <button onClick={() => { setDrawerOpen(false); handleLogout(); }} className="bg-red-500 text-white text-base font-semibold rounded-md px-4 py-1.5 hover:bg-red-600 text-center transition-all">Logout</button>
       )}
-    </Box>
+    </nav>
   );
 
   return (
-    <Box
-      sx={{
-        position: 'relative',
-        zIndex: 2,
-        px: { xs: 1, sm: 3 },
-        py: { xs: 1, sm: 1.5 },
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        bgcolor: NAVY_BLUE,
-        boxShadow: 3,
-        minHeight: { xs: 56, sm: 72 },
-      }}
-    >
-      {/* Left: Hamburger, Logo/Name, Home */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
-        {isMobile ? (
-          <>
-            <IconButton color="inherit" onClick={() => setDrawerOpen(true)}>
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              variant="h6"
-              sx={{ color: '#fff', fontWeight: 700, letterSpacing: 1, ml: 1, cursor: 'pointer' }}
-              onClick={() => navigate('/')}
-            >
-              bike rent
-            </Typography>
-            {/* Home button removed on mobile */}
-          </>
-        ) : (
-          <>
-            <Box
-              component="img"
-              src="/images/logo.png"
-              alt="Bike Rent Logo"
-              sx={{ height: { xs: 32, sm: 40 }, width: 'auto', mr: 1, cursor: 'pointer' }}
-              onClick={() => navigate('/')}
-            />
-            <Typography
-              variant="h5"
-              sx={{ color: '#fff', fontWeight: 700, letterSpacing: 1, mr: 2, cursor: 'pointer' }}
-              onClick={() => navigate('/')}
-            >
-              bike rent
-            </Typography>
-            <Button
-              startIcon={<PhoneIcon />}
-              variant="contained"
-              sx={{
-                bgcolor: SKY_BLUE,
-                color: 'white',
-                minWidth: 0,
-                px: { xs: 0.5, sm: 1 },
-                py: 0.2,
-                fontSize: { xs: 10, sm: 13 },
-                height: 28,
-                boxShadow: 1,
-                borderRadius: 2,
-                '&:hover': { bgcolor: '#0eaee6' },
-                mr: 1,
-                fontWeight: 400
-              }}
-            >
-              +91 979875 74681
-            </Button>
-            <Button
-              sx={{ color: 'white', textTransform: 'none', fontWeight: 500, fontSize: { xs: 12, sm: 16 }, mr: 1 }}
-              onClick={() => navigate('/bikes')}
-            >
-              Bikes
-            </Button>
-            <Button
-              sx={{ color: 'white', textTransform: 'none', fontWeight: 500, fontSize: { xs: 12, sm: 16 }, mr: 1 }}
-              onClick={() => navigate('/')}
-            >
-              Home
-            </Button>
-            <Button
-              sx={{ color: 'white', textTransform: 'none', fontWeight: 500, fontSize: { xs: 12, sm: 16 }, mr: 1 }}
-              onClick={() => navigate('/contact')}
-            >
-              Contact Us
-            </Button>
-          </>
-        )}
-      </Box>
-      {/* Center: Empty space for alignment */}
-      <Box sx={{ flexGrow: 1 }} />
-      {/* Right: Login/Register and Location Button or Drawer */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
-        {isMobile ? (
-          <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-            {drawerContent}
-          </Drawer>
-        ) : (
-          <>
-            {user && user.isAdmin && (
-              <Button
-                sx={{ color: 'white', textTransform: 'none', fontWeight: 500, fontSize: { xs: 12, sm: 16 }, mr: 1 }}
-                onClick={() => navigate('/admin/dashboard')}
-              >
-                Dashboard
-              </Button>
-            )}
-            {user ? (
-              <Button
-                sx={{ color: 'white', textTransform: 'none', fontWeight: 500, fontSize: { xs: 12, sm: 16 }, mr: 1 }}
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            ) : (
-              <Button
-                sx={{ color: 'white', textTransform: 'none', fontWeight: 500, fontSize: { xs: 12, sm: 16 }, mr: 1 }}
-                onClick={() => navigate('/login')}
-              >
-                Login / Register
-              </Button>
-            )}
-          </>
-        )}
-        <Button
-          startIcon={<LocationOnIcon />}
-          variant="contained"
-          sx={{
-            bgcolor: SKY_BLUE,
-            color: 'white',
-            fontWeight: 600,
-            px: { xs: 1, sm: 1.5 },
-            py: 0.5,
-            fontSize: { xs: 11, sm: 14 },
-            height: 36,
-            borderRadius: 2,
-            boxShadow: 1,
-            '&:hover': { bgcolor: '#0eaee6' }
-          }}
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <img
+            src="/images/logo-2.png"
+            alt="Bike Rent Logo"
+            className="w-10 h-10 object-contain"
+          />
+          <span className="font-bold text-lg text-[#111518]">Bike Rent</span>
+        </div>
+        {/* Desktop Nav Links */}
+        <nav className="hidden md:flex items-center gap-6">
+          <a href="/" className="text-sm font-semibold text-[#111518] hover:text-blue-600">Home</a>
+          <a href="/bikes" className="text-sm font-semibold text-[#111518] hover:text-blue-600">Bikes</a>
+          {isLoggedIn && (
+            <a href="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-blue-600">
+              <MdDashboard className="w-5 h-5" /> Dashboard
+            </a>
+          )}
+          {!isLoggedIn ? (
+            <>
+              <Link to="/login" className="bg-blue-500 text-white text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-blue-600">Login</Link>
+              <Link to="/signup" className="bg-gray-100 text-[#111518] text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-gray-200">Sign Up</Link>
+            </>
+          ) : (
+            <button onClick={handleLogout} className="bg-red-500 text-white text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-red-600">Logout</button>
+          )}
+        </nav>
+        {/* Hamburger Icon for Mobile */}
+        <button
+          className="md:hidden flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-blue-500  "
+          onClick={() => setDrawerOpen(true)}
+          aria-label="Open menu"
         >
-          Indore
-        </Button>
-      </Box>
-    </Box>
+          <MdMenu className="w-7 h-7 text-[#111518]" />
+        </button>
+        {/* Drawer Overlay */}
+        <div
+          className={`fixed inset-0 z-50 bg-black bg-opacity-30 transition-opacity duration-300 ${drawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+          onClick={() => setDrawerOpen(false)}
+        ></div>
+        {/* Drawer */}
+        <aside
+          className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${drawerOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        >
+          <div className="flex items-center justify-between px-4 h-14 border-b border-gray-200">
+            <span className="font-bold text-lg text-[#111518]">Menu</span>
+            <button
+              className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={() => setDrawerOpen(false)}
+              aria-label="Close menu"
+            >
+              <MdClose className="w-6 h-6 text-[#111518]" />
+            </button>
+          </div>
+          <div className="px-4 pb-6">{drawerLinks}</div>
+        </aside>
+      </div>
+    </header>
   );
-}
+};
+
+export default Navbar; 

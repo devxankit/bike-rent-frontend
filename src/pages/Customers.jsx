@@ -31,7 +31,7 @@ export default function Customers() {
     { label: 'Bikes', icon: <DirectionsBikeIcon />, path: '/admin/bikes' },
     { label: 'Bookings', icon: <CalendarTodayIcon />, path: '/admin/bikes?tab=1' },
     { label: 'Customers', icon: <PeopleIcon />, path: '/admin/customers' },
-    { label: 'Analytics', icon: <BarChartIcon /> },
+    { label: 'Analytics', icon: <BarChartIcon />, path: '/admin/analytics' },
   ];
   const bottomNavItems = [
     { label: 'Settings', icon: <SettingsIcon /> },
@@ -60,6 +60,8 @@ export default function Customers() {
                 isActive = location.pathname === '/admin/dashboard';
               } else if (item.label === 'Customers') {
                 isActive = location.pathname === '/admin/customers';
+              } else if (item.label === 'Analytics') {
+                isActive = location.pathname === '/admin/analytics';
               }
               return (
                 <Box
@@ -81,6 +83,7 @@ export default function Customers() {
                     else if (item.label === 'Bikes') navigate('/admin/bikes');
                     else if (item.label === 'Dashboard') navigate('/admin/dashboard');
                     else if (item.label === 'Customers') navigate('/admin/customers');
+                    else if (item.label === 'Analytics') navigate('/admin/analytics');
                   }}
                 >
                   <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#2563eb' : '#fff' }}>{item.icon}</span>

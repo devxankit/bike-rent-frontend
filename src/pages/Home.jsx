@@ -1,276 +1,572 @@
-import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Phone, Menu, X, MapPin, Calendar, Clock, Users, DollarSign, Shield,ArrowRight, Play, Bike, Star,
+  ChevronDown, ChevronUp, Facebook, Twitter, Instagram, Youtube, Smartphone
+} from 'lucide-react';
+
+import { FaMoneyBillWave, FaMotorcycle, FaRegClock, FaHandHoldingUsd, FaCity, FaLandmark, FaMonument, FaBuilding, FaUniversity, FaRegBuilding, FaMapMarkerAlt, FaRegHospital, FaRegSmile, FaRegSun, FaRegStar, FaRegFlag } from 'react-icons/fa';
+import { MdOutlineMiscellaneousServices } from 'react-icons/md';
+import { BiRupee } from 'react-icons/bi';
+
+import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import Navbar from '../components/Navbar';
-import BookingForm from '../components/BookingForm';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import WhyChooseUs from '../components/WhyChooseUs';
-import dayjs from 'dayjs';
-import { keyframes } from '@mui/system';
-import HomePageInfo from "../components/HomePageInfo";
+import PromoToast from '../components/PromoToast';
+import api from '../utils/api';
+import RunningBanner from '../components/RunningBanner';
 
+// Custom styles for green highlight (add to global CSS if needed)
+const customDatepickerStyles = `
+.custom-calendar .react-datepicker__day--selected,
+.custom-calendar .react-datepicker__time-list-item--selected {
+  background-color: #8BC34A !important;
+  color: #fff !important;
+}
+.custom-calendar .react-datepicker__day--keyboard-selected {
+  background-color: #dcedc8 !important;
+  color: #222 !important;
+}
+.custom-calendar .react-datepicker__time-list-item--selected {
+  background-color: #8BC34A !important;
+  color: #fff !important;
+}
+`;
+if (typeof document !== 'undefined' && !document.getElementById('custom-datepicker-style')) {
+  const style = document.createElement('style');
+  style.id = 'custom-datepicker-style';
+  style.innerHTML = customDatepickerStyles;
+  document.head.appendChild(style);
+}
 
-export default function Home() {
-  const navigate = useNavigate();
-  const [city, setCity] = useState('Indore');
-  const [bookingType, setBookingType] = useState('Daily');
-  const [pickDate, setPickDate] = useState(dayjs());
-  const [pickTime, setPickTime] = useState(dayjs());
-  const [dropDate, setDropDate] = useState(null);
-  const [dropTime, setDropTime] = useState(null);
-  const [footerInView, setFooterInView] = useState(false);
-  const footerRef = useRef(null);
-  const bookingFormRef = useRef(null);
+// Calendar and clock icons for Home2 booking form
 
-  useEffect(() => {
-    if (!footerRef.current) return;
-    const observer = new window.IntersectionObserver(
-      ([entry]) => setFooterInView(entry.isIntersecting),
-      { root: null, threshold: 0 }
-    );
-    observer.observe(footerRef.current);
-    return () => observer.disconnect();
-  }, []);
+const placeholderCitySVG = (
+  <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 48 48"><rect x="8" y="16" width="32" height="24" rx="4" stroke="#888" fill="#f3f4f6"/><rect x="16" y="24" width="8" height="8" rx="2" stroke="#bbb" fill="#fff"/><rect x="28" y="24" width="8" height="8" rx="2" stroke="#bbb" fill="#fff"/></svg>
+);
 
+// City icon mapping
+const cityIconMap = {
+  'Ahmedabad': <FaLandmark size={38} className="text-blue-500" />,
+  'Bengaluru': <FaRegBuilding size={38} className="text-green-600" />,
+  'Bhopal': <FaMonument size={38} className="text-orange-500" />,
+  'Bhubaneswar': <FaUniversity size={38} className="text-indigo-500" />,
+  'Dandeli': <FaRegSun size={38} className="text-yellow-500" />,
+  'Gulbarga': <FaRegHospital size={38} className="text-pink-500" />,
+  'Hampi': <FaRegFlag size={38} className="text-purple-500" />,
+  'Hyderabad': <FaMapMarkerAlt size={38} className="text-red-500" />,
+  'Indore': <FaRegSmile size={38} className="text-green-500" />,
+  'Jaipur': <FaRegStar size={38} className="text-pink-400" />,
+  'Kota': <FaBuilding size={38} className="text-blue-400" />,
+  'Mysuru': <FaCity size={38} className="text-gray-500" />,
+  'Mumbai': <FaCity size={38} className="text-gray-700" />,
+  'Chennai': <FaRegBuilding size={38} className="text-blue-700" />,
+  'Pune': <FaRegBuilding size={38} className="text-green-700" />,
+  'Kolkata': <FaLandmark size={38} className="text-yellow-700" />,
+  'Surat': <FaRegSmile size={38} className="text-orange-400" />,
+  'Lucknow': <FaRegFlag size={38} className="text-blue-600" />,
+  'Kanpur': <FaRegFlag size={38} className="text-green-600" />,
+  'Jaipur': <FaRegStar size={38} className="text-pink-400" />,
+};
+
+const Home = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openFAQ, setOpenFAQ] = useState(null);
+  const [bookingForm, setBookingForm] = useState({
+    pickup: '',
+    dropoff: '',
+    startDate: '',
+    endDate: '',
+    time: '',
+    passengers: '1'
+  });
+
+  // State for BookingForm
+  const [city, setCity] = useState('');
+  const [cityPopupOpen, setCityPopupOpen] = useState(false);
+  const [cityPopupVisible, setCityPopupVisible] = useState(false);
+  const cityPopupRef = useRef(null);
+  const [allCities, setAllCities] = useState([]);
+  const [citySearch, setCitySearch] = useState('');
+  const [bookingType, setBookingType] = useState('');
+  // State for combined DateTime pickers
+  const [pickDateTime, setPickDateTime] = useState(new Date());
+  const [dropDateTime, setDropDateTime] = useState(new Date());
   const handleFindBike = () => {
-    // Navigate to bikes page with booking data
-    console.log({
+    // Save form data to localStorage and redirect
+    const formData = {
       city,
-      bookingType,
-      pickDate: pickDate ? pickDate.toString() : null,
-      pickTime: pickTime ? pickTime.toString() : null,
-      dropDate: dropDate ? dropDate.toString() : null,
-      dropTime: dropTime ? dropTime.toString() : null,
-    });
-    navigate('/bikes');
+      pickDateTime,
+      dropDateTime
+    };
+    localStorage.setItem('bikeRentFormData', JSON.stringify(formData));
+    window.location.href = '/bikes';
   };
 
+  const handleInputChange = (e) => {
+    setBookingForm({ ...bookingForm, [e.target.name]: e.target.value });
+  };
+
+  const toggleFAQ = (index) => {
+    setOpenFAQ(openFAQ === index ? null : index);
+  };
+
+  // Animate popup open/close
+  useEffect(() => {
+    if (cityPopupOpen) {
+      setCityPopupVisible(true);
+    } else if (cityPopupVisible) {
+      // Delay unmount for animation
+      const timeout = setTimeout(() => setCityPopupVisible(false), 180);
+      return () => clearTimeout(timeout);
+    }
+  }, [cityPopupOpen]);
+
+  // Close popup on outside click
+  useEffect(() => {
+    if (!cityPopupOpen) return;
+    function handleClick(e) {
+      if (cityPopupRef.current && !cityPopupRef.current.contains(e.target)) {
+        setCityPopupOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    document.addEventListener('touchstart', handleClick);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('touchstart', handleClick);
+    };
+  }, [cityPopupOpen]);
+
+  // Fetch unique cities from bikes
+  useEffect(() => {
+    api.get('/api/bikes').then(res => {
+      const bikes = res.data || [];
+      const cityMap = {};
+      bikes.forEach(b => {
+        if (b.location) {
+          const key = b.location.trim().toLowerCase();
+          if (!cityMap[key]) cityMap[key] = b.location.trim();
+        }
+      });
+      setAllCities(Object.values(cityMap));
+    });
+  }, []);
+
+  const features = [
+    {
+      icon: DollarSign,
+      title: "Lowest Rental Prices",
+      description: "We offer the most competitive pricing in the market without compromising on quality."
+    },
+    {
+      icon: Calendar,
+      title: "Flexible Rental Plans",
+      description: "Choose from hourly, daily, weekly, or monthly plans that suit your needs perfectly."
+    },
+    {
+      icon: Shield,
+      title: "No Ownership Worries",
+      description: "Skip the maintenance, insurance, and registration hassles. Just ride and enjoy."
+    },
+    {
+      icon: MapPin,
+      title: "15+ Rental Hubs",
+      description: "Conveniently located pickup points across the city for easy accessibility."
+    }
+  ];
+
+  const clients = [
+    { name: "ChaiPoint", logo: "CP" },
+    { name: "OLA", logo: "OLA" },
+    { name: "Uber", logo: "UBER" },
+    { name: "Swiggy", logo: "SW" },
+    { name: "Zomato", logo: "ZM" },
+    { name: "Flipkart", logo: "FK" }
+  ];
+
+  const featuredOn = [
+    { name: "TechCrunch", logo: "TC" },
+    { name: "Forbes", logo: "FB" },
+    { name: "Business Standard", logo: "BS" },
+    { name: "Economic Times", logo: "ET" },
+    { name: "StartupStory", logo: "SS" }
+  ];
+
+  const faqs = [
+    {
+      question: "What is BikeRent's pricing?",
+      answer: "Our pricing varies based on the type of bike and rental duration. We offer competitive hourly, daily, and monthly rates with special discounts for long-term rentals."
+    },
+    {
+      question: "What are the benefits of using BikeRent?",
+      answer: "BikeRent offers convenience, affordability, and flexibility. No maintenance costs, insurance worries, or parking hassles. Just pick up and ride!"
+    },
+    {
+      question: "What bike options are available?",
+      answer: "We have a diverse fleet including city bikes, mountain bikes, electric bikes, and scooters to suit different needs and preferences."
+    },
+    {
+      question: "Where is BikeRent currently operational?",
+      answer: "We currently operate in major cities with 15+ rental hubs. Check our locations page for the nearest hub to you."
+    }
+  ];
+
+  const cities = [
+    "Bike rental in Bangalore", "Bike rental in Hyderabad", "Bike rental in Mumbai",
+    "Bike rental in Delhi", "Bike rental in Chennai", "Bike rental in Pune",
+    "Bike rental in Kolkata", "Bike rental in Ahmedabad", "Bike rental in Jaipur",
+    "Bike rental in Surat", "Bike rental in Lucknow", "Bike rental in Kanpur"
+  ];
+
+  // Carousel state
+  const carouselImages = [
+    './images/bike-banner-1.jpeg',
+    './images/bike-banner-2.jpeg',
+    './images/bike-banner-3.jpeg'
+   
+  ];
+  const [activeIndex, setActiveIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % carouselImages.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
+  const goToPrev = () => setActiveIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  const goToNext = () => setActiveIndex((prev) => (prev + 1) % carouselImages.length);
+
   return (
-    <>
-      {/* Main Content: Two Columns for the whole page, white background */}
-      <Box sx={{ minHeight: '100vh', bgcolor: 'white', width: '100vw' }}>
-        <Navbar />
-        <Box sx={{
-          position: 'relative',
-          zIndex: 2,
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          alignItems: { xs: 'stretch', md: 'flex-start' },
-          justifyContent: 'center',
-          minHeight: { xs: 600, md: '80vh' },
-          px: { xs: 0.5, md: 6 },
-          pt: { xs: 2, md: 8 },
-          gap: { xs: 2, md: 6 },
-        }}>
-          {/* Left: Sticky Booking Form */}
-          <Box
-            ref={bookingFormRef}
-            sx={{
-              flex: { xs: 'unset', md: '0 0 420px' },
-              width: { xs: '100%', md: 420 },
-              maxWidth: { xs: '100%', md: 420 },
-              position: { xs: 'static', md: 'sticky' },
-              top: { xs: 'auto', md: 40 },
-              zIndex: 10,
-              transition: 'transform 0.3s, margin-bottom 0.3s',
-              transform: footerInView ? 'translateY(-120px)' : 'none',
-              marginBottom: footerInView ? '120px' : 0,
-              mx: { xs: 'auto', md: 0 },
-              mb: { xs: 2, md: 0 },
-              px: { xs: 1, md: 0 },
-            }}
-          >
-            <BookingForm
-              city={city}
-              setCity={setCity}
-              bookingType={bookingType}
-              setBookingType={setBookingType}
-              pickDate={pickDate}
-              setPickDate={setPickDate}
-              pickTime={pickTime}
-              setPickTime={setPickTime}
-              dropDate={dropDate}
-              setDropDate={setDropDate}
-              dropTime={dropTime}
-              setDropTime={setDropTime}
-              onFindBike={handleFindBike}
-            />
-          </Box>
-          {/* Right: All other sections stacked vertically, max width for clean look */}
-          <Box sx={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'stretch',
-            gap: { xs: 4, md: 6 },
-            width: '100%',
-            maxWidth: { xs: '100%', md: 900 },
-            minWidth: { xs: 'unset', md: 700 },
-            ml: { md: 0 },
-            overflowX: { xs: 'unset', md: 'auto' },
-            px: { xs: 1, md: 0 },
-          }}>
-            {/* Hero/Slider at the top */}
-            <Box sx={{
-              width: '100%',
-              maxWidth: { xs: '100%', md: 700 },
-              alignSelf: 'center',
-              mt: { xs: 2, md: 0 },
-              boxShadow: 2,
-              borderRadius: 3,
-              overflow: 'hidden',
-              bgcolor: 'white',
-            }}>
-              <Slider
-                autoplay={true}
-                autoplaySpeed={3500}
-                infinite={true}
-                arrows={false}
-                dots={true}
-                slidesToShow={1}
-                slidesToScroll={1}
-                pauseOnHover={false}
-                style={{ width: '100%' }}
-              >
-                {/* Slide 1: Hero Content */}
+    <div className="min-h-screen">
+      <Navbar />
+      <RunningBanner />
+      <PromoToast />
+
+      {/* Hero Section */}
+      <section className="relative min-h-[500px] bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
+        {/* Background Image */}
+        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/163407/bike-bicycle-beautiful-beauty-163407.jpeg?auto=compress&cs=tinysrgb&w=1200')] bg-cover bg-center opacity-30"></div>
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Booking Form on Left */}
+            <div className="order-2 lg:order-1 flex justify-center">
+              <div className="bg-white rounded-lg shadow p-4 w-full max-w-md border border-gray-100 flex flex-col gap-3 sm:p-6">
+                <h2 className="text-2xl font-bold text-gray-900 text-center mb-1">Rent a Bike in Delhi</h2>
+                <p className="text-xs text-gray-500 text-center mb-1">Quickly find the best scooter or bike for your needs.</p>
                 <div>
-                  <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minHeight: 400,
-                    bgcolor: 'white',
-                    p: 4,
-                  }}>
-                    <img src="/images/logo.png" alt="Bike Rent Logo" style={{ width: 120, marginBottom: 16 }} />
-                    <Typography variant="h3" sx={{ color: '#222', fontWeight: 'bold', mb: 2, textAlign: 'center', fontSize: { xs: 22, md: 32 } }}>
-                      RENT BIKE IN INDORE
-                    </Typography>
-                    <Typography variant="h6" sx={{ color: '#444', mb: 4, textAlign: 'center', fontSize: { xs: 15, md: 20 } }}>
-                      Rent from India's Largest Fleet of Motorcycles, Trusted by millions.
-                    </Typography>
-                    <Button startIcon={<DirectionsBikeIcon />} variant="contained" sx={{ bgcolor: '#03A9F4', color: 'white', fontWeight: 'bold', px: 4, borderRadius: 2, boxShadow: 2, fontSize: { xs: 15, md: 20 } }}>
-                      Rent Bikes
-                    </Button>
-                  </Box>
+                  <label className="block text-[10px] font-semibold text-gray-500 mb-0.5">Select City</label>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      className="w-full flex items-center border border-gray-300 rounded px-4 py-3 pr-10 text-base bg-white focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer transition placeholder-gray-400 text-gray-700 font-normal text-left"
+                      style={{ height: '44px' }}
+                      onClick={() => setCityPopupOpen(true)}
+                    >
+                      <span className="flex-1 truncate text-base text-gray-700 text-left">{city || 'Select a city'}</span>
+                    </button>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center h-full cursor-pointer pointer-events-none">
+                      <MapPin className="h-5 w-5 text-green-500" />
+                    </span>
+                  </div>
+                  {/* City Selection Popup */}
+                  {cityPopupVisible && (
+                    <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/30 transition-opacity duration-200`} style={{ opacity: cityPopupOpen ? 1 : 0 }}>
+                      <div
+                        ref={cityPopupRef}
+                        className={`bg-white rounded-xl shadow-2xl w-full max-w-xs sm:max-w-lg p-3 sm:p-6 relative mx-2 transform transition-transform duration-200 ${cityPopupOpen ? 'scale-100' : 'scale-95'}`}
+                        style={{ opacity: 1 }}
+                      >
+                        <button
+                          className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl"
+                          onClick={() => setCityPopupOpen(false)}
+                          aria-label="Close"
+                        >
+                          ×
+                        </button>
+                        <input
+                          type="text"
+                          placeholder="Search city"
+                          value={citySearch}
+                          onChange={e => setCitySearch(e.target.value)}
+                          className="w-full mb-3 px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-green-200 text-sm"
+                        />
+                        <div className="grid grid-cols-3 gap-3 sm:gap-6 max-h-56 sm:max-h-72 overflow-y-auto">
+                          {allCities.filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).map(c => (
+                            <button
+                              key={c}
+                              className="flex flex-col items-center gap-1 sm:gap-2 p-1 sm:p-2 rounded-lg hover:bg-green-50 focus:bg-green-100 transition"
+                              onClick={() => { setCity(c); setCityPopupOpen(false); }}
+                            >
+                              <FaCity size={28} className="text-gray-500 sm:text-[38px]" />
+                              <span className="text-xs font-semibold text-gray-700 mt-1 text-center">{c}</span>
+                            </button>
+                          ))}
+                          {allCities.filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).length === 0 && (
+                            <span className="col-span-3 text-center text-gray-400 text-sm">No cities found</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                {/* Slide 2: Banner Image */}
-                <div>
-                  <Box sx={{
-                    width: '100%',
-                    height: 400,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    bgcolor: 'white',
-                    p: 0,
-                    borderRadius: 0,
-                    overflow: 'hidden',
-                  }}>
-                    <img
-                      src="./images/bikePoster.png"
-                      alt="Bike Banner"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 0, display: 'block', objectPosition: 'center' }}
+                <div className="grid grid-cols-1 gap-2 mt-1.5">
+                  <div className="relative">
+                    <CustomDateTimePicker
+                      value={pickDateTime}
+                      onChange={setPickDateTime}
+                      label="Pick Up Date & Time"
                     />
-                  </Box>
+                    <span className="absolute right-2 top-0 h-full flex items-center pt-1 pointer-events-none"><Calendar className='w-5 h-5 text-green-500' /></span>
+                  </div>
+                  <div className="relative">
+                    <CustomDateTimePicker
+                      value={dropDateTime}
+                      onChange={setDropDateTime}
+                      label="Drop Off Date & Time"
+                    />
+                    <span className="absolute right-2 top-0 h-full flex items-center pt-1 pointer-events-none"><Calendar className='w-5 h-5 text-red-500' /></span>
+                  </div>
                 </div>
-              </Slider>
-            </Box>
-            {/* WhyChooseUs below slider, reduced width if needed */}
-            <Box sx={{ width: '100%', maxWidth: { xs: '100%', md: 900 }, minWidth: { xs: 'unset', md: 700 }, alignSelf: 'center', bgcolor: 'white', p: { xs: 1, md: 4 }, overflowX: { xs: 'unset', md: 'auto' } }}>
-              <WhyChooseUs />
-            </Box>
-            {/* New: Multiple Info Sections for Realistic Scroll */}
-            <Box sx={{ width: '100%', maxWidth: 700, alignSelf: 'center', mt: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <SectionBlock title="How Bike Rent Works" text={`1. Choose your city and dates.
-2. Browse our wide range of bikes.
-3. Book instantly with easy online payment or pay at pickup.
-4. Pick up your sanitized bike from a nearby location.
-5. Enjoy your ride and return hassle-free!`} />
-              <SectionBlock title="Safety & Hygiene Promise" text={`Your safety is our top priority. All bikes are sanitized before every ride. Helmets are provided and regularly disinfected. Our support team is available 24/7 for any assistance on the road.`} />
-              <SectionBlock title="Join Our Rider Community" text={`Over 10,000 riders trust us for their daily commute, weekend getaways, and epic road trips. Share your journey with #BikeRentIndore and get featured!`} />
-              <SectionBlock title="Sustainability Matters" text={`We are committed to a greener future. Our fleet includes electric and low-emission bikes. Every ride helps reduce traffic and pollution in your city.`} />
-              <SectionBlock title="Customer Stories" text={`“I booked a bike for my college trip—super easy and affordable!” — Rahul, Indore
+                <hr className="my-2 border-gray-200" />
+                <div className="flex items-center justify-between text-[11px] text-gray-500 font-semibold">
+                  <span>Total Duration:</span>
+                  <span>-</span>
+                </div>
+                <button className="w-full h-10 bg-green-500 text-white py-1.5 rounded font-bold hover:bg-green-600 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm flex items-center justify-center gap-1 mt-1 active:scale-95" onClick={handleFindBike}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                  </svg>
+                  Find Your Bike
+                </button>
+              </div>
+            </div>
+            {/* Hero Text on Right */}
+            <div className="order-1 lg:order-2 text-white lg:pl-12 flex flex-col items-start">
+              <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                GO ANYWHERE<br />
+                IN THE CITY<br />
+                <span className="text-blue-500">RENT</span> YOUR<br />
+                 OWN RIDE!
+              </h1>
+              <p className="text-xl mb-8 text-gray-300">
+              Ride your way with our premium motorcycle rental service.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-“Excellent service and well-maintained bikes. Highly recommended!” — Sneha, Bhopal`} />
-              <SectionBlock title="Pro Tips for Riders" text={`• Always wear a helmet and follow traffic rules.
-• Inspect your bike before you ride.
-• For long trips, plan your fuel stops in advance.
-• Save more with our weekly and monthly plans!`} />
-              <SectionBlock title="Need Help?" text={`Our support team is just a call or WhatsApp away. Check our FAQ or contact us for any queries. We’re here to make your ride smooth and memorable!`} />
-              <Box sx={{ mt: 3, textAlign: 'center' }}>
-                <Typography variant="h6" color="#0288d1" fontWeight={600}>
-                  Ready to hit the road? <span style={{ color: '#00bfae' }}>Book your ride now!</span>
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-      <HomePageInfo/>
-    </>
-    
-  );
-}
+      {/* Carousel Section */}
+      <section className="w-full py-12 bg-white">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-4">
+          {/* Left: Why Choose Bike Rent */}
+          <div className="flex flex-col justify-center h-full">
+            <h2 className="text-2xl md:text-3xl font-bold text-left mb-6">Why choose Bike Rent?</h2>
+            <div className="flex flex-col gap-5">
+              <div className="flex items-start gap-3">
+                <span className="mt-1"><FaMoneyBillWave size={28} color="#8BC34A" /></span>
+                <div>
+                  <div className="font-semibold text-base">Different Flexible Packages</div>
+                  <div className="text-gray-700 text-xs">Grab daily, weekly, fortnight and monthly packages at discounted rates</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-1"><FaMotorcycle size={28} color="#8BC34A" /></span>
+                <div>
+                  <div className="font-semibold text-base">Wide Range</div>
+                  <div className="text-gray-700 text-xs">Looking for a particular brand or location? We have probably got it.</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-1"><MdOutlineMiscellaneousServices size={28} color="#8BC34A" /></span>
+                <div>
+                  <div className="font-semibold text-base">Highly Maintained Fleet</div>
+                  <div className="text-gray-700 text-xs">Get high quality and serviced vehicles.</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-1"><FaRegClock size={28} color="#8BC34A" /></span>
+                <div>
+                  <div className="font-semibold text-base">24*7 At Service</div>
+                  <div className="text-gray-700 text-xs">Day or night, rent a bike</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-1"><BiRupee size={28} color="#8BC34A" /></span>
+                <div>
+                  <div className="font-semibold text-base">Book Now, Pay later</div>
+                  <div className="text-gray-700 text-xs">Flexibility to decide when and how to pay.</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-1"><FaHandHoldingUsd size={28} color="#8BC34A" /></span>
+                <div>
+                  <div className="font-semibold text-base">Instant Refund</div>
+                  <div className="text-gray-700 text-xs">Facing an issue while booking/pick up? We initiate instant refund.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Right: Carousel */}
+          <div className="flex justify-center items-center h-full">
+            <div className="relative w-full max-w-xl h-[420px] md:h-[420px] overflow-hidden rounded-2xl shadow-lg">
+              {carouselImages.map((img, idx) => (
+                <img
+                  key={img}
+                  src={img}
+                  alt={`Demo ${idx + 1}`}
+                  className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-700 ${idx === activeIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                  style={{ transition: 'opacity 0.7s cubic-bezier(0.4,0,0.2,1)' }}
+                />
+              ))}
+              {/* Left Arrow (hidden by default, show on hover) */}
+              <button onClick={goToPrev} className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white/90 rounded-full p-2 shadow transition z-20 opacity-0 group-hover:opacity-100 focus:opacity-100">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-gray-700">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+              {/* Right Arrow (hidden by default, show on hover) */}
+              <button onClick={goToNext} className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white/90 rounded-full p-2 shadow transition z-20 opacity-0 group-hover:opacity-100 focus:opacity-100">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-gray-700">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+              {/* Dots (hidden by default, show on hover) */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20 opacity-0 group-hover:opacity-100 focus:opacity-100">
+                {carouselImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveIndex(idx)}
+                    className={`w-3 h-3 rounded-full ${idx === activeIndex ? 'bg-green-500' : 'bg-gray-300'} transition`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-function AnimatedText({ text }) {
-  const blink = keyframes`
-    0% { opacity: 1; }
-    50% { opacity: 0.4; }
-    100% { opacity: 1; }
-  `;
-  return (
-    <Typography
-      variant="subtitle1"
-      sx={{
-        color: '#00796b',
-        fontWeight: 500,
-        fontSize: { xs: 15, md: 18 },
-        animation: `${blink} 2.5s linear infinite`,
-        mb: 1,
-      }}
-    >
-      {text}
-    </Typography>
-  );
-}
+      {/* Services Section */}
+  
 
-function InfoCard({ title, content, icon }) {
-  return (
-    <Box sx={{
-      flex: '1 1 220px',
-      minWidth: 180,
-      bgcolor: 'white',
-      borderRadius: 2,
-      boxShadow: 1,
-      p: 2,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      border: '1px solid #e0f7fa',
-      gap: 1,
-    }}>
-      <Typography variant="h6" fontWeight={700} color="#039be5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <span style={{ fontSize: 22 }}>{icon}</span> {title}
-      </Typography>
-      <Typography variant="body2" color="#555">
-        {content}
-      </Typography>
-    </Box>
-  );
-}
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">Why BikeRent?</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              We simplified bike rentals so you can focus on what's important to you.
+            </p>
+          </div>
 
-function SectionBlock({ title, text }) {
-  return (
-    <Box sx={{ bgcolor: 'white', p: { xs: 2, md: 3 }, borderRadius: 2, mb: 0 }}>
-      <Typography variant="h5" fontWeight={700} color="#0288d1" mb={1} sx={{ fontSize: { xs: 18, md: 24 } }}>{title}</Typography>
-      <Typography variant="body1" color="#444" sx={{ whiteSpace: 'pre-line', fontSize: { xs: 15, md: 18 } }}>{text}</Typography>
-    </Box>
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="h-8 w-8 text-orange-500" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3">{feature.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Exlore Section */}
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 overflow-hidden">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-white space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+                  Explore the City
+                  <span className="block text-blue-300">Your Way</span>
+                </h1>
+                <p className="text-xl text-blue-100 leading-relaxed">
+                  Premium bike rentals for urban adventures. Discover hidden gems, 
+                  beat the traffic, and experience the city like never before.
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group">
+                  Book Now
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button className="border-2 border-white/30 hover:border-white/50 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:bg-white/10 flex items-center justify-center">
+                  <Play className="mr-2 h-5 w-5" />
+                  Watch Demo
+                </button>
+              </div>
+              
+              <div className="flex items-center space-x-8 pt-4">
+                <div className="flex items-center space-x-2">
+                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
+                  <span className="text-white font-semibold">4.9/5</span>
+                  <span className="text-blue-200">2,450+ reviews</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Bike className="h-5 w-5 text-blue-300" />
+                  <span className="text-white font-semibold">500+</span>
+                  <span className="text-blue-200">bikes available</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <img 
+                src="./images/bikePoster.png" 
+                alt="Premium bike rental"
+                className="w-full h-80 lg:h-80 object-cover rounded-2xl shadow-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">Top FAQ's</h2>
+            <p className="text-gray-600">
+              Renting a bike made simple • Explore our FAQs for quick answers
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                <button
+                  onClick={() => toggleFAQ(index)}
+                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-semibold text-gray-800">{faq.question}</span>
+                  {openFAQ === index ? (
+                    <ChevronUp className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+                {openFAQ === index && (
+                  <div className="px-6 pb-4">
+                    <p className="text-gray-600">{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+   
+    </div>
   );
-} 
+};
+
+export default Home;

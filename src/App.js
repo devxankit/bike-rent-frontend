@@ -33,6 +33,9 @@ function App() {
         <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
           <Routes>
             <Route path="/" element={<Home />} />
+
+            <Route path="/home" element={<Home />} />
+
             <Route path="/bikes" element={<Bikes />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

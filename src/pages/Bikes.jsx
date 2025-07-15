@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import BikeCard from '../components/BikeCard';
 import api from '../utils/api';
 import Navbar from '../components/Navbar';
-import dayjs from 'dayjs';
 
 
 const Bikes = () => {
@@ -35,6 +34,14 @@ const Bikes = () => {
       }
     };
     fetchBikes();
+    // Auto-set city filter from localStorage
+    const formData = localStorage.getItem('bikeRentFormData');
+    if (formData) {
+      try {
+        const parsed = JSON.parse(formData);
+        if (parsed.city) setLocation(parsed.city);
+      } catch {}
+    }
   }, []);
 
   // Auto-filter bikes when any filter changes

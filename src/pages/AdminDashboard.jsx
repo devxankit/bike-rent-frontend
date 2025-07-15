@@ -370,7 +370,23 @@ export default function AdminDashboard() {
           </Box>
           {/* Add Bike Modal */}
           <Dialog open={bikeFormOpen} onClose={() => setBikeFormOpen(false)} maxWidth="sm" fullWidth>
-            <DialogTitle sx={{ fontSize: 15, py: 0.7 }}>{editId ? 'Edit Bike' : 'Add New Bike'}</DialogTitle>
+            <DialogTitle sx={{ fontSize: 15, py: 0.7, position: 'relative', pr: 4 }}>
+              {editId ? 'Edit Bike' : 'Add New Bike'}
+              {/* Cross/Close Button */}
+              <IconButton
+                aria-label="close"
+                onClick={() => setBikeFormOpen(false)}
+                sx={{
+                  position: 'absolute',
+                  right: 8,
+                  top: 8,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+                size="small"
+              >
+                <span style={{ fontSize: 22, fontWeight: 'bold', lineHeight: 1 }}>&times;</span>
+              </IconButton>
+            </DialogTitle>
             <DialogContent sx={{ p: 1 }}>
               <form onSubmit={handleSubmit} style={{ width: '100%' }} encType="multipart/form-data">
                 {/* Bike Details Section */}

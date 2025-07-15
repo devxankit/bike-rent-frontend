@@ -39,9 +39,21 @@ export default function BikeCard({ bike }) {
   // Build link to this bike card (assuming user is on the bikes page)
   const bikeUrl = `${window.location.origin}/bikes#bike-${bike._id}`;
 
-  // WhatsApp message and link to owner
+  // Get form data from localStorage
+  let formData = null;
+  try {
+    formData = JSON.parse(localStorage.getItem('bikeRentFormData'));
+  } catch {}
+
+  // Build WhatsApp message with form data if available
   const message = encodeURIComponent(
-    `Hi, I want to book this bike:\n\nBike: ${bike.name}\nLocation: ${bike.location}\nPrice: ₹${bike.price}/day\n\nMy Name: ${userName}\nMy Phone: ${userPhone}\nMy Email: ${userEmail}\n\nBike Link: ${bikeUrl}`
+    `Hi, I want to book this bike:\n\nBike: ${bike.name}\nLocation: ${bike.location}\nPrice: ₹${bike.price}/day` +
+    (formData ?
+      `\n\nBooking Details:\nCity: ${formData.city || ''}\nPick Up: ${formData.pickDateTime ? new Date(formData.pickDateTime).toLocaleString() : ''}\nDrop Off: ${formData.dropDateTime ? new Date(formData.dropDateTime).toLocaleString() : ''}`
+      :
+      ''
+    ) +
+    `\n\nMy Name: ${userName}\nMy Phone: ${userPhone}\nMy Email: ${userEmail}\n\nBike Link: ${bikeUrl}`
   );
   // Send to bike owner's WhatsApp number
   const whatsappUrl = `https://wa.me/${ownerPhone}?text=${message}`;
@@ -49,6 +61,8 @@ export default function BikeCard({ bike }) {
   const handleWhatsAppClick = (e) => {
     if (!isLoggedIn) {
       e.preventDefault();
+      // Save booking intent and form data
+      localStorage.setItem('pendingBikeBooking', JSON.stringify({ bikeId: bike._id }));
       toast.info('Please log in to send WhatsApp messages.');
       navigate('/login');
     }

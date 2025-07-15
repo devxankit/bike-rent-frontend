@@ -58,6 +58,7 @@ export default function AllBikes() {
   const [loading, setLoading] = useState(false);
   const [cityFilter, setCityFilter] = useState('');
   const [nameFilter, setNameFilter] = useState('');
+  const [ready, setReady] = useState(false);
 
   // Get unique city list from bikes (case-insensitive, display original casing)
   const cityMap = {};
@@ -191,27 +192,32 @@ export default function AllBikes() {
     }
   };
 
-  useEffect(() => {
-    fetchBikes();
-  }, []);
-
-  const fetchBikes = async () => {
+  // Fetch bikes from backend, optionally by city
+  const fetchBikes = async (city) => {
     try {
-      const res = await api.get('/api/bikes');
+      let url = '/api/bikes';
+      if (city) {
+        url += `?location=${encodeURIComponent(city)}`;
+      }
+      const res = await api.get(url);
       setBikes(res.data);
-      console.log('Fetched bikes:', res.data); // Debug: log bikes and their createdAt
+      setReady(true);
     } catch {
       setSnackbar({ open: true, message: 'Failed to fetch bikes', severity: 'error' });
     }
   };
 
+  // On mount, fetch all bikes
+  useEffect(() => {
+    fetchBikes();
+  }, []);
+
   // Sort bikes so newest appear first (descending by createdAt)
-  const sortedBikes = [...bikes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Newest bikes first
-  // Apply tab, city, and name filters
+  const sortedBikes = [...bikes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  // Apply tab and name filter only (city filter is handled by backend fetch)
   const filteredBikes = sortedBikes.filter(bike => {
     if (tab === 1 && !bike.isBooked) return false;
     if (tab === 2 && bike.isBooked) return false;
-    if (cityFilter && (!bike.location || bike.location.trim().toLowerCase() !== cityFilter.trim().toLowerCase())) return false;
     if (nameFilter && !bike.name.toLowerCase().includes(nameFilter.toLowerCase())) return false;
     return true;
   });
@@ -222,7 +228,7 @@ export default function AllBikes() {
     { label: 'Bikes', icon: <DirectionsBikeIcon />, path: '/admin/bikes' },
     { label: 'Bookings', icon: <CalendarTodayIcon /> },
     { label: 'Customers', icon: <PeopleIcon /> },
-    { label: 'Analytics', icon: <BarChartIcon /> },
+    { label: 'Analytics', icon: <BarChartIcon />, path: '/admin/analytics' },
   ];
   const bottomNavItems = [
     { label: 'Settings', icon: <SettingsIcon /> },
@@ -251,6 +257,8 @@ export default function AllBikes() {
                 isActive = location.pathname === '/admin/dashboard';
               } else if (item.label === 'Customers') {
                 isActive = location.pathname === '/admin/customers';
+              } else if (item.label === 'Analytics') {
+                isActive = location.pathname === '/admin/analytics';
               }
               return (
                 <Box
@@ -272,6 +280,7 @@ export default function AllBikes() {
                     else if (item.label === 'Bikes') navigate('/admin/bikes');
                     else if (item.label === 'Dashboard') navigate('/admin/dashboard');
                     else if (item.label === 'Customers') navigate('/admin/customers');
+                    else if (item.label === 'Analytics') navigate('/admin/analytics');
                   }}
                 >
                   <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#2563eb' : '#fff' }}>{item.icon}</span>
@@ -300,7 +309,11 @@ export default function AllBikes() {
                   select
                   label="Filter by City"
                   value={cityFilter}
-                  onChange={e => setCityFilter(e.target.value)}
+                  onChange={e => {
+                    setCityFilter(e.target.value);
+                    setNameFilter(''); // Reset name filter when city changes
+                    fetchBikes(e.target.value);
+                  }}
                   size="small"
                   sx={{ minWidth: 180 }}
                 >
@@ -328,31 +341,31 @@ export default function AllBikes() {
                 <Tab label="Booked" />
                 <Tab label="Unbooked" />
               </Tabs>
-              {filteredBikes.length === 0 ? (
-                <Typography>No bikes found.</Typography>
-              ) : (
-                filteredBikes.map(bike => (
-                  <Box key={bike._id} sx={{ display: 'flex', alignItems: 'center', mb: 2, p: 1, borderBottom: '1px solid #eee' }}>
-                    <img src={bike.image} alt={bike.name} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 4, marginRight: 16 }} />
-                    <Box sx={{ flex: 1 }}>
-                      <Typography fontWeight={600}>{bike.name}</Typography>
-                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: 12, display: 'block' }}>{dayjs(bike.createdAt).format('DD MMM YYYY')}</Typography>
-                      <Typography variant="body2" color="text.secondary">₹{bike.price} | {bike.location}</Typography>
-                      {bike.isBooked ? (
-                        <Typography variant="body2" color="error">
-                          Booked: {bike.bookingPeriod?.from ? dayjs(bike.bookingPeriod.from).format('DD/MM/YYYY') : ''} - {bike.bookingPeriod?.to ? dayjs(bike.bookingPeriod.to).format('DD/MM/YYYY') : ''} ({bike.bookedDays} days)
-                        </Typography>
-                      ) : (
-                        <Typography variant="body2" color="success.main">Available</Typography>
-                      )}
-                    </Box>
-                    <IconButton onClick={() => handleEdit(bike)}><EditIcon /></IconButton>
-                    <IconButton color={bike.isBooked ? 'error' : 'primary'} title={bike.isBooked ? 'Mark as available' : 'Book this bike'} onClick={() => openBookingDialog(bike)}>
-                      <EventAvailableIcon />
-                    </IconButton>
-                    <IconButton color="error" onClick={e => handleDelete(bike._id, e)}><DeleteIcon /></IconButton>
-                  </Box>
-                ))
+              {ready && (
+                filteredBikes.length === 0
+                  ? <Typography>No bikes found.</Typography>
+                  : filteredBikes.map(bike => (
+                      <Box key={bike._id} sx={{ display: 'flex', alignItems: 'center', mb: 2, p: 1, borderBottom: '1px solid #eee' }}>
+                        <img src={bike.image} alt={bike.name} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 4, marginRight: 16 }} />
+                        <Box sx={{ flex: 1 }}>
+                          <Typography fontWeight={600}>{bike.name}</Typography>
+                          <Typography variant="caption" color="text.secondary" sx={{ fontSize: 12, display: 'block' }}>{dayjs(bike.createdAt).format('DD MMM YYYY')}</Typography>
+                          <Typography variant="body2" color="text.secondary">₹{bike.price} | {bike.location}</Typography>
+                          {bike.isBooked ? (
+                            <Typography variant="body2" color="error">
+                              Booked: {bike.bookingPeriod?.from ? dayjs(bike.bookingPeriod.from).format('DD/MM/YYYY') : ''} - {bike.bookingPeriod?.to ? dayjs(bike.bookingPeriod.to).format('DD/MM/YYYY') : ''} ({bike.bookedDays} days)
+                            </Typography>
+                          ) : (
+                            <Typography variant="body2" color="success.main">Available</Typography>
+                          )}
+                        </Box>
+                        <IconButton onClick={() => handleEdit(bike)}><EditIcon /></IconButton>
+                        <IconButton color={bike.isBooked ? 'error' : 'primary'} title={bike.isBooked ? 'Mark as available' : 'Book this bike'} onClick={() => openBookingDialog(bike)}>
+                          <EventAvailableIcon />
+                        </IconButton>
+                        <IconButton color="error" onClick={e => handleDelete(bike._id, e)}><DeleteIcon /></IconButton>
+                      </Box>
+                    ))
               )}
             </Paper>
           </Box>
@@ -365,7 +378,23 @@ export default function AllBikes() {
       </Box>
       {/* Add/Edit Bike Modal */}
       <Dialog open={bikeFormOpen} onClose={() => setBikeFormOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontSize: 15, py: 0.7 }}>{editId ? 'Edit Bike' : 'Add New Bike'}</DialogTitle>
+        <DialogTitle sx={{ fontSize: 15, py: 0.7, position: 'relative', pr: 4 }}>
+          {editId ? 'Edit Bike' : 'Add New Bike'}
+          {/* Cross/Close Button */}
+          <IconButton
+            aria-label="close"
+            onClick={() => setBikeFormOpen(false)}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            size="small"
+          >
+            <span style={{ fontSize: 22, fontWeight: 'bold', lineHeight: 1 }}>&times;</span>
+          </IconButton>
+        </DialogTitle>
         <DialogContent sx={{ p: 1 }}>
           <form onSubmit={handleSubmit} style={{ width: '100%' }} encType="multipart/form-data">
             {/* Bike Details Section */}
