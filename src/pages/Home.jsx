@@ -7,8 +7,10 @@ import {
 import { FaMoneyBillWave, FaMotorcycle, FaRegClock, FaHandHoldingUsd, FaCity, FaLandmark, FaMonument, FaBuilding, FaUniversity, FaRegBuilding, FaMapMarkerAlt, FaRegHospital, FaRegSmile, FaRegSun, FaRegStar, FaRegFlag } from 'react-icons/fa';
 import { MdOutlineMiscellaneousServices } from 'react-icons/md';
 import { BiRupee } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
-import CustomDateTimePicker from '../components/CustomDateTimePicker';
+import CustomDatePicker from '../components/CustomDatePicker';
+import CustomTimePicker from '../components/CustomTimePicker';
 import Navbar from '../components/Navbar';
 import PromoToast from '../components/PromoToast';
 import api from '../utils/api';
@@ -87,18 +89,61 @@ const Home = () => {
   const [allCities, setAllCities] = useState([]);
   const [citySearch, setCitySearch] = useState('');
   const [bookingType, setBookingType] = useState('');
-  // State for combined DateTime pickers
-  const [pickDateTime, setPickDateTime] = useState(new Date());
-  const [dropDateTime, setDropDateTime] = useState(new Date());
-  const handleFindBike = () => {
-    // Save form data to localStorage and redirect
+  // State for separate date and time pickers
+  function getNextAvailableTime() {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    if (minutes < 30) {
+      now.setMinutes(30, 0, 0);
+    } else {
+      now.setHours(now.getHours() + 1, 0, 0, 0);
+    }
+    return now;
+  }
+  const [pickDate, setPickDate] = useState(new Date());
+  const [pickTime, setPickTime] = useState(new Date());
+  const [dropDate, setDropDate] = useState(new Date());
+  const [dropTime, setDropTime] = useState(new Date());
+
+  // Calculate total duration between pickup and dropoff
+  function getDurationString(pickDate, pickTime, dropDate, dropTime) {
+    if (!pickDate || !pickTime || !dropDate || !dropTime) return "-";
+    const start = new Date(pickDate);
+    start.setHours(pickTime.getHours(), pickTime.getMinutes(), 0, 0);
+    const end = new Date(dropDate);
+    end.setHours(dropTime.getHours(), dropTime.getMinutes(), 0, 0);
+    if (end <= start) return "-";
+    const ms = end - start;
+    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    let str = "";
+    if (days > 0) str += `${days} day${days > 1 ? "s" : ""} `;
+    if (hours > 0) str += `${hours} hour${hours > 1 ? "s" : ""} `;
+    if (minutes > 0) str += `${minutes} min${minutes > 1 ? "s" : ""}`;
+    return str.trim() || "0 min";
+  }
+  const navigate = useNavigate();
+  const handleFindBike = (e) => {
+    e.preventDefault();
+    // Combine date and time for pick and drop
+    const pickDateTime = new Date(pickDate);
+    pickDateTime.setHours(pickTime.getHours(), pickTime.getMinutes(), 0, 0);
+    const dropDateTime = new Date(dropDate);
+    dropDateTime.setHours(dropTime.getHours(), dropTime.getMinutes(), 0, 0);
+    // Save form data to localStorage
     const formData = {
       city,
       pickDateTime,
       dropDateTime
     };
     localStorage.setItem('bikeRentFormData', JSON.stringify(formData));
-    window.location.href = '/bikes';
+    const cityLower = city.trim().toLowerCase();
+    if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(cityLower)) {
+      navigate(`/bikes/${cityLower}`);
+    } else {
+      navigate('/bikes');
+    }
   };
 
   const handleInputChange = (e) => {
@@ -290,7 +335,7 @@ const Home = () => {
                           className="w-full mb-3 px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-green-200 text-sm"
                         />
                         <div className="grid grid-cols-3 gap-3 sm:gap-6 max-h-56 sm:max-h-72 overflow-y-auto">
-                          {allCities.filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).map(c => (
+                          {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).map(c => (
                             <button
                               key={c}
                               className="flex flex-col items-center gap-1 sm:gap-2 p-1 sm:p-2 rounded-lg hover:bg-green-50 focus:bg-green-100 transition"
@@ -300,7 +345,7 @@ const Home = () => {
                               <span className="text-xs font-semibold text-gray-700 mt-1 text-center">{c}</span>
                             </button>
                           ))}
-                          {allCities.filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).length === 0 && (
+                          {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).length === 0 && (
                             <span className="col-span-3 text-center text-gray-400 text-sm">No cities found</span>
                           )}
                         </div>
@@ -309,27 +354,47 @@ const Home = () => {
                   )}
                 </div>
                 <div className="grid grid-cols-1 gap-2 mt-1.5">
-                  <div className="relative">
-                    <CustomDateTimePicker
-                      value={pickDateTime}
-                      onChange={setPickDateTime}
-                      label="Pick Up Date & Time"
-                    />
-                    <span className="absolute right-2 top-0 h-full flex items-center pt-1 pointer-events-none"><Calendar className='w-5 h-5 text-green-500' /></span>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="relative">
+                      <CustomDatePicker
+                        value={pickDate}
+                        onChange={setPickDate}
+                        label="Pick Up Date"
+                        minDate={new Date()}
+                      />
+                    </div>
+                    <div className="relative">
+                      <CustomTimePicker
+                        value={pickTime}
+                        onChange={setPickTime}
+                        label="Pick Up Time"
+                        selectedDate={pickDate}
+                      />
+                    </div>
                   </div>
-                  <div className="relative">
-                    <CustomDateTimePicker
-                      value={dropDateTime}
-                      onChange={setDropDateTime}
-                      label="Drop Off Date & Time"
-                    />
-                    <span className="absolute right-2 top-0 h-full flex items-center pt-1 pointer-events-none"><Calendar className='w-5 h-5 text-red-500' /></span>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="relative">
+                      <CustomDatePicker
+                        value={dropDate}
+                        onChange={setDropDate}
+                        label="Drop Off Date"
+                        minDate={pickDate}
+                      />
+                    </div>
+                    <div className="relative">
+                      <CustomTimePicker
+                        value={dropTime}
+                        onChange={setDropTime}
+                        label="Drop Off Time"
+                        selectedDate={dropDate}
+                      />
+                    </div>
                   </div>
                 </div>
                 <hr className="my-2 border-gray-200" />
                 <div className="flex items-center justify-between text-[11px] text-gray-500 font-semibold">
                   <span>Total Duration:</span>
-                  <span>-</span>
+                  <span>{getDurationString(pickDate, pickTime, dropDate, dropTime)}</span>
                 </div>
                 <button className="w-full h-10 bg-green-500 text-white py-1.5 rounded font-bold hover:bg-green-600 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm flex items-center justify-center gap-1 mt-1 active:scale-95" onClick={handleFindBike}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
@@ -493,7 +558,9 @@ const Home = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group">
+                <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
+                  onClick={() => navigate('/bikes')}
+                >
                   Book Now
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>

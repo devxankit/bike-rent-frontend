@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { MdDashboard, MdMenu, MdClose } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { FiFilter } from 'react-icons/fi';
 
-const Navbar = () => {
+const Navbar = ({ onFilterToggle }) => {
   // Check login state from localStorage
   let user = null;
   try {
@@ -11,6 +12,7 @@ const Navbar = () => {
   const isLoggedIn = !!user;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -21,12 +23,12 @@ const Navbar = () => {
   // Drawer content
   const drawerLinks = (
     <nav className="flex flex-col gap-4 mt-8">
-      <a href="/" className="text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>Home</a>
-      <a href="/bikes" className="text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>Bikes</a>
+      <Link to="/" className="text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>Home</Link>
+      <Link to="/bikes" className="text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>Bikes</Link>
       {isLoggedIn && (
-        <a href="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>
+        <Link to="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
-        </a>
+        </Link>
       )}
       {!isLoggedIn ? (
         <>
@@ -43,22 +45,22 @@ const Navbar = () => {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
         {/* Logo */}
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <img
             src="/images/logo-2.png"
             alt="Bike Rent Logo"
             className="w-10 h-10 object-contain"
           />
           <span className="font-bold text-lg text-[#111518]">Bike Rent</span>
-        </div>
+        </Link>
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6">
-          <a href="/" className="text-sm font-semibold text-[#111518] hover:text-blue-600">Home</a>
-          <a href="/bikes" className="text-sm font-semibold text-[#111518] hover:text-blue-600">Bikes</a>
+          <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-blue-600">Home</Link>
+          <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-blue-600">Bikes</Link>
           {isLoggedIn && (
-            <a href="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-blue-600">
+            <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-blue-600">
               <MdDashboard className="w-5 h-5" /> Dashboard
-            </a>
+            </Link>
           )}
           {!isLoggedIn ? (
             <>
@@ -70,13 +72,24 @@ const Navbar = () => {
           )}
         </nav>
         {/* Hamburger Icon for Mobile */}
-        <button
-          className="md:hidden flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-blue-500  "
-          onClick={() => setDrawerOpen(true)}
-          aria-label="Open menu"
-        >
-          <MdMenu className="w-7 h-7 text-[#111518]" />
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          {location.pathname.startsWith('/bikes') && (
+            <button
+              className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={onFilterToggle}
+              aria-label="Open filter"
+            >
+              <FiFilter className="w-5 h-5 text-sky-500" />
+            </button>
+          )}
+          <button
+            className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onClick={() => setDrawerOpen(true)}
+            aria-label="Open menu"
+          >
+            <MdMenu className="w-7 h-7 text-[#111518]" />
+          </button>
+        </div>
         {/* Drawer Overlay */}
         <div
           className={`fixed inset-0 z-50 bg-black bg-opacity-30 transition-opacity duration-300 ${drawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}

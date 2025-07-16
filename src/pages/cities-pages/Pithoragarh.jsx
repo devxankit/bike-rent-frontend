@@ -1,37 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import BikeCard from '../components/BikeCard';
-import api from '../utils/api';
-import Navbar from '../components/Navbar';
+import BikeCard from '../../components/BikeCard';
+import api from '../../utils/api';
+import Navbar from '../../components/Navbar';
 import { useNavigate } from 'react-router-dom';
-import FilterSidebar from '../components/FilterSidebar';
+import FilterSidebar from '../../components/FilterSidebar';
 import { FiX } from 'react-icons/fi';
 
-
-const Bikes = () => {
+const PithoragarhBikesPage = () => {
   const [bikes, setBikes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState('');
-  const [allLocations, setAllLocations] = useState([]);
+  const [location, setLocation] = useState('Pithoragarh');
   const [bikeName, setBikeName] = useState("");
   const [price, setPrice] = useState(0);
-  const [maxPrice] = useState(10000); // Fixed max price for slider
+  const [maxPrice] = useState(10000);
   const [filterOpen, setFilterOpen] = useState(false);
+  const allLocations = [];
   const navigate = useNavigate();
 
-  // Fetch all available bikes initially to get all locations
   useEffect(() => {
     const fetchBikes = async () => {
       try {
         setLoading(true);
-        const res = await api.get('/api/bikes', { params: { isBooked: false } });
+        const res = await api.get('/api/bikes', { params: { isBooked: false, location: 'Pithoragarh' } });
         setBikes(res.data);
-        // Extract unique locations for dropdown
-        const locations = Array.from(new Set(res.data.map(b => b.location).filter(Boolean)));
-        setAllLocations(locations);
-        // Find max price for slider
-        const prices = res.data.map(b => b.price).filter(Boolean);
-        // setMaxPrice(prices.length ? Math.max(...prices) : 100000); // This line is removed as maxPrice is now fixed
       } catch (err) {
         setError('Failed to load bikes.');
       } finally {
@@ -39,20 +31,16 @@ const Bikes = () => {
       }
     };
     fetchBikes();
-    // Removed auto-set city filter from localStorage to always default to 'All Cities'
   }, []);
 
-  // Auto-filter bikes when any filter changes
   useEffect(() => {
     const fetchFilteredBikes = async () => {
       setLoading(true);
       setError(null);
       try {
-        const params = { isBooked: false };
-        if (location) params.location = location;
+        const params = { isBooked: false, location };
         if (bikeName) params.name = bikeName;
         if (price > 0) params.price = price;
-        // pickupTime filter is removed, so this line is removed
         const res = await api.get('/api/bikes', { params });
         setBikes(res.data);
       } catch (err) {
@@ -64,7 +52,18 @@ const Bikes = () => {
     fetchFilteredBikes();
   }, [location, bikeName, price]);
 
-  // Sort bikes so newest appear first
+  // Redirect to city route on city change
+  useEffect(() => {
+    if (location && location.toLowerCase() !== 'pithoragarh') {
+      const city = location.trim().toLowerCase();
+      if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "dehradun"].includes(city)) {
+        navigate(`/bikes/${city}`);
+      } else if (location === "") {
+        navigate('/bikes');
+      }
+    }
+  }, [location, navigate]);
+
   const sortedBikes = [...bikes].sort((a, b) => new Date(b.year || b.createdAt) - new Date(a.year || a.createdAt));
 
   return (
@@ -128,9 +127,8 @@ const Bikes = () => {
           </div>
         </main>
       </div>
-      
     </>
   );
 };
 
-export default Bikes; 
+export default PithoragarhBikesPage; 

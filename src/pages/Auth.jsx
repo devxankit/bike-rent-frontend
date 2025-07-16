@@ -18,17 +18,14 @@ export default function Auth() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Sync tab with route
+  // Sync tab and route together to avoid double navigation and remounts
   useEffect(() => {
     if (location.pathname === '/signup' && tab !== 1) setTab(1);
     else if (location.pathname === '/login' && tab !== 0) setTab(0);
-  }, [location.pathname]);
-
-  // Change route when tab changes
-  useEffect(() => {
-    if (tab === 0 && location.pathname !== '/login') navigate('/login', { replace: true });
+    else if (tab === 0 && location.pathname !== '/login') navigate('/login', { replace: true });
     else if (tab === 1 && location.pathname !== '/signup') navigate('/signup', { replace: true });
-  }, [tab]);
+    // Only update tab or route if needed
+  }, [location.pathname, tab, navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -223,10 +220,7 @@ export default function Auth() {
                     <svg className="w-5 h-5" viewBox="0 0 48 48"><g><circle fill="#fff" cx="24" cy="24" r="24"/><path fill="#4285F4" d="M35.6 24.2c0-.7-.1-1.4-.2-2H24v4.1h6.5c-.3 1.4-1.3 2.6-2.7 3.4v2.8h4.4c2.6-2.4 4.1-5.9 4.1-10.3z"/><path fill="#34A853" d="M24 36c3.3 0 6-1.1 8-3l-4.4-2.8c-1.2.8-2.7 1.3-4.4 1.3-3.4 0-6.2-2.3-7.2-5.3h-4.5v3.1C13.8 33.7 18.5 36 24 36z"/><path fill="#FBBC05" d="M16.8 26.2c-.2-.7-.3-1.4-.3-2.2s.1-1.5.3-2.2v-3.1h-4.5C11.5 21.1 12 23.4 12 24c0 .6.1 1.2.2 1.8l4.6-2.8z"/><path fill="#EA4335" d="M24 18.7c1.8 0 3.4.6 4.6 1.7l3.4-3.4C31.9 15.1 28.9 14 24 14c-5.5 0-10.2 2.3-12.5 5.7l4.6 3.1c1-3 3.8-5.1 7.9-5.1z"/></g></svg>
                     Google
                   </button>
-                  <button type="button" className="flex-1 flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 text-gray-700 font-semibold bg-white hover:bg-gray-50 transition">
-                    <svg className="w-5 h-5" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 10.995 10.125 11.854v-8.385H7.078v-3.47h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.926-1.953 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.068 24 18.092 24 12.073z"/></svg>
-                    Facebook
-                  </button>
+                
                 </div>
               </form>
             ) : (
@@ -355,10 +349,7 @@ export default function Auth() {
                     <svg className="w-5 h-5" viewBox="0 0 48 48"><g><circle fill="#fff" cx="24" cy="24" r="24"/><path fill="#4285F4" d="M35.6 24.2c0-.7-.1-1.4-.2-2H24v4.1h6.5c-.3 1.4-1.3 2.6-2.7 3.4v2.8h4.4c2.6-2.4 4.1-5.9 4.1-10.3z"/><path fill="#34A853" d="M24 36c3.3 0 6-1.1 8-3l-4.4-2.8c-1.2.8-2.7 1.3-4.4 1.3-3.4 0-6.2-2.3-7.2-5.3h-4.5v3.1C13.8 33.7 18.5 36 24 36z"/><path fill="#FBBC05" d="M16.8 26.2c-.2-.7-.3-1.4-.3-2.2s.1-1.5.3-2.2v-3.1h-4.5C11.5 21.1 12 23.4 12 24c0 .6.1 1.2.2 1.8l4.6-2.8z"/><path fill="#EA4335" d="M24 18.7c1.8 0 3.4.6 4.6 1.7l3.4-3.4C31.9 15.1 28.9 14 24 14c-5.5 0-10.2 2.3-12.5 5.7l4.6 3.1c1-3 3.8-5.1 7.9-5.1z"/></g></svg>
                     Google
                   </button>
-                  <button type="button" className="flex-1 flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 text-gray-700 font-semibold bg-white hover:bg-gray-50 transition">
-                    <svg className="w-5 h-5" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 10.995 10.125 11.854v-8.385H7.078v-3.47h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.926-1.953 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.068 24 18.092 24 12.073z"/></svg>
-                    Facebook
-                  </button>
+                 
                 </div>
               </form>
             )}

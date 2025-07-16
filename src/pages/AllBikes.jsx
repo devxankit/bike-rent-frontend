@@ -31,7 +31,7 @@ const initialForm = {
   ownerPhone: '',
 };
 
-export default function AllBikes() {
+export default function AllBikes({ cityOverride }) {
   const [bikes, setBikes] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ export default function AllBikes() {
   const [bookingTo, setBookingTo] = useState(null);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, bikeId: null, anchorEl: null });
   const [loading, setLoading] = useState(false);
-  const [cityFilter, setCityFilter] = useState('');
+  const [cityFilter, setCityFilter] = useState(cityOverride || '');
   const [nameFilter, setNameFilter] = useState('');
   const [ready, setReady] = useState(false);
 
@@ -196,8 +196,9 @@ export default function AllBikes() {
   const fetchBikes = async (city) => {
     try {
       let url = '/api/bikes';
-      if (city) {
-        url += `?location=${encodeURIComponent(city)}`;
+      const cityToUse = cityOverride || city;
+      if (cityToUse) {
+        url += `?location=${encodeURIComponent(cityToUse)}`;
       }
       const res = await api.get(url);
       setBikes(res.data);
@@ -207,10 +208,16 @@ export default function AllBikes() {
     }
   };
 
-  // On mount, fetch all bikes
+  // On mount, fetch all bikes or by cityOverride
   useEffect(() => {
-    fetchBikes();
-  }, []);
+    fetchBikes(cityOverride);
+    // Set cityFilter to '' (All Cities) by default, and reset on mount if not cityOverride
+    if (!cityOverride) {
+      setCityFilter('');
+    } else {
+      setCityFilter(cityOverride);
+    }
+  }, [cityOverride]);
 
   // Sort bikes so newest appear first (descending by createdAt)
   const sortedBikes = [...bikes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -310,15 +317,21 @@ export default function AllBikes() {
                   label="Filter by City"
                   value={cityFilter}
                   onChange={e => {
-                    setCityFilter(e.target.value);
+                    const selected = e.target.value;
+                    setCityFilter(selected);
                     setNameFilter(''); // Reset name filter when city changes
-                    fetchBikes(e.target.value);
+                    const city = selected.trim().toLowerCase();
+                    if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(city)) {
+                      navigate(`/bikes/${city}`);
+                    } else if (city === "") {
+                      navigate('/bikes');
+                    }
                   }}
                   size="small"
                   sx={{ minWidth: 180 }}
                 >
                   <MenuItem value="">All Cities</MenuItem>
-                  {cityOptions.map(city => (
+                  {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].map(city => (
                     <MenuItem key={city} value={city}>{city}</MenuItem>
                   ))}
                 </TextField>
