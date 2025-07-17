@@ -315,6 +315,21 @@ export default function AdminDashboard() {
               <Typography variant="h5" fontWeight={700} sx={{ fontSize: 26 }}>Welcome back, Admin!</Typography>
               <Typography variant="body2" mt={0.5} sx={{ fontSize: 15 }}>Here's what's happening with your bike rental business today.</Typography>
             </Box>
+            {/* Quick Actions at top for mobile only */}
+            <Box sx={{ display: { xs: 'block', md: 'none' }, bgcolor: '#fff', borderRadius: 1.5, p: 2, mb: 2, boxShadow: 1 }}>
+              <Typography variant="subtitle1" fontWeight={700} mb={1} sx={{ fontSize: 16 }}>Quick Actions</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2 }}>
+                <Button variant="contained" fullWidth sx={{ bgcolor: '#2563eb', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
+                  Add New Bike
+                </Button>
+                <Button variant="contained" fullWidth sx={{ bgcolor: '#22c55e', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => navigate('/admin/bikes?tab=1')}>
+                  View Bookings
+                </Button>
+                <Button variant="contained" fullWidth sx={{ bgcolor: '#a21caf', color: '#fff', fontWeight: 600, fontSize: 14, py: 1 }} onClick={async () => { await fetchBikes(); await fetchUsers(); setSnackbar({ open: true, message: 'Dashboard data refreshed!', severity: 'success' }); }}>
+                  Refresh Dashboard Data
+                </Button>
+              </Box>
+            </Box>
             {/* Stats Cards */}
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' }, gap: 1.5, mb: 2 }}>
               {stats.map(stat => (
@@ -353,18 +368,20 @@ export default function AdminDashboard() {
                   ))
                 )}
               </Box>
-              {/* Quick Actions */}
-              <Box sx={{ bgcolor: '#fff', borderRadius: 1.5, p: 2, display: 'flex', flexDirection: 'column', gap: 1.2 }}>
+              {/* Quick Actions (desktop only) */}
+              <Box sx={{ bgcolor: '#fff', borderRadius: 1.5, p: 2, display: { xs: 'none', md: 'flex' }, flexDirection: 'column', gap: 1.2 }}>
                 <Typography variant="subtitle1" fontWeight={700} mb={1} sx={{ fontSize: 16 }}>Quick Actions</Typography>
-                <Button variant="contained" sx={{ bgcolor: '#2563eb', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
-                  Add New Bike
-                </Button>
-                <Button variant="contained" sx={{ bgcolor: '#22c55e', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => navigate('/admin/bikes?tab=1')}>
-                  View Bookings
-                </Button>
-                <Button variant="contained" sx={{ bgcolor: '#a21caf', color: '#fff', fontWeight: 600, fontSize: 14, py: 1 }} onClick={async () => { await fetchBikes(); await fetchUsers(); setSnackbar({ open: true, message: 'Dashboard data refreshed!', severity: 'success' }); }}>
-                  Refresh Dashboard Data
-                </Button>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2 }}>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: '#2563eb', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
+                    Add New Bike
+                  </Button>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: '#22c55e', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => navigate('/admin/bikes?tab=1')}>
+                    View Bookings
+                  </Button>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: '#a21caf', color: '#fff', fontWeight: 600, fontSize: 14, py: 1 }} onClick={async () => { await fetchBikes(); await fetchUsers(); setSnackbar({ open: true, message: 'Dashboard data refreshed!', severity: 'success' }); }}>
+                    Refresh Dashboard Data
+                  </Button>
+                </Box>
               </Box>
             </Box>
           </Box>
