@@ -8,6 +8,7 @@ import { FaMoneyBillWave, FaMotorcycle, FaRegClock, FaHandHoldingUsd, FaCity, Fa
 import { MdOutlineMiscellaneousServices } from 'react-icons/md';
 import { BiRupee } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import CustomDatePicker from '../components/CustomDatePicker';
 import CustomTimePicker from '../components/CustomTimePicker';
@@ -16,19 +17,19 @@ import PromoToast from '../components/PromoToast';
 import api from '../utils/api';
 import RunningBanner from '../components/RunningBanner';
 
-// Custom styles for green highlight (add to global CSS if needed)
+// Custom styles for red highlight (add to global CSS if needed)
 const customDatepickerStyles = `
 .custom-calendar .react-datepicker__day--selected,
 .custom-calendar .react-datepicker__time-list-item--selected {
-  background-color: #8BC34A !important;
+  background-color: #EF4444 !important;
   color: #fff !important;
 }
 .custom-calendar .react-datepicker__day--keyboard-selected {
-  background-color: #dcedc8 !important;
+  background-color: #fecaca !important;
   color: #222 !important;
 }
 .custom-calendar .react-datepicker__time-list-item--selected {
-  background-color: #8BC34A !important;
+  background-color: #EF4444 !important;
   color: #fff !important;
 }
 `;
@@ -69,6 +70,19 @@ const cityIconMap = {
   'Jaipur': <FaRegStar size={38} className="text-pink-400" />,
 };
 
+// Add city image mapping
+const cityImageMap = {
+  Indore: '/images/indore.jpeg',
+  Bhopal: '/images/bhopal.jpeg',
+  Mumbai: '/images/mumbai.jpg',
+  Goa: '/images/goa.jpeg',
+  Haldwani: '/images/haldwani.jpeg',
+  Kathgodam: '/images/kathgodam.jpeg',
+  Pithoragarh: '/images/pithoragarh.jpeg',
+  Dehradun: '/images/dehradun.jpeg',
+  // Add more as needed
+};
+
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openFAQ, setOpenFAQ] = useState(null);
@@ -100,10 +114,10 @@ const Home = () => {
     }
     return now;
   }
-  const [pickDate, setPickDate] = useState(new Date());
-  const [pickTime, setPickTime] = useState(new Date());
-  const [dropDate, setDropDate] = useState(new Date());
-  const [dropTime, setDropTime] = useState(new Date());
+  const [pickDate, setPickDate] = useState(null);
+  const [pickTime, setPickTime] = useState(null);
+  const [dropDate, setDropDate] = useState(null);
+  const [dropTime, setDropTime] = useState(null);
 
   // Calculate total duration between pickup and dropoff
   function getDurationString(pickDate, pickTime, dropDate, dropTime) {
@@ -126,6 +140,16 @@ const Home = () => {
   const navigate = useNavigate();
   const handleFindBike = (e) => {
     e.preventDefault();
+    // Check if all fields are filled
+    if (!city || !pickDate || !pickTime || !dropDate || !dropTime) {
+      toast.info("Please fill all fields to find your bike!", {
+        position: "top-right",
+        autoClose: 2500,
+        style: { fontSize: '0.95rem', minWidth: 0, maxWidth: '260px', padding: '8px 16px' },
+        icon: '🚲',
+      });
+      return;
+    }
     // Combine date and time for pick and drop
     const pickDateTime = new Date(pickDate);
     pickDateTime.setHours(pickTime.getHours(), pickTime.getMinutes(), 0, 0);
@@ -264,9 +288,9 @@ const Home = () => {
 
   // Carousel state
   const carouselImages = [
-    './images/bike-banner-1.jpeg',
-    './images/bike-banner-2.jpeg',
-    './images/bike-banner-3.jpeg'
+    './images/bike-banner-1.png',
+    './images/bike-banner-2.png',
+    './images/bike-banner-3.png'
    
   ];
   const [activeIndex, setActiveIndex] = useState(0);
@@ -279,6 +303,53 @@ const Home = () => {
   const goToPrev = () => setActiveIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
   const goToNext = () => setActiveIndex((prev) => (prev + 1) % carouselImages.length);
 
+  // Add refs and direction state for pickers
+  const pickDateRef = useRef();
+  const pickTimeRef = useRef();
+  const dropDateRef = useRef();
+  const dropTimeRef = useRef();
+  const [pickDateDirection, setPickDateDirection] = useState('down');
+  const [pickTimeDirection, setPickTimeDirection] = useState('down');
+  const [dropDateDirection, setDropDateDirection] = useState('down');
+  const [dropTimeDirection, setDropTimeDirection] = useState('down');
+  // Add open state for each picker
+  const [pickDateOpen, setPickDateOpen] = useState(false);
+  const [pickTimeOpen, setPickTimeOpen] = useState(false);
+  const [dropDateOpen, setDropDateOpen] = useState(false);
+  const [dropTimeOpen, setDropTimeOpen] = useState(false);
+
+  function getPopupDirection(inputRef) {
+    if (!inputRef.current) return 'down';
+    const rect = inputRef.current.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    // Assume popup height ~350px, adjust as needed
+    return spaceBelow < 350 && spaceAbove > spaceBelow ? 'up' : 'down';
+  }
+
+  const handlePickDateFocus = () => setPickDateDirection(getPopupDirection(pickDateRef));
+  const handlePickTimeFocus = () => setPickTimeDirection(getPopupDirection(pickTimeRef));
+  const handleDropDateFocus = () => setDropDateDirection(getPopupDirection(dropDateRef));
+  const handleDropTimeFocus = () => setDropTimeDirection(getPopupDirection(dropTimeRef));
+
+  // Add useEffect to recalculate popup direction when each picker is opened
+  useEffect(() => {
+    if (pickDateOpen) setPickDateDirection(getPopupDirection(pickDateRef));
+  }, [pickDateOpen]);
+  useEffect(() => {
+    if (pickTimeOpen) setPickTimeDirection(getPopupDirection(pickTimeRef));
+  }, [pickTimeOpen]);
+  useEffect(() => {
+    if (dropDateOpen) setDropDateDirection(getPopupDirection(dropDateRef));
+  }, [dropDateOpen]);
+  useEffect(() => {
+    if (dropTimeOpen) setDropTimeDirection(getPopupDirection(dropTimeRef));
+  }, [dropTimeOpen]);
+
+  const now = new Date();
+  const currentDatePlaceholder = now.toLocaleDateString('en-GB');
+  const currentTimePlaceholder = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -288,28 +359,31 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative min-h-[500px] bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
         {/* Background Image */}
-        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/163407/bike-bicycle-beautiful-beauty-163407.jpeg?auto=compress&cs=tinysrgb&w=1200')] bg-cover bg-center opacity-30"></div>
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{ backgroundImage: "url('/images/bg.png')" }}
+        ></div>
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Booking Form on Left */}
-            <div className="order-2 lg:order-1 flex justify-center">
+            {/* Booking Form on Top (mobile), Left (desktop) */}
+            <div className="order-1 lg:order-1 flex justify-center">
               <div className="bg-white rounded-lg shadow p-4 w-full max-w-md border border-gray-100 flex flex-col gap-3 sm:p-6">
-                <h2 className="text-2xl font-bold text-gray-900 text-center mb-1">Rent a Bike in Delhi</h2>
+                <h2 className="text-2xl font-bold text-gray-900 text-center mb-1">Rent a Bike in Your City</h2>
                 <p className="text-xs text-gray-500 text-center mb-1">Quickly find the best scooter or bike for your needs.</p>
                 <div>
                   <label className="block text-[10px] font-semibold text-gray-500 mb-0.5">Select City</label>
                   <div className="relative">
                     <button
                       type="button"
-                      className="w-full flex items-center border border-gray-300 rounded px-4 py-3 pr-10 text-base bg-white focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer transition placeholder-gray-400 text-gray-700 font-normal text-left"
+                      className="w-full flex items-center border border-gray-300 rounded px-4 py-3 pr-10 text-base bg-white focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer transition placeholder-gray-400 text-gray-700 font-normal text-left"
                       style={{ height: '44px' }}
                       onClick={() => setCityPopupOpen(true)}
                     >
                       <span className="flex-1 truncate text-base text-gray-700 text-left">{city || 'Select a city'}</span>
                     </button>
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center h-full cursor-pointer pointer-events-none">
-                      <MapPin className="h-5 w-5 text-green-500" />
+                      <MapPin className="h-5 w-5 text-red-500" />
                     </span>
                   </div>
                   {/* City Selection Popup */}
@@ -332,16 +406,20 @@ const Home = () => {
                           placeholder="Search city"
                           value={citySearch}
                           onChange={e => setCitySearch(e.target.value)}
-                          className="w-full mb-3 px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-green-200 text-sm"
+                          className="w-full mb-3 px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-red-200 text-sm"
                         />
-                        <div className="grid grid-cols-3 gap-3 sm:gap-6 max-h-56 sm:max-h-72 overflow-y-auto">
+                        <div className="grid grid-cols-3 gap-2 sm:gap-3 max-h-56 sm:max-h-72 overflow-y-auto">
                           {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).map(c => (
                             <button
                               key={c}
-                              className="flex flex-col items-center gap-1 sm:gap-2 p-1 sm:p-2 rounded-lg hover:bg-green-50 focus:bg-green-100 transition"
+                              className="flex flex-col items-center gap-1 sm:gap-1 p-0.5 sm:p-1 rounded-lg hover:bg-red-50 focus:bg-red-100 transition"
                               onClick={() => { setCity(c); setCityPopupOpen(false); }}
                             >
-                              <FaCity size={28} className="text-gray-500 sm:text-[38px]" />
+                              <img
+                                src={cityImageMap[c] || '/images/default-city.png'}
+                                alt={c}
+                                className="w-10 h-10 object-cover rounded-lg shadow"
+                              />
                               <span className="text-xs font-semibold text-gray-700 mt-1 text-center">{c}</span>
                             </button>
                           ))}
@@ -357,36 +435,76 @@ const Home = () => {
                   <div className="grid grid-cols-2 gap-2">
                     <div className="relative">
                       <CustomDatePicker
+                        ref={pickDateRef}
                         value={pickDate}
-                        onChange={setPickDate}
+                        onChange={date => {
+                          setPickDate(date);
+                          setPickDateOpen(false);
+                          if (!pickTime) setPickTimeOpen(true); // Only open if not already set
+                        }}
                         label="Pick Up Date"
                         minDate={new Date()}
+                        popupDirection={pickDateDirection}
+                        onFocus={handlePickDateFocus}
+                        open={pickDateOpen}
+                        setOpen={setPickDateOpen}
+                        placeholder={currentDatePlaceholder}
                       />
                     </div>
                     <div className="relative">
                       <CustomTimePicker
+                        ref={pickTimeRef}
                         value={pickTime}
-                        onChange={setPickTime}
+                        onChange={time => {
+                          setPickTime(time);
+                          setPickTimeOpen(false);
+                          if (!pickDate) setPickDateOpen(true); // Only open if not already set
+                        }}
                         label="Pick Up Time"
                         selectedDate={pickDate}
+                        popupDirection={pickTimeDirection}
+                        onFocus={handlePickTimeFocus}
+                        open={pickTimeOpen}
+                        setOpen={setPickTimeOpen}
+                        placeholder={currentTimePlaceholder}
                       />
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="relative">
                       <CustomDatePicker
+                        ref={dropDateRef}
                         value={dropDate}
-                        onChange={setDropDate}
+                        onChange={date => {
+                          setDropDate(date);
+                          setDropDateOpen(false);
+                          if (!dropTime) setDropTimeOpen(true); // Only open if not already set
+                        }}
                         label="Drop Off Date"
-                        minDate={pickDate}
+                        minDate={pickDate || new Date()}
+                        popupDirection={dropDateDirection}
+                        onFocus={handleDropDateFocus}
+                        open={dropDateOpen}
+                        setOpen={setDropDateOpen}
+                        placeholder={currentDatePlaceholder}
                       />
                     </div>
                     <div className="relative">
                       <CustomTimePicker
+                        ref={dropTimeRef}
                         value={dropTime}
-                        onChange={setDropTime}
+                        onChange={time => {
+                          setDropTime(time);
+                          setDropTimeOpen(false);
+                          if (!dropDate) setDropDateOpen(true); // Only open if not already set
+                        }}
                         label="Drop Off Time"
                         selectedDate={dropDate}
+                        popupDirection={dropTimeDirection}
+                        onFocus={handleDropTimeFocus}
+                        open={dropTimeOpen}
+                        setOpen={setDropTimeOpen}
+                        placeholder={currentTimePlaceholder}
                       />
                     </div>
                   </div>
@@ -396,7 +514,7 @@ const Home = () => {
                   <span>Total Duration:</span>
                   <span>{getDurationString(pickDate, pickTime, dropDate, dropTime)}</span>
                 </div>
-                <button className="w-full h-10 bg-green-500 text-white py-1.5 rounded font-bold hover:bg-green-600 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm flex items-center justify-center gap-1 mt-1 active:scale-95" onClick={handleFindBike}>
+                <button className="w-full h-10 bg-red-500 text-white py-1.5 rounded font-bold hover:bg-red-600 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm flex items-center justify-center gap-1 mt-1 active:scale-95" onClick={handleFindBike}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
                   </svg>
@@ -404,13 +522,11 @@ const Home = () => {
                 </button>
               </div>
             </div>
-            {/* Hero Text on Right */}
-            <div className="order-1 lg:order-2 text-white lg:pl-12 flex flex-col items-start">
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                GO ANYWHERE<br />
-                IN THE CITY<br />
-                <span className="text-blue-500">RENT</span> YOUR<br />
-                 OWN RIDE!
+            {/* Hero Text below form (mobile), Right (desktop) */}
+            <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start">
+              <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-4">
+                Your <span className='text-red-600 '>Ride.</span> <br />
+                Your City.
               </h1>
               <p className="text-xl mb-8 text-gray-300">
               Ride your way with our premium motorcycle rental service.
@@ -428,42 +544,42 @@ const Home = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-left mb-6">Why choose Bike Rent?</h2>
             <div className="flex flex-col gap-5">
               <div className="flex items-start gap-3">
-                <span className="mt-1"><FaMoneyBillWave size={28} color="#8BC34A" /></span>
+                <span className="mt-1"><FaMoneyBillWave size={28} color="#EF4444" /></span>
                 <div>
                   <div className="font-semibold text-base">Different Flexible Packages</div>
                   <div className="text-gray-700 text-xs">Grab daily, weekly, fortnight and monthly packages at discounted rates</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><FaMotorcycle size={28} color="#8BC34A" /></span>
+                <span className="mt-1"><FaMotorcycle size={28} color="#EF4444" /></span>
                 <div>
                   <div className="font-semibold text-base">Wide Range</div>
                   <div className="text-gray-700 text-xs">Looking for a particular brand or location? We have probably got it.</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><MdOutlineMiscellaneousServices size={28} color="#8BC34A" /></span>
+                <span className="mt-1"><MdOutlineMiscellaneousServices size={28} color="#EF4444" /></span>
                 <div>
                   <div className="font-semibold text-base">Highly Maintained Fleet</div>
                   <div className="text-gray-700 text-xs">Get high quality and serviced vehicles.</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><FaRegClock size={28} color="#8BC34A" /></span>
+                <span className="mt-1"><FaRegClock size={28} color="#EF4444" /></span>
                 <div>
                   <div className="font-semibold text-base">24*7 At Service</div>
                   <div className="text-gray-700 text-xs">Day or night, rent a bike</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><BiRupee size={28} color="#8BC34A" /></span>
+                <span className="mt-1"><BiRupee size={28} color="#EF4444" /></span>
                 <div>
                   <div className="font-semibold text-base">Book Now, Pay later</div>
                   <div className="text-gray-700 text-xs">Flexibility to decide when and how to pay.</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><FaHandHoldingUsd size={28} color="#8BC34A" /></span>
+                <span className="mt-1"><FaHandHoldingUsd size={28} color="#EF4444" /></span>
                 <div>
                   <div className="font-semibold text-base">Instant Refund</div>
                   <div className="text-gray-700 text-xs">Facing an issue while booking/pick up? We initiate instant refund.</div>
@@ -525,17 +641,38 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Features Cards - Responsive Scrollable */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <div key={index} className="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
-                <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="h-8 w-8 text-orange-500" />
+              <div key={index} className="text-center px-4 py-6 rounded-xl shadow-md hover:shadow-lg transition-shadow bg-white max-w-xs mx-auto border border-gray-100">
+                <div className="flex items-center justify-center mb-2">
+                  <div className="bg-red-50 w-14 h-14 rounded-full flex items-center justify-center">
+                    <feature.icon className="h-8 w-8 text-red-500" />
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">{feature.title}</h3>
+                <p className="text-gray-700 text-[15px] leading-snug font-normal">{feature.description}</p>
               </div>
             ))}
+          </div>
+          {/* Mobile: Horizontal Scrollable Cards */}
+          <div className="md:hidden">
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 px-1 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="min-w-[50vw] max-w-[60vw] flex-shrink-0 snap-center bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow text-center px-4 py-6 mx-auto border border-gray-100"
+                >
+                  <div className="flex items-center justify-center mb-2">
+                    <div className="bg-red-50 w-14 h-14 rounded-full flex items-center justify-center">
+                      <feature.icon className="h-8 w-8 text-red-500" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">{feature.title}</h3>
+                  <p className="text-gray-700 text-[15px] leading-snug font-normal">{feature.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -558,7 +695,7 @@ const Home = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
+                <button className="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
                   onClick={() => navigate('/bikes')}
                 >
                   Book Now

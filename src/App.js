@@ -25,6 +25,7 @@ import PithoragarhBikesPage from './pages/cities-pages/Pithoragarh';
 import DehradunBikesPage from './pages/cities-pages/Dehradun';
 import ScrollToTop from './components/ScrollToTop';
 
+
 function ProtectedRoute({ children, adminOnly }) {
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user') || '{}');

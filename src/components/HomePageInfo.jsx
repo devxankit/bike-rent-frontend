@@ -18,39 +18,8 @@ import {
 function HomePageInfo() {
   const [activeTab, setActiveTab] = useState('hourly');
 
-  const bikeTypes = [
-    {
-      name: 'City Bikes',
-      image: 'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=400',
-      price: '$8/hour',
-      features: ['Comfortable riding', 'City optimized', 'Basket included']
-    },
-    {
-      name: 'Mountain Bikes',
-      image: 'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=400',
-      price: '$12/hour',
-      features: ['All-terrain', 'Premium suspension', 'Adventure ready']
-    },
-    {
-      name: 'Electric Bikes',
-      image: 'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=400',
-      price: '$15/hour',
-      features: ['Electric powered', 'Long battery life', 'Eco-friendly']
-    }
-  ];
+ 
 
-  const pricingPlans = {
-    hourly: [
-      { duration: '1 Hour', price: '$8', popular: false },
-      { duration: '3 Hours', price: '$20', popular: true },
-      { duration: '6 Hours', price: '$35', popular: false }
-    ],
-    daily: [
-      { duration: '1 Day', price: '$45', popular: false },
-      { duration: '3 Days', price: '$120', popular: true },
-      { duration: '7 Days', price: '$250', popular: false }
-    ]
-  };
 
   const features = [
     { icon: Shield, title: 'Fully Insured', desc: 'Complete coverage for your peace of mind' },
@@ -85,7 +54,7 @@ function HomePageInfo() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group">
+                <button className="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group">
                   Book Now
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>

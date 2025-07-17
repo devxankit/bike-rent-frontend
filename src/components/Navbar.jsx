@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MdDashboard, MdMenu, MdClose } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 import { FiFilter } from 'react-icons/fi';
+import { FaMoneyBillWave, FaMotorcycle, FaRegClock, FaHandHoldingUsd, FaCity, FaLandmark, FaMonument, FaBuilding, FaUniversity, FaRegBuilding, FaMapMarkerAlt, FaRegHospital, FaRegSmile, FaRegSun, FaRegStar, FaRegFlag } from 'react-icons/fa';
 
 const Navbar = ({ onFilterToggle }) => {
   // Check login state from localStorage
@@ -47,18 +48,18 @@ const Navbar = ({ onFilterToggle }) => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <img
-            src="/images/logo-2.png"
+            src="/images/bike-rent-logo.png"
             alt="Bike Rent Logo"
-            className="w-10 h-10 object-contain"
+            className="w-20 h-20 object-contain"
           />
-          <span className="font-bold text-lg text-[#111518]">Bike Rent</span>
+          {/* <span className="font-bold text-lg text-[#111518]">Bike Rent</span> */}
         </Link>
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-blue-600">Home</Link>
-          <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-blue-600">Bikes</Link>
+          <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-red-600">Home</Link>
+          <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-red-600">Bikes</Link>
           {isLoggedIn && (
-            <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-blue-600">
+            <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-red-600">
               <MdDashboard className="w-5 h-5" /> Dashboard
             </Link>
           )}
@@ -75,13 +76,18 @@ const Navbar = ({ onFilterToggle }) => {
         <div className="md:hidden flex items-center gap-2">
           {location.pathname.startsWith('/bikes') && (
             <button
-              className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-red-400"
               onClick={onFilterToggle}
               aria-label="Open filter"
             >
-              <FiFilter className="w-5 h-5 text-sky-500" />
+              <FiFilter className="w-5 h-5 text-red-500" />
             </button>
           )}
+          {/* Bikes link for mobile */}
+          <Link to="/bikes" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-red-600 px-2 py-1 rounded transition-all">
+            Bikes
+            <FaMotorcycle className="w-4 h-4 text-red-500" />
+          </Link>
           <button
             className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             onClick={() => setDrawerOpen(true)}

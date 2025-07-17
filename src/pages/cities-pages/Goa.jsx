@@ -94,9 +94,9 @@ const GoaBikesPage = () => {
             {/* Popup */}
             <div className="relative bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-base font-bold text-sky-700">Filters</h2>
-                <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-sky-400">
-                  <FiX className="w-5 h-5 text-sky-700" />
+                <h2 className="text-base font-bold text-red-600">Filters</h2>
+                <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
+                  <FiX className="w-5 h-5 text-red-600" />
                 </button>
               </div>
               <FilterSidebar

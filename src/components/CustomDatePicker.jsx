@@ -1,12 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
 
 const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 const pad = n => n < 10 ? `0${n}` : n;
 
-const CustomDatePicker = ({ value, onChange, label = '', minDate }) => {
-  const [open, setOpen] = useState(false);
+const CustomDatePicker = forwardRef(({ value, onChange, label = '', minDate, popupDirection = 'down', onFocus, open: controlledOpen, setOpen: setControlledOpen, placeholder }, ref) => {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const open = controlledOpen !== undefined ? controlledOpen : uncontrolledOpen;
+  const setOpen = setControlledOpen !== undefined ? setControlledOpen : setUncontrolledOpen;
   const [viewDate, setViewDate] = useState(value || new Date());
-  const inputRef = useRef();
+  const localInputRef = useRef();
+  const inputRef = ref || localInputRef;
   const pickerRef = useRef();
 
   useEffect(() => {
@@ -22,7 +25,7 @@ const CustomDatePicker = ({ value, onChange, label = '', minDate }) => {
     }
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
-  }, []);
+  }, [inputRef]);
 
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
@@ -66,29 +69,30 @@ const CustomDatePicker = ({ value, onChange, label = '', minDate }) => {
       <input
         ref={inputRef}
         type="text"
-        value={formatDisplayValue(value)}
+        value={value ? formatDisplayValue(value) : ''}
         onClick={() => setOpen(v => !v)}
         readOnly
-        placeholder="Select date"
-        className="w-full border border-gray-300 rounded px-4 py-2 pr-10 text-base focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer bg-white placeholder-gray-400"
+        placeholder={placeholder || 'Select date'}
+        className="w-full border border-gray-300 rounded px-4 py-2 pr-10 text-base focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer bg-white placeholder-gray-400"
         style={{ fontWeight: 400 }}
+        onFocus={onFocus}
       />
       <span className="absolute pt-4 right-3 inset-y-0 my-auto flex items-center pointer-events-none h-5">
-        <svg width="18" height="18" fill="none" stroke="#22c55e" strokeWidth="2" viewBox="0 0 24 24" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <svg width="18" height="18" fill="none" stroke="#EF4444" strokeWidth="2" viewBox="0 0 24 24" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
       </span>
       {open && (
         <div
           ref={pickerRef}
-          className="absolute z-50 bg-white rounded-xl shadow-xl w-[90vw] min-w-[260px] max-w-[98vw] sm:max-w-xs sm:min-w-[320px] p-4 mt-2 border border-gray-100 max-h-[70vh] overflow-y-auto"
+          className={`absolute z-50 bg-white rounded-xl shadow-xl w-[90vw] min-w-[260px] max-w-[98vw] sm:max-w-xs sm:min-w-[320px] p-4 border border-gray-100 max-h-[70vh] overflow-y-auto ${popupDirection === 'up' ? 'bottom-full mb-2' : 'mt-2'}`}
           style={{ left: 0, right: 0, margin: '0 auto' }}
         >
           {/* Calendar header */}
           <div className="flex items-center justify-between mb-2">
-            <button onClick={() => handleMonthChange(-1)} className="text-green-600 font-bold px-2 text-lg hover:bg-green-50 rounded">&#8592;</button>
-            <span className="font-bold text-green-600 text-lg">
+            <button onClick={() => handleMonthChange(-1)} className="text-red-600 font-bold px-2 text-lg hover:bg-red-50 rounded">&#8592;</button>
+            <span className="font-bold text-red-600 text-lg">
               {viewDate.toLocaleString('default', { month: 'long' })} {year}
             </span>
-            <button onClick={() => handleMonthChange(1)} className="text-green-600 font-bold px-2 text-lg hover:bg-green-50 rounded">&#8594;</button>
+            <button onClick={() => handleMonthChange(1)} className="text-red-600 font-bold px-2 text-lg hover:bg-red-50 rounded">&#8594;</button>
           </div>
           <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-gray-500 mb-1">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => <div key={d}>{d}</div>)}
@@ -99,8 +103,8 @@ const CustomDatePicker = ({ value, onChange, label = '', minDate }) => {
                 key={i}
                 onClick={() => handleDateClick(d)}
                 className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold transition text-base
-                  ${value && value.getDate() === d && value.getMonth() === month && value.getFullYear() === year ? 'bg-green-500 text-white' : 'hover:bg-green-100 text-gray-800'}
-                  ${today.getDate() === d && today.getMonth() === month && today.getFullYear() === year ? 'border border-green-400' : ''}
+                  ${value && value.getDate() === d && value.getMonth() === month && value.getFullYear() === year ? 'bg-red-500 text-white' : 'hover:bg-red-100 text-gray-800'}
+                  ${today.getDate() === d && today.getMonth() === month && today.getFullYear() === year ? 'border border-red-400' : ''}
                   ${isPastDate(year, month, d) ? 'opacity-30 cursor-not-allowed' : ''}
                 `}
                 disabled={isPastDate(year, month, d)}
@@ -111,6 +115,7 @@ const CustomDatePicker = ({ value, onChange, label = '', minDate }) => {
       )}
     </div>
   );
-};
+});
 
+CustomDatePicker.displayName = 'CustomDatePicker';
 export default CustomDatePicker; 
