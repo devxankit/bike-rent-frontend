@@ -65,7 +65,7 @@ const Navbar = ({ onFilterToggle }) => {
           )}
           {!isLoggedIn ? (
             <>
-              <Link to="/login" className="bg-yellow-400 text-white text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-yellow-600">Login</Link>
+              <Link to="/login" className="bg-yellow-400 text-white text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-yellow-500">Login</Link>
               <Link to="/signup" className="bg-gray-100 text-[#111518] text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-gray-200">Sign Up</Link>
             </>
           ) : (
