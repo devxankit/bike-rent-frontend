@@ -26,8 +26,20 @@ const isToday = (date) => {
   );
 };
 
-const isPastTime = (selectedDate, hour, minute) => {
+const isPastTime = (selectedDate, hour, minute, minDateTime) => {
   if (!selectedDate) return false;
+  // If minDateTime is provided and selectedDate is the same day as minDateTime, block times before minDateTime
+  if (minDateTime) {
+    const sameDay =
+      selectedDate.getFullYear() === minDateTime.getFullYear() &&
+      selectedDate.getMonth() === minDateTime.getMonth() &&
+      selectedDate.getDate() === minDateTime.getDate();
+    if (sameDay) {
+      if (hour < minDateTime.getHours()) return true;
+      if (hour === minDateTime.getHours() && minute < minDateTime.getMinutes()) return true;
+    }
+  }
+  // Fallback to blocking times in the past compared to now (for today)
   if (!isToday(selectedDate)) return false;
   const now = new Date();
   if (hour < now.getHours()) return true;
@@ -35,7 +47,9 @@ const isPastTime = (selectedDate, hour, minute) => {
   return false;
 };
 
-const CustomTimePicker = forwardRef(({ value, onChange, label = '', selectedDate, popupDirection = 'down', onFocus, open: controlledOpen, setOpen: setControlledOpen, placeholder }, ref) => {
+const CustomTimePicker = forwardRef(({
+  value, onChange, label = '', selectedDate, popupDirection = 'down', onFocus, open: controlledOpen, setOpen: setControlledOpen, placeholder, minDateTime, maxDateTime 
+}, ref) => {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
   const open = controlledOpen !== undefined ? controlledOpen : uncontrolledOpen;
   const setOpen = setControlledOpen !== undefined ? setControlledOpen : setUncontrolledOpen;
@@ -100,7 +114,7 @@ const CustomTimePicker = forwardRef(({ value, onChange, label = '', selectedDate
           style={{ left: 0, right: 0, margin: '0 auto' }}
         >
           <div className="flex flex-col gap-1">
-            {times.filter(t => !isPastTime(selectedDate, t.hour, t.minute)).map((t, idx) => (
+            {times.filter(t => !isPastTime(selectedDate, t.hour, t.minute, minDateTime)).map((t, idx) => (
               <button
                 key={idx}
                 onClick={() => handleTimeClick(t.hour, t.minute, false)}

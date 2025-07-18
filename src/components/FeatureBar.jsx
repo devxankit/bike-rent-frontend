@@ -3,34 +3,34 @@ import { FaShieldAlt, FaHome, FaCreditCard, FaTools, FaMotorcycle, FaHardHat } f
 
 const features = [
   {
-    icon: <FaShieldAlt size={24} color="#facc15" />, // Govt. Compliant
+    icon: <FaShieldAlt size={26} color="#facc15" />, // Govt. Compliant
     title: 'Govt. Compliant',
-    subtitle: 'Vehicles',
+    subtitle: 'Safe Vehicles',
   },
   {
-    icon: <FaHome size={24} color="#facc15" />, // Doorstep Delivery
-    title: 'Doorstep Delivery of',
-    subtitle: 'Vehicles',
+    icon: <FaHome size={26} color="#facc15" />, // Doorstep Delivery
+    title: 'Doorstep Delivery',
+    subtitle: 'To Your Location',
   },
   {
-    icon: <FaCreditCard size={24} color="#facc15" />, // Instant & Secure Payments
-    title: 'Instant & Secure',
-    subtitle: 'Payments',
+    icon: <FaCreditCard size={26} color="#facc15" />, // Secure Payments
+    title: 'Secure Payments',
+    subtitle: 'Instant & Easy',
   },
   {
-    icon: <FaTools size={24} color="#facc15" />, // Services & Maintenance
-    title: 'Services &',
-    subtitle: 'Maintenance',
+    icon: <FaTools size={26} color="#facc15" />, // Regular Service
+    title: 'Regular Service',
+    subtitle: 'Well Maintained',
   },
   {
-    icon: <FaMotorcycle size={24} color="#facc15" />, // Sanitized Vehicles
-    title: 'Sanitized',
-    subtitle: 'Vehicles',
+    icon: <FaMotorcycle size={26} color="#facc15" />, // Sanitized Bikes
+    title: 'Sanitized Bikes',
+    subtitle: 'Clean & Ready',
   },
   {
-    icon: <FaHardHat size={24} color="#ffbe00" />, // Free Helmet
+    icon: <FaHardHat size={26} color="#facc15" />, // Free Helmet
     title: 'Free Helmet',
-    subtitle: 'With Every Ride',
+    subtitle: 'Every Ride Safe',
   },
 ];
 
@@ -42,7 +42,7 @@ const FeatureBar = () => (
           key={i}
           className="flex flex-row items-center h-full min-h-[56px] md:min-h-[64px] justify-center bg-white rounded-xl shadow-sm border border-gray-100 px-1.5 py-2 md:py-3 transition hover:shadow-md text-left gap-2 md:gap-2 min-w-0 max-w-full"
         >
-          <div className="flex items-center justify-center shrink-0 min-w-0 h-full">{f.icon}</div>
+          <div className="flex items-center justify-center shrink-0 w-10 h-full">{f.icon}</div>
           <div className="flex flex-col justify-center min-w-0 max-w-full h-full">
             <div className="text-[11px] md:text-[13px] font-bold text-gray-800 leading-tight truncate max-w-full">{f.title}</div>
             <div className="text-[10px] md:text-[12px] text-gray-500 -mt-0.5 truncate max-w-full">{f.subtitle}</div>

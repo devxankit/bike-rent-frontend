@@ -480,6 +480,11 @@ const Home = () => {
                         open={dropTimeOpen}
                         setOpen={setDropTimeOpen}
                         placeholder={currentTimePlaceholder}
+                        minDateTime={
+                          dropDate && pickDate && pickTime && dropDate.getFullYear() === pickDate.getFullYear() && dropDate.getMonth() === pickDate.getMonth() && dropDate.getDate() === pickDate.getDate()
+                            ? (() => { const d = new Date(dropDate); d.setHours(pickTime.getHours(), pickTime.getMinutes(), 0, 0); return d; })()
+                            : undefined
+                        }
                       />
                     </div>
                   </div>
