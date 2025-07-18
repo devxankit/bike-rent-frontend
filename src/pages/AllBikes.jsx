@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Checkbox, FormControlLabel, Popover, MenuItem } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+import DashboardNavbar from '../components/DashboardNabvar';
 
 const initialForm = {
   name: '',
@@ -245,7 +246,7 @@ export default function AllBikes({ cityOverride }) {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f7f9fb' }}>
-      <Navbar />
+      <DashboardNavbar/>
       <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
         {/* Sidebar below Navbar */}
         <Box sx={{ width: 240, bgcolor: '#111827', color: '#fff', display: { xs: 'none', md: 'flex' }, flexDirection: 'column', py: 2, minHeight: '100%', position: 'relative' }}>

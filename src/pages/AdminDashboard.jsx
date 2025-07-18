@@ -16,6 +16,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate, useLocation } from 'react-router-dom';
+import DashboardNavbar from '../components/DashboardNabvar';
 
 const initialForm = {
   name: '',
@@ -238,7 +239,8 @@ export default function AdminDashboard() {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f7f9fb' }}>
       {/* Navbar at the very top, full width */}
-      <Navbar />
+      {/* <Navbar /> */}
+      <DashboardNavbar/>
       <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 56px)' }}>
         {/* Sidebar below Navbar */}
         <Box sx={{ width: 240, bgcolor: '#111827', color: '#fff', display: { xs: 'none', md: 'flex' }, flexDirection: 'column', py: 2, minHeight: '100%', position: 'relative' }}>

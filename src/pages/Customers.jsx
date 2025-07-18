@@ -11,6 +11,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate, useLocation } from 'react-router-dom';
+import DashboardNavbar from '../components/DashboardNabvar';
+import { useTheme, useMediaQuery } from '@mui/material';
 
 export default function Customers() {
   const [users, setUsers] = useState([]);
@@ -18,6 +20,8 @@ export default function Customers() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     api.get('/api/admin/users')
@@ -41,8 +45,8 @@ export default function Customers() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f7f9fb' }}>
-      <Navbar />
-      <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
+      <DashboardNavbar/>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, minHeight: 'calc(100vh - 64px)' }}>
         {/* Sidebar below Navbar */}
         <Box sx={{ width: 240, bgcolor: '#111827', color: '#fff', display: { xs: 'none', md: 'flex' }, flexDirection: 'column', py: 2, minHeight: '100%', position: 'relative' }}>
           <Box sx={{ px: 2, mb: 2 }}>
@@ -50,7 +54,7 @@ export default function Customers() {
             <Typography variant="caption" color="#bdbdbd" sx={{ fontSize: 12 }}>Pro Dashboard</Typography>
           </Box>
           <Box sx={{ flex: 1 }}>
-            {navItems.map((item, idx) => {
+            {navItems.map((item) => {
               let isActive = false;
               if (item.label === 'Bookings') {
                 isActive = location.pathname === '/admin/bikes' && new URLSearchParams(location.search).get('tab') === '1';
@@ -79,11 +83,7 @@ export default function Customers() {
                     mb: 0.5
                   }}
                   onClick={() => {
-                    if (item.label === 'Bookings') navigate('/admin/bikes?tab=1');
-                    else if (item.label === 'Bikes') navigate('/admin/bikes');
-                    else if (item.label === 'Dashboard') navigate('/admin/dashboard');
-                    else if (item.label === 'Customers') navigate('/admin/customers');
-                    else if (item.label === 'Analytics') navigate('/admin/analytics');
+                    if (item.path) navigate(item.path);
                   }}
                 >
                   <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#2563eb' : '#fff' }}>{item.icon}</span>
@@ -94,7 +94,16 @@ export default function Customers() {
           </Box>
           <Box>
             {bottomNavItems.map(item => (
-              <Box key={item.label} sx={{ display: 'flex', alignItems: 'center', px: 1.5, py: 0.7, cursor: 'pointer', color: '#bdbdbd', borderRadius: 2, mb: 0.5 }}>
+              <Box
+                key={item.label}
+                sx={{ display: 'flex', alignItems: 'center', px: 1.5, py: 0.7, cursor: 'pointer', color: '#bdbdbd', borderRadius: 2, mb: 0.5 }}
+                onClick={() => {
+                  if (item.label === 'Logout') {
+                    localStorage.removeItem('token');
+                    navigate('/login');
+                  }
+                }}
+              >
                 <span style={{ fontSize: 16, display: 'flex', alignItems: 'center' }}>{item.icon}</span>
                 <Typography sx={{ ml: 1, fontSize: 12 }}>{item.label}</Typography>
               </Box>
@@ -105,7 +114,7 @@ export default function Customers() {
         <Box sx={{ flex: 1, pl: { md: 0 }, pr: 0 }}>
           <Box sx={{ maxWidth: 950, mx: 'auto', mt: 2, px: 1 }}>
             <Typography variant="h5" fontWeight={700} mb={2}>All Customers</Typography>
-            <Paper sx={{ p: 2 }}>
+            <Paper sx={{ p: 2, overflowX: 'auto' }}>
               {loading ? (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight={200}>
                   <CircularProgress />
@@ -113,28 +122,47 @@ export default function Customers() {
               ) : error ? (
                 <Typography color="error">{error}</Typography>
               ) : (
-                <TableContainer>
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Email</TableCell>
-                        <TableCell>Phone</TableCell>
-                        <TableCell>Registered</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {users.map(user => (
-                        <TableRow key={user._id}>
-                          <TableCell>{user.name}</TableCell>
-                          <TableCell>{user.email}</TableCell>
-                          <TableCell>{user.phone || '-'}</TableCell>
-                          <TableCell>{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}</TableCell>
+                isMobile ? (
+                  <Box>
+                    {users.map(user => (
+                      <Paper key={user._id} sx={{ mb: 2, p: 2, boxShadow: 1 }}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                          <Typography fontWeight={700}>{user.name}</Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}
+                          </Typography>
+                        </Box>
+                        <Box mt={0.5} display="flex" flexDirection="column" gap={0.5}>
+                          <Typography variant="body2" color="text.secondary" noWrap>Email: {user.email}</Typography>
+                          <Typography variant="body2" color="text.secondary">Phone: {user.phone || '-'}</Typography>
+                        </Box>
+                      </Paper>
+                    ))}
+                  </Box>
+                ) : (
+                  <TableContainer sx={{ minWidth: 400 }}>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Name</TableCell>
+                          <TableCell>Email</TableCell>
+                          <TableCell>Phone</TableCell>
+                          <TableCell>Registered</TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                      </TableHead>
+                      <TableBody>
+                        {users.map(user => (
+                          <TableRow key={user._id}>
+                            <TableCell>{user.name}</TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>{user.phone || '-'}</TableCell>
+                            <TableCell>{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )
               )}
             </Paper>
           </Box>

@@ -12,6 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate, useLocation } from 'react-router-dom';
 // For charting, use recharts (or chart.js if preferred)
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import DashboardNavbar from '../components/DashboardNabvar';
 
 const navItems = [
   { label: 'Dashboard', icon: <MenuIcon />, path: '/admin/dashboard' },
@@ -88,7 +89,7 @@ export default function Analytics() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f7f9fb' }}>
-      <Navbar />
+      <DashboardNavbar/>
       <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 56px)' }}>
         {/* Sidebar */}
         <Box sx={{ width: 240, bgcolor: '#111827', color: '#fff', display: { xs: 'none', md: 'flex' }, flexDirection: 'column', py: 2, minHeight: '100%', position: 'relative' }}>
