@@ -339,8 +339,8 @@ const Home = () => {
           style={{ backgroundImage: "url('/images/bg-3.png')" }}
         ></div>
         {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-5">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
             {/* Booking Form on Top (mobile), Left (desktop) */}
             <div className="order-1 lg:order-1 flex justify-center">
               <div className="bg-white rounded-lg shadow p-4 w-full max-w-md border border-gray-100 flex flex-col gap-3 sm:p-6">
@@ -653,11 +653,11 @@ const Home = () => {
       {/* Exlore Section */}
       <section className="relative bg-[#ffbe00] overflow-hidden">
         <div className="absolute inset-0 "></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-8">
               <div className="space-y-4">
-                <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+                <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
                   Explore the City
                   <span className="block text-black">Your Way</span>
                 </h1>

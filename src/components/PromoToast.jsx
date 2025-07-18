@@ -50,7 +50,7 @@ const PromoToast = () => {
         className={`bg-white shadow-lg rounded-lg px-3 py-2 flex items-center gap-2 border border-gray-200 select-none transition-transform duration-300 ${beating ? 'animate-pulse-beat' : ''}`}
         style={{ animationDuration: '0.7s' }}
       >
-        <span className="text-sm font-semibold text-gray-800 text-left flex-1 leading-tight" style={{ fontFamily: 'cursive, sans-serif' }}>
+        <span className="text-sm font-semibold text-gray-800 text-left flex-1 leading-tight" style={{ fontFamily: 'sans-serif' }}>
           {promoMessages[msgIndex]}
         </span>
         <button onClick={handleClose} className="ml-1 text-gray-400 hover:text-gray-700 p-1 rounded focus:outline-none" aria-label="Close promo toast">
