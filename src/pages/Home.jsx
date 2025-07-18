@@ -659,7 +659,7 @@ const Home = () => {
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
                   Explore the City
-                  <span className="block text-yellow-300">Your Way</span>
+                  <span className="block text-black">Your Way</span>
                 </h1>
                 <p className="text-xl text-blue-100 leading-relaxed">
                   Premium bike rentals for urban adventures. Discover hidden gems, 
