@@ -210,18 +210,8 @@ export default function Auth() {
                 >
                   Sign in
                 </button>
-                <div className="flex items-center my-4">
-                  <div className="flex-1 h-px bg-gray-200" />
-                  <span className="mx-3 text-gray-400 text-sm">Or continue with</span>
-                  <div className="flex-1 h-px bg-gray-200" />
-                </div>
-                <div className="flex gap-3">
-                  <button type="button" className="flex-1 flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 text-gray-700 font-semibold bg-white hover:bg-gray-50 transition">
-                    <svg className="w-5 h-5" viewBox="0 0 48 48"><g><circle fill="#fff" cx="24" cy="24" r="24"/><path fill="#4285F4" d="M35.6 24.2c0-.7-.1-1.4-.2-2H24v4.1h6.5c-.3 1.4-1.3 2.6-2.7 3.4v2.8h4.4c2.6-2.4 4.1-5.9 4.1-10.3z"/><path fill="#34A853" d="M24 36c3.3 0 6-1.1 8-3l-4.4-2.8c-1.2.8-2.7 1.3-4.4 1.3-3.4 0-6.2-2.3-7.2-5.3h-4.5v3.1C13.8 33.7 18.5 36 24 36z"/><path fill="#FBBC05" d="M16.8 26.2c-.2-.7-.3-1.4-.3-2.2s.1-1.5.3-2.2v-3.1h-4.5C11.5 21.1 12 23.4 12 24c0 .6.1 1.2.2 1.8l4.6-2.8z"/><path fill="#EA4335" d="M24 18.7c1.8 0 3.4.6 4.6 1.7l3.4-3.4C31.9 15.1 28.9 14 24 14c-5.5 0-10.2 2.3-12.5 5.7l4.6 3.1c1-3 3.8-5.1 7.9-5.1z"/></g></svg>
-                    Google
-                  </button>
                 
-                </div>
+                
               </form>
             ) : (
               <form onSubmit={handleSignupSubmit} className="flex flex-col gap-4">
@@ -339,18 +329,7 @@ export default function Auth() {
                 >
                   Sign up
                 </button>
-                <div className="flex items-center my-4">
-                  <div className="flex-1 h-px bg-gray-200" />
-                  <span className="mx-3 text-gray-400 text-sm">Or continue with</span>
-                  <div className="flex-1 h-px bg-gray-200" />
-                </div>
-                <div className="flex gap-3">
-                  <button type="button" className="flex-1 flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 text-gray-700 font-semibold bg-white hover:bg-gray-50 transition">
-                    <svg className="w-5 h-5" viewBox="0 0 48 48"><g><circle fill="#fff" cx="24" cy="24" r="24"/><path fill="#4285F4" d="M35.6 24.2c0-.7-.1-1.4-.2-2H24v4.1h6.5c-.3 1.4-1.3 2.6-2.7 3.4v2.8h4.4c2.6-2.4 4.1-5.9 4.1-10.3z"/><path fill="#34A853" d="M24 36c3.3 0 6-1.1 8-3l-4.4-2.8c-1.2.8-2.7 1.3-4.4 1.3-3.4 0-6.2-2.3-7.2-5.3h-4.5v3.1C13.8 33.7 18.5 36 24 36z"/><path fill="#FBBC05" d="M16.8 26.2c-.2-.7-.3-1.4-.3-2.2s.1-1.5.3-2.2v-3.1h-4.5C11.5 21.1 12 23.4 12 24c0 .6.1 1.2.2 1.8l4.6-2.8z"/><path fill="#EA4335" d="M24 18.7c1.8 0 3.4.6 4.6 1.7l3.4-3.4C31.9 15.1 28.9 14 24 14c-5.5 0-10.2 2.3-12.5 5.7l4.6 3.1c1-3 3.8-5.1 7.9-5.1z"/></g></svg>
-                    Google
-                  </button>
-                 
-                </div>
+                
               </form>
             )}
           </div>
