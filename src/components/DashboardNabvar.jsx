@@ -40,7 +40,7 @@ const DashboardNavbar = ({ onFilterToggle }) => {
           <Link to="/signup" className="bg-gray-100 text-[#111518] text-base font-semibold rounded-md px-4 py-1.5 hover:bg-gray-200 text-center transition-all" onClick={() => setDrawerOpen(false)}>Sign Up</Link>
         </>
       ) : (
-        <button onClick={() => { setDrawerOpen(false); handleLogout(); }} className="bg-red-500 text-white text-base font-semibold rounded-md px-4 py-1.5 hover:bg-red-600 text-center transition-all">Logout</button>
+        <button onClick={() => { setDrawerOpen(false); handleLogout(); }} className="bg-red-500 text-white text-base font-semibold rounded-md px-4 py-1.5 hover:bg-yellow-500 text-center transition-all">Logout</button>
       )}
     </nav>
   );
@@ -51,7 +51,7 @@ const DashboardNavbar = ({ onFilterToggle }) => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <img
-            src="/images/bike-rent-logo.png"
+            src="/images/bike-rent-logo-2.png"
             alt="Bike Rent Logo"
             className="w-20 h-20 object-contain"
           />
@@ -59,10 +59,10 @@ const DashboardNavbar = ({ onFilterToggle }) => {
         </Link>
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-red-600">Home</Link>
-          <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-red-600">Bikes</Link>
+          <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Home</Link>
+          <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Bikes</Link>
           {isLoggedIn && (
-            <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-red-600">
+            <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-500">
               <MdDashboard className="w-5 h-5" /> Dashboard
             </Link>
           )}
@@ -83,13 +83,13 @@ const DashboardNavbar = ({ onFilterToggle }) => {
               onClick={onFilterToggle}
               aria-label="Open filter"
             >
-              <FiFilter className="w-5 h-5 text-red-500" />
+              <FiFilter className="w-5 h-5 text-yellow-500" />
             </button>
           )}
           {/* Bikes link for mobile */}
-          <Link to="/bikes" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-red-600 px-2 py-1 rounded transition-all">
+          <Link to="/bikes" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-600 px-2 py-1 rounded transition-all">
             Bikes
-            <FaMotorcycle className="w-4 h-4 text-red-500" />
+            <FaMotorcycle className="w-4 h-4 text-yellow-500" />
           </Link>
           <button
             className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-blue-500"

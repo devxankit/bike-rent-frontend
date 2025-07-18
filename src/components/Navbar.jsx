@@ -24,20 +24,20 @@ const Navbar = ({ onFilterToggle }) => {
   // Drawer content
   const drawerLinks = (
     <nav className="flex flex-col gap-4 mt-8">
-      <Link to="/" className="text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>Home</Link>
-      <Link to="/bikes" className="text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>Bikes</Link>
+      <Link to="/" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Home</Link>
+      <Link to="/bikes" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Bikes</Link>
       {isLoggedIn && (
-        <Link to="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>
+        <Link to="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
         </Link>
       )}
       {!isLoggedIn ? (
         <>
-          <Link to="/login" className="bg-blue-500 text-white text-base font-semibold rounded-md px-4 py-1.5 hover:bg-blue-600 text-center transition-all" onClick={() => setDrawerOpen(false)}>Login</Link>
+          <Link to="/login" className="bg-yellow-500 text-white text-base font-semibold rounded-md px-4 py-1.5 hover:bg-yellow-600 text-center transition-all" onClick={() => setDrawerOpen(false)}>Login</Link>
           <Link to="/signup" className="bg-gray-100 text-[#111518] text-base font-semibold rounded-md px-4 py-1.5 hover:bg-gray-200 text-center transition-all" onClick={() => setDrawerOpen(false)}>Sign Up</Link>
         </>
       ) : (
-        <button onClick={() => { setDrawerOpen(false); handleLogout(); }} className="bg-red-500 text-white text-base font-semibold rounded-md px-4 py-1.5 hover:bg-red-600 text-center transition-all">Logout</button>
+        <button onClick={() => { setDrawerOpen(false); handleLogout(); }} className="bg-red-500 text-white text-base font-semibold rounded-md px-4 py-1.5 hover:bg-yellow-500 text-center transition-all">Logout</button>
       )}
     </nav>
   );
@@ -48,7 +48,7 @@ const Navbar = ({ onFilterToggle }) => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <img
-            src="/images/bike-rent-logo.png"
+            src="/images/bike-rent-logo-2.png"
             alt="Bike Rent Logo"
             className="w-20 h-20 object-contain"
           />
@@ -56,40 +56,40 @@ const Navbar = ({ onFilterToggle }) => {
         </Link>
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-red-600">Home</Link>
-          <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-red-600">Bikes</Link>
+          <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Home</Link>
+          <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Bikes</Link>
           {isLoggedIn && (
-            <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-red-600">
+            <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-500">
               <MdDashboard className="w-5 h-5" /> Dashboard
             </Link>
           )}
           {!isLoggedIn ? (
             <>
-              <Link to="/login" className="bg-blue-500 text-white text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-blue-600">Login</Link>
+              <Link to="/login" className="bg-yellow-500 text-white text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-yellow-600">Login</Link>
               <Link to="/signup" className="bg-gray-100 text-[#111518] text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-gray-200">Sign Up</Link>
             </>
           ) : (
-            <button onClick={handleLogout} className="bg-red-500 text-white text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-red-600">Logout</button>
+            <button onClick={handleLogout} className="bg-red-500 text-white text-sm font-semibold rounded-full px-5 py-1.5 hover:bg-yellow-500">Logout</button>
           )}
         </nav>
         {/* Hamburger Icon for Mobile */}
         <div className="md:hidden flex items-center gap-2">
           {location.pathname.startsWith('/bikes') && (
             <button
-              className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
               onClick={onFilterToggle}
               aria-label="Open filter"
             >
-              <FiFilter className="w-5 h-5 text-red-500" />
+              <FiFilter className="w-5 h-5 text-yellow-500" />
             </button>
           )}
           {/* Bikes link for mobile */}
-          <Link to="/bikes" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-red-600 px-2 py-1 rounded transition-all">
+          <Link to="/bikes" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-500 px-2 py-1 rounded transition-all">
             Bikes
-            <FaMotorcycle className="w-4 h-4 text-red-500" />
+            <FaMotorcycle className="w-4 h-4 text-yellow-500" />
           </Link>
           <button
-            className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
             onClick={() => setDrawerOpen(true)}
             aria-label="Open menu"
           >
@@ -108,7 +108,7 @@ const Navbar = ({ onFilterToggle }) => {
           <div className="flex items-center justify-between px-4 h-14 border-b border-gray-200">
             <span className="font-bold text-lg text-[#111518]">Menu</span>
             <button
-              className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
               onClick={() => setDrawerOpen(false)}
               aria-label="Close menu"
             >

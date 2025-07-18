@@ -16,20 +16,21 @@ import Navbar from '../components/Navbar';
 import PromoToast from '../components/PromoToast';
 import api from '../utils/api';
 import RunningBanner from '../components/RunningBanner';
+import FeatureBar from '../components/FeatureBar';
 
-// Custom styles for red highlight (add to global CSS if needed)
+// Custom styles for yellow highlight (add to global CSS if needed)
 const customDatepickerStyles = `
 .custom-calendar .react-datepicker__day--selected,
 .custom-calendar .react-datepicker__time-list-item--selected {
-  background-color: #EF4444 !important;
+  background-color: #FACC15 !important;
   color: #fff !important;
 }
 .custom-calendar .react-datepicker__day--keyboard-selected {
-  background-color: #fecaca !important;
+  background-color: #fef08a !important;
   color: #222 !important;
 }
 .custom-calendar .react-datepicker__time-list-item--selected {
-  background-color: #EF4444 !important;
+  background-color: #FACC15 !important;
   color: #fff !important;
 }
 `;
@@ -335,7 +336,7 @@ const Home = () => {
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url('/images/bg.png')" }}
+          style={{ backgroundImage: "url('/images/bg-3.png')" }}
         ></div>
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -350,14 +351,14 @@ const Home = () => {
                   <div className="relative">
                     <button
                       type="button"
-                      className="w-full flex items-center border border-gray-300 rounded px-4 py-3 pr-10 text-base bg-white focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer transition placeholder-gray-400 text-gray-700 font-normal text-left"
+                      className="w-full flex items-center border border-gray-300 rounded px-4 py-3 pr-10 text-base bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 cursor-pointer transition placeholder-gray-400 text-gray-700 font-normal text-left"
                       style={{ height: '44px' }}
                       onClick={() => setCityPopupOpen(true)}
                     >
                       <span className="flex-1 truncate text-base text-gray-700 text-left">{city || 'Select a city'}</span>
                     </button>
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center h-full cursor-pointer pointer-events-none">
-                      <MapPin className="h-5 w-5 text-red-500" />
+                      <MapPin className="h-5 w-5 text-yellow-500" />
                     </span>
                   </div>
                   {/* City Selection Popup */}
@@ -380,13 +381,13 @@ const Home = () => {
                           placeholder="Search city"
                           value={citySearch}
                           onChange={e => setCitySearch(e.target.value)}
-                          className="w-full mb-3 px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-red-200 text-sm"
+                          className="w-full mb-3 px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-yellow-200 text-sm"
                         />
                         <div className="grid grid-cols-3 gap-2 sm:gap-3 max-h-56 sm:max-h-72 overflow-y-auto">
                           {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).map(c => (
                             <button
                               key={c}
-                              className="flex flex-col items-center gap-1 sm:gap-1 p-0.5 sm:p-1 rounded-lg hover:bg-red-50 focus:bg-red-100 transition"
+                              className="flex flex-col items-center gap-1 sm:gap-1 p-0.5 sm:p-1 rounded-lg hover:bg-yellow-50 focus:bg-yellow-100 transition"
                               onClick={() => { setCity(c); setCityPopupOpen(false); }}
                             >
                               <img
@@ -488,7 +489,7 @@ const Home = () => {
                   <span>Total Duration:</span>
                   <span>{getDurationString(pickDate, pickTime, dropDate, dropTime)}</span>
                 </div>
-                <button className="w-full h-10 bg-red-500 text-white py-1.5 rounded font-bold hover:bg-red-600 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm flex items-center justify-center gap-1 mt-1 active:scale-95" onClick={handleFindBike}>
+                <button className="w-full h-10 bg-yellow-500 text-white py-1.5 rounded font-bold hover:bg-yellow-600 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm flex items-center justify-center gap-1 mt-1 active:scale-95" onClick={handleFindBike}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
                   </svg>
@@ -499,7 +500,7 @@ const Home = () => {
             {/* Hero Text below form (mobile), Right (desktop) */}
             <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-4">
-                Your <span className='text-red-600 '>Ride.</span> <br />
+                Your <span className='text-yellow-500 '>Ride.</span> <br />
                 Your City.
               </h1>
               <p className="text-xl mb-8 text-gray-300">
@@ -509,7 +510,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+      <FeatureBar/>
       {/* Carousel Section */}
       <section className="w-full py-12 bg-white">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-4">
@@ -518,42 +519,42 @@ const Home = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-left mb-6">Why choose Bike Rent?</h2>
             <div className="flex flex-col gap-5">
               <div className="flex items-start gap-3">
-                <span className="mt-1"><FaMoneyBillWave size={28} color="#EF4444" /></span>
+                <span className="mt-1"><FaMoneyBillWave size={28} color="#FACC15" /></span>
                 <div>
                   <div className="font-semibold text-base">Different Flexible Packages</div>
                   <div className="text-gray-700 text-xs">Grab daily, weekly, fortnight and monthly packages at discounted rates</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><FaMotorcycle size={28} color="#EF4444" /></span>
+                <span className="mt-1"><FaMotorcycle size={28} color="#FACC15" /></span>
                 <div>
                   <div className="font-semibold text-base">Wide Range</div>
                   <div className="text-gray-700 text-xs">Looking for a particular brand or location? We have probably got it.</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><MdOutlineMiscellaneousServices size={28} color="#EF4444" /></span>
+                <span className="mt-1"><MdOutlineMiscellaneousServices size={28} color="#FACC15" /></span>
                 <div>
                   <div className="font-semibold text-base">Highly Maintained Fleet</div>
                   <div className="text-gray-700 text-xs">Get high quality and serviced vehicles.</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><FaRegClock size={28} color="#EF4444" /></span>
+                <span className="mt-1"><FaRegClock size={28} color="#FACC15" /></span>
                 <div>
                   <div className="font-semibold text-base">24*7 At Service</div>
                   <div className="text-gray-700 text-xs">Day or night, rent a bike</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><BiRupee size={28} color="#EF4444" /></span>
+                <span className="mt-1"><BiRupee size={28} color="#FACC15" /></span>
                 <div>
                   <div className="font-semibold text-base">Book Now, Pay later</div>
                   <div className="text-gray-700 text-xs">Flexibility to decide when and how to pay.</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-1"><FaHandHoldingUsd size={28} color="#EF4444" /></span>
+                <span className="mt-1"><FaHandHoldingUsd size={28} color="#FACC15" /></span>
                 <div>
                   <div className="font-semibold text-base">Instant Refund</div>
                   <div className="text-gray-700 text-xs">Facing an issue while booking/pick up? We initiate instant refund.</div>
@@ -601,7 +602,6 @@ const Home = () => {
         </div>
       </section>
 
-  
 
       {/* Features Section */}
       <section className="py-16 bg-white">
@@ -619,8 +619,8 @@ const Home = () => {
             {features.map((feature, index) => (
               <div key={index} className="text-center px-4 py-6 rounded-xl shadow-md hover:shadow-lg transition-shadow bg-white max-w-xs mx-auto border border-gray-100">
                 <div className="flex items-center justify-center mb-2">
-                  <div className="bg-red-50 w-14 h-14 rounded-full flex items-center justify-center">
-                    <feature.icon className="h-8 w-8 text-red-500" />
+                  <div className="bg-yellow-50 w-14 h-14 rounded-full flex items-center justify-center">
+                    <feature.icon className="h-8 w-8 text-yellow-500" />
                   </div>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">{feature.title}</h3>
@@ -637,8 +637,8 @@ const Home = () => {
                   className="min-w-[50vw] max-w-[60vw] flex-shrink-0 snap-center bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow text-center px-4 py-6 mx-auto border border-gray-100"
                 >
                   <div className="flex items-center justify-center mb-2">
-                    <div className="bg-red-50 w-14 h-14 rounded-full flex items-center justify-center">
-                      <feature.icon className="h-8 w-8 text-red-500" />
+                    <div className="bg-yellow-50 w-14 h-14 rounded-full flex items-center justify-center">
+                      <feature.icon className="h-8 w-8 text-yellow-500" />
                     </div>
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">{feature.title}</h3>
@@ -651,7 +651,7 @@ const Home = () => {
       </section>
 
       {/* Exlore Section */}
-      <section className="relative bg-gradient-to-br from-red-900 via-red-800 to-orange-900 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-yellow-500 via-yellow-400 to-yellow-500 overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -659,7 +659,7 @@ const Home = () => {
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
                   Explore the City
-                  <span className="block text-red-300">Your Way</span>
+                  <span className="block text-yellow-300">Your Way</span>
                 </h1>
                 <p className="text-xl text-blue-100 leading-relaxed">
                   Premium bike rentals for urban adventures. Discover hidden gems, 
@@ -668,7 +668,7 @@ const Home = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
+                <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
                   onClick={() => navigate('/bikes')}
                 >
                   Book Now

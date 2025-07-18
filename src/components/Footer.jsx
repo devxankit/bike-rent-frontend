@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, Clock, Star, Shield, Users, Award } from 'lucide-r
 
 const Footer = () => {
   return (
-    <footer className="bg-red-800 text-white">
+    <footer className="bg-yellow-500 text-white">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -11,7 +11,7 @@ const Footer = () => {
           {/* About Section */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-white mb-4">About Bike Rent</h3>
-            <p className="text-gray-300 text-sm leading-relaxed">
+            <p className="text-white text-sm leading-relaxed">
               Bike Rent is your trusted partner for convenient, affordable, and reliable bike 
               rentals in Indore. Explore the city with ease, enjoy flexible booking, and experience 
               top-notch customer service. Our mission is to make urban mobility simple and 
@@ -21,7 +21,7 @@ const Footer = () => {
             {/* Trust Indicators */}
             <div className="flex items-center space-x-4 pt-4">
               <div className="flex items-center space-x-1">
-                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-white" />
                 <span className="text-sm">4.8/5 Rating</span>
               </div>
               <div className="flex items-center space-x-1">
@@ -35,25 +35,25 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-white mb-4">Our Services</h3>
             <ul className="space-y-2 text-sm">
-              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-black transition-colors cursor-pointer">
                 • Hourly Bike Rentals
               </li>
-              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-black transition-colors cursor-pointer">
                 • Daily & Weekly Packages
               </li>
-              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-black transition-colors cursor-pointer">
                 • Premium Bike Collection
               </li>
-              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-black transition-colors cursor-pointer">
                 • Corporate Bike Solutions
               </li>
-              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-black transition-colors cursor-pointer">
                 • 24/7 Roadside Assistance
               </li>
-              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-black transition-colors cursor-pointer">
                 • Guided City Tours
               </li>
-              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-black transition-colors cursor-pointer">
                 • Bike Maintenance Services
               </li>
             </ul>
@@ -67,7 +67,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-white flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-gray-300">Call Us</p>
+                  <p className="text-sm text-white">Call Us</p>
                   <p className="text-white font-medium">+91 97987 74681</p>
                 </div>
               </div>
@@ -75,7 +75,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-white flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-gray-300">Email Support</p>
+                  <p className="text-sm text-white">Email Support</p>
                   <p className="text-white font-medium">support@bikerent.com</p>
                 </div>
               </div>
@@ -83,7 +83,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5 text-white flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-gray-300">Location</p>
+                  <p className="text-sm text-white">Location</p>
                   <p className="text-white font-medium">Indore, Madhya Pradesh, India</p>
                 </div>
               </div>
@@ -91,7 +91,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Clock className="h-5 w-5 text-white flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-gray-300">Working Hours</p>
+                  <p className="text-sm text-white">Working Hours</p>
                   <p className="text-white font-medium">24/7 Service Available</p>
                 </div>
               </div>
@@ -103,31 +103,31 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-white mb-4">Quick Links</h3>
             
             <div className="space-y-2">
-              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
                 Home
               </a>
-              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
                 About Us
               </a>
                  
-              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
                 Book Now
               </a>
-              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
                 Contact
               </a>
-              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
                 Login / Register
               </a>
-              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
                 FAQ
               </a>
             </div>
 
             {/* Security Badge */}
             <div className="flex items-center space-x-2 pt-4">
-              <Shield className="h-5 w-5 text-green-400" />
-              <span className="text-sm text-green-400">Secure & Trusted</span>
+              <Shield className="h-5 w-5 text-white" />
+              <span className="text-sm text-white">Secure & Trusted</span>
             </div>
           </div>
         </div>
@@ -135,29 +135,29 @@ const Footer = () => {
       </div>
 
       {/* Bottom Copyright Section */}
-      <div className="border-t border-gray-800">
+      <div className="border-t border-white">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
-              <p className="text-gray-400 text-sm">
+              <p className="text-white text-sm">
                 © 2025 Bike Rent. All rights reserved.
               </p>
-              <p className="text-gray-500 text-xs mt-1">
+              <p className="text-white text-xs mt-1">
                 Making urban mobility accessible, one ride at a time.
               </p>
             </div>
             
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-white hover:text-white transition-colors">
                 Privacy Policy
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-white hover:text-white transition-colors">
                 Terms of Service
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-white hover:text-white transition-colors">
                 Refund Policy
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-white hover:text-white transition-colors">
                 Careers
               </a>
             </div>
