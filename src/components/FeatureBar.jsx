@@ -28,7 +28,7 @@ const features = [
     subtitle: 'Vehicles',
   },
   {
-    icon: <FaHardHat size={24} color="#facc15" />, // Free Helmet
+    icon: <FaHardHat size={24} color="#ffbe00" />, // Free Helmet
     title: 'Free Helmet',
     subtitle: 'With Every Ride',
   },

@@ -91,7 +91,7 @@ const CustomTimePicker = forwardRef(({ value, onChange, label = '', selectedDate
         onFocus={onFocus}
       />
       <span className="absolute right-3 pt-4 inset-y-0 my-auto flex items-center pointer-events-none h-5">
-        <svg width="18" height="18" fill="none" stroke="#FACC15" strokeWidth="2" viewBox="0 0 24 24" className="w-5 h-5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <svg width="18" height="18" fill="none" stroke="#ffbe00" strokeWidth="2" viewBox="0 0 24 24" className="w-5 h-5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
       </span>
       {open && (
         <div
@@ -105,7 +105,7 @@ const CustomTimePicker = forwardRef(({ value, onChange, label = '', selectedDate
                 key={idx}
                 onClick={() => handleTimeClick(t.hour, t.minute, false)}
                 className={`w-full py-1 rounded text-sm font-semibold transition text-left px-3
-                  ${value && value.getHours() === t.hour && value.getMinutes() === t.minute ? 'bg-yellow-500 text-white' : 'hover:bg-yellow-100 text-gray-800'}
+                  ${value && value.getHours() === t.hour && value.getMinutes() === t.minute ? 'bg-yellow-400 text-white' : 'hover:bg-yellow-100 text-gray-800'}
                 `}
               >
                 {t.label}

@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, Clock, Star, Shield, Users, Award } from 'lucide-r
 
 const Footer = () => {
   return (
-    <footer className="bg-yellow-500 text-white">
+    <footer className="bg-gray-900 text-white">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -21,7 +21,7 @@ const Footer = () => {
             {/* Trust Indicators */}
             <div className="flex items-center space-x-4 pt-4">
               <div className="flex items-center space-x-1">
-                <Star className="h-4 w-4 text-white" />
+                <Star className="h-4 w-4 text-yellow-400" />
                 <span className="text-sm">4.8/5 Rating</span>
               </div>
               <div className="flex items-center space-x-1">
@@ -35,25 +35,25 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-white mb-4">Our Services</h3>
             <ul className="space-y-2 text-sm">
-              <li className="text-white hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-yellow-400 transition-colors cursor-pointer">
                 • Hourly Bike Rentals
               </li>
-              <li className="text-white hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-yellow-400 transition-colors cursor-pointer">
                 • Daily & Weekly Packages
               </li>
-              <li className="text-white hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-yellow-400 transition-colors cursor-pointer">
                 • Premium Bike Collection
               </li>
-              <li className="text-white hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-yellow-400 transition-colors cursor-pointer">
                 • Corporate Bike Solutions
               </li>
-              <li className="text-white hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-yellow-400 transition-colors cursor-pointer">
                 • 24/7 Roadside Assistance
               </li>
-              <li className="text-white hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-yellow-400 transition-colors cursor-pointer">
                 • Guided City Tours
               </li>
-              <li className="text-white hover:text-black transition-colors cursor-pointer">
+              <li className="text-white hover:text-yellow-400 transition-colors cursor-pointer">
                 • Bike Maintenance Services
               </li>
             </ul>
@@ -103,23 +103,23 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-white mb-4">Quick Links</h3>
             
             <div className="space-y-2">
-              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-yellow-400 transition-colors text-sm">
                 Home
               </a>
-              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-yellow-400 transition-colors text-sm">
                 About Us
               </a>
                  
-              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-yellow-400 transition-colors text-sm">
                 Book Now
               </a>
-              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-yellow-400 transition-colors text-sm">
                 Contact
               </a>
-              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-yellow-400 transition-colors text-sm">
                 Login / Register
               </a>
-              <a href="#" className="block text-white hover:text-black transition-colors text-sm">
+              <a href="#" className="block text-white hover:text-yellow-400 transition-colors text-sm">
                 FAQ
               </a>
             </div>

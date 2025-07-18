@@ -209,8 +209,8 @@ const Home = () => {
     {
       icon: Shield,
       title: "No Ownership Worries",
-      description: "Skip the maintenance, insurance, and registration hassles. Just ride and enjoy."
-    },
+        description: "Skip the maintenance, insurance, and registration hassles. Just ride and enjoy."
+      },
     {
       icon: MapPin,
       title: "15+ Rental Hubs",
@@ -358,7 +358,7 @@ const Home = () => {
                       <span className="flex-1 truncate text-base text-gray-700 text-left">{city || 'Select a city'}</span>
                     </button>
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center h-full cursor-pointer pointer-events-none">
-                      <MapPin className="h-5 w-5 text-yellow-500" />
+                      <MapPin className="h-5 w-5 text-yellow-400" />
                     </span>
                   </div>
                   {/* City Selection Popup */}
@@ -489,7 +489,7 @@ const Home = () => {
                   <span>Total Duration:</span>
                   <span>{getDurationString(pickDate, pickTime, dropDate, dropTime)}</span>
                 </div>
-                <button className="w-full h-10 bg-yellow-500 text-white py-1.5 rounded font-bold hover:bg-yellow-600 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm flex items-center justify-center gap-1 mt-1 active:scale-95" onClick={handleFindBike}>
+                <button className="w-full h-10 bg-yellow-400 text-white py-1.5 rounded font-bold hover:bg-yellow-400 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm flex items-center justify-center gap-1 mt-1 active:scale-95" onClick={handleFindBike}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
                   </svg>
@@ -500,7 +500,7 @@ const Home = () => {
             {/* Hero Text below form (mobile), Right (desktop) */}
             <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-4">
-                Your <span className='text-yellow-500 '>Ride.</span> <br />
+                Your <span className='text-yellow-400 '>Ride.</span> <br />
                 Your City.
               </h1>
               <p className="text-xl mb-8 text-gray-300">
@@ -620,7 +620,7 @@ const Home = () => {
               <div key={index} className="text-center px-4 py-6 rounded-xl shadow-md hover:shadow-lg transition-shadow bg-white max-w-xs mx-auto border border-gray-100">
                 <div className="flex items-center justify-center mb-2">
                   <div className="bg-yellow-50 w-14 h-14 rounded-full flex items-center justify-center">
-                    <feature.icon className="h-8 w-8 text-yellow-500" />
+                    <feature.icon className="h-8 w-8 text-yellow-400" />
                   </div>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">{feature.title}</h3>
@@ -638,7 +638,7 @@ const Home = () => {
                 >
                   <div className="flex items-center justify-center mb-2">
                     <div className="bg-yellow-50 w-14 h-14 rounded-full flex items-center justify-center">
-                      <feature.icon className="h-8 w-8 text-yellow-500" />
+                      <feature.icon className="h-8 w-8 text-yellow-400" />
                     </div>
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">{feature.title}</h3>
@@ -651,8 +651,8 @@ const Home = () => {
       </section>
 
       {/* Exlore Section */}
-      <section className="relative bg-gradient-to-br from-yellow-500 via-yellow-400 to-yellow-500 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      <section className="relative bg-[#ffbe00] overflow-hidden">
+        <div className="absolute inset-0 "></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-8">
@@ -668,7 +668,7 @@ const Home = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
+                <button className="bg-white hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
                   onClick={() => navigate('/bikes')}
                 >
                   Book Now
@@ -698,7 +698,7 @@ const Home = () => {
               <img 
                 src="./images/bikePoster.png" 
                 alt="Premium bike rental"
-                className="w-full h-80 lg:h-[400px] object-cover rounded-2xl shadow-2xl"
+                className="w-full h-80 lg:h-[400px] object-cover rounded-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
             </div>
