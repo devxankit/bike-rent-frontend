@@ -42,33 +42,7 @@ if (typeof document !== 'undefined' && !document.getElementById('custom-datepick
 
 // Calendar and clock icons for Home2 booking form
 
-const placeholderCitySVG = (
-  <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 48 48"><rect x="8" y="16" width="32" height="24" rx="4" stroke="#888" fill="#f3f4f6"/><rect x="16" y="24" width="8" height="8" rx="2" stroke="#bbb" fill="#fff"/><rect x="28" y="24" width="8" height="8" rx="2" stroke="#bbb" fill="#fff"/></svg>
-);
 
-// City icon mapping
-const cityIconMap = {
-  'Ahmedabad': <FaLandmark size={38} className="text-blue-500" />,
-  'Bengaluru': <FaRegBuilding size={38} className="text-green-600" />,
-  'Bhopal': <FaMonument size={38} className="text-orange-500" />,
-  'Bhubaneswar': <FaUniversity size={38} className="text-indigo-500" />,
-  'Dandeli': <FaRegSun size={38} className="text-yellow-500" />,
-  'Gulbarga': <FaRegHospital size={38} className="text-pink-500" />,
-  'Hampi': <FaRegFlag size={38} className="text-purple-500" />,
-  'Hyderabad': <FaMapMarkerAlt size={38} className="text-red-500" />,
-  'Indore': <FaRegSmile size={38} className="text-green-500" />,
-  'Jaipur': <FaRegStar size={38} className="text-pink-400" />,
-  'Kota': <FaBuilding size={38} className="text-blue-400" />,
-  'Mysuru': <FaCity size={38} className="text-gray-500" />,
-  'Mumbai': <FaCity size={38} className="text-gray-700" />,
-  'Chennai': <FaRegBuilding size={38} className="text-blue-700" />,
-  'Pune': <FaRegBuilding size={38} className="text-green-700" />,
-  'Kolkata': <FaLandmark size={38} className="text-yellow-700" />,
-  'Surat': <FaRegSmile size={38} className="text-orange-400" />,
-  'Lucknow': <FaRegFlag size={38} className="text-blue-600" />,
-  'Kanpur': <FaRegFlag size={38} className="text-green-600" />,
-  'Jaipur': <FaRegStar size={38} className="text-pink-400" />,
-};
 
 // Add city image mapping
 const cityImageMap = {
@@ -589,7 +563,7 @@ const Home = () => {
           </div>
           {/* Right: Carousel */}
           <div className="flex justify-center items-center h-full">
-            <div className="relative w-full max-w-xl h-[420px] md:h-[420px] overflow-hidden rounded-2xl shadow-lg">
+            <div className="relative w-full max-w-xl h-[350px] md:h-[500px] overflow-hidden rounded-2xl shadow-lg">
               {carouselImages.map((img, idx) => (
                 <img
                   key={img}
@@ -627,7 +601,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Services Section */}
   
 
       {/* Features Section */}
@@ -678,7 +651,7 @@ const Home = () => {
       </section>
 
       {/* Exlore Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-red-900 via-red-800 to-orange-900 overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -686,7 +659,7 @@ const Home = () => {
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
                   Explore the City
-                  <span className="block text-blue-300">Your Way</span>
+                  <span className="block text-red-300">Your Way</span>
                 </h1>
                 <p className="text-xl text-blue-100 leading-relaxed">
                   Premium bike rentals for urban adventures. Discover hidden gems, 
@@ -709,14 +682,14 @@ const Home = () => {
               
               <div className="flex items-center space-x-8 pt-4">
                 <div className="flex items-center space-x-2">
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
+                  <Star className="h-5 w-5 text-white fill-current" />
                   <span className="text-white font-semibold">4.9/5</span>
-                  <span className="text-blue-200">2,450+ reviews</span>
+                  <span className="text-white-200">2,450+ reviews</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Bike className="h-5 w-5 text-blue-300" />
+                  <Bike className="h-5 w-5 text-white" />
                   <span className="text-white font-semibold">500+</span>
-                  <span className="text-blue-200">bikes available</span>
+                  <span className="text-white">bikes available</span>
                 </div>
               </div>
             </div>
@@ -725,7 +698,7 @@ const Home = () => {
               <img 
                 src="./images/bikePoster.png" 
                 alt="Premium bike rental"
-                className="w-full h-80 lg:h-80 object-cover rounded-2xl shadow-2xl"
+                className="w-full h-80 lg:h-[400px] object-cover rounded-2xl shadow-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
             </div>

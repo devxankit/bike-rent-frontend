@@ -3,14 +3,14 @@ import { Phone, Mail, MapPin, Clock, Star, Shield, Users, Award } from 'lucide-r
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-red-800 text-white">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
           {/* About Section */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-red-500 mb-4">About Bike Rent</h3>
+            <h3 className="text-xl font-bold text-white mb-4">About Bike Rent</h3>
             <p className="text-gray-300 text-sm leading-relaxed">
               Bike Rent is your trusted partner for convenient, affordable, and reliable bike 
               rentals in Indore. Explore the city with ease, enjoy flexible booking, and experience 
@@ -25,7 +25,7 @@ const Footer = () => {
                 <span className="text-sm">4.8/5 Rating</span>
               </div>
               <div className="flex items-center space-x-1">
-                <Users className="h-4 w-4 text-red-500" />
+                <Users className="h-4 w-4 text-white" />
                 <span className="text-sm">10K+ Users</span>
               </div>
             </div>
@@ -33,27 +33,27 @@ const Footer = () => {
 
           {/* Services Section */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-red-500 mb-4">Our Services</h3>
+            <h3 className="text-xl font-bold text-white mb-4">Our Services</h3>
             <ul className="space-y-2 text-sm">
-              <li className="text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
                 • Hourly Bike Rentals
               </li>
-              <li className="text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
                 • Daily & Weekly Packages
               </li>
-              <li className="text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
                 • Premium Bike Collection
               </li>
-              <li className="text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
                 • Corporate Bike Solutions
               </li>
-              <li className="text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
                 • 24/7 Roadside Assistance
               </li>
-              <li className="text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
                 • Guided City Tours
               </li>
-              <li className="text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <li className="text-gray-300 hover:text-black transition-colors cursor-pointer">
                 • Bike Maintenance Services
               </li>
             </ul>
@@ -61,11 +61,11 @@ const Footer = () => {
 
           {/* Contact Section */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-red-500 mb-4">Contact Us</h3>
+            <h3 className="text-xl font-bold text-white mb-4">Contact Us</h3>
             
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-red-500 flex-shrink-0" />
+                <Phone className="h-5 w-5 text-white flex-shrink-0" />
                 <div>
                   <p className="text-sm text-gray-300">Call Us</p>
                   <p className="text-white font-medium">+91 97987 74681</p>
@@ -73,7 +73,7 @@ const Footer = () => {
               </div>
               
               <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-red-500 flex-shrink-0" />
+                <Mail className="h-5 w-5 text-white flex-shrink-0" />
                 <div>
                   <p className="text-sm text-gray-300">Email Support</p>
                   <p className="text-white font-medium">support@bikerent.com</p>
@@ -81,7 +81,7 @@ const Footer = () => {
               </div>
               
               <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-red-500 flex-shrink-0" />
+                <MapPin className="h-5 w-5 text-white flex-shrink-0" />
                 <div>
                   <p className="text-sm text-gray-300">Location</p>
                   <p className="text-white font-medium">Indore, Madhya Pradesh, India</p>
@@ -89,7 +89,7 @@ const Footer = () => {
               </div>
               
               <div className="flex items-center space-x-3">
-                <Clock className="h-5 w-5 text-red-500 flex-shrink-0" />
+                <Clock className="h-5 w-5 text-white flex-shrink-0" />
                 <div>
                   <p className="text-sm text-gray-300">Working Hours</p>
                   <p className="text-white font-medium">24/7 Service Available</p>
@@ -100,26 +100,26 @@ const Footer = () => {
 
           {/* Quick Links Section */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-red-500 mb-4">Quick Links</h3>
+            <h3 className="text-xl font-bold text-white mb-4">Quick Links</h3>
             
             <div className="space-y-2">
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
                 Home
               </a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
                 About Us
               </a>
                  
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
                 Book Now
               </a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
                 Contact
               </a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
                 Login / Register
               </a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="#" className="block text-gray-300 hover:text-black transition-colors text-sm">
                 FAQ
               </a>
             </div>

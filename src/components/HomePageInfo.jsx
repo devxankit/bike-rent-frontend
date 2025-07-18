@@ -37,7 +37,7 @@ function HomePageInfo() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-red-900 via-red-800 to-orange-900 overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -45,9 +45,9 @@ function HomePageInfo() {
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
                   Explore the City
-                  <span className="block text-blue-300">Your Way</span>
+                  <span className="block text-red-300">Your Way</span>
                 </h1>
-                <p className="text-xl text-blue-100 leading-relaxed">
+                <p className="text-xl text-red-100 leading-relaxed">
                   Premium bike rentals for urban adventures. Discover hidden gems, 
                   beat the traffic, and experience the city like never before.
                 </p>
@@ -68,12 +68,12 @@ function HomePageInfo() {
                 <div className="flex items-center space-x-2">
                   <Star className="h-5 w-5 text-yellow-400 fill-current" />
                   <span className="text-white font-semibold">4.9/5</span>
-                  <span className="text-blue-200">2,450+ reviews</span>
+                  <span className="text-red-200">2,450+ reviews</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Bike className="h-5 w-5 text-blue-300" />
+                  <Bike className="h-5 w-5 text-red-300" />
                   <span className="text-white font-semibold">500+</span>
-                  <span className="text-blue-200">bikes available</span>
+                  <span className="text-red-200">bikes available</span>
                 </div>
               </div>
             </div>
@@ -103,8 +103,8 @@ function HomePageInfo() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                <div className="bg-blue-100 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500 transition-colors">
-                  <feature.icon className="h-8 w-8 text-blue-600 group-hover:text-white transition-colors" />
+                <div className="bg-red-100 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500 transition-colors">
+                  <feature.icon className="h-8 w-8 text-red-600 group-hover:text-white transition-colors" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
