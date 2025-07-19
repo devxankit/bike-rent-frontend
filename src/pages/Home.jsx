@@ -18,6 +18,8 @@ import api from '../utils/api';
 import RunningBanner from '../components/RunningBanner';
 import FeatureBar from '../components/FeatureBar';
 import { generateCitySlug, generateBikesSlug } from '../utils/slugUtils';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 // Custom styles for yellow highlight (add to global CSS if needed)
 const customDatepickerStyles = `
@@ -330,6 +332,13 @@ const Home = () => {
   const currentDatePlaceholder = now.toLocaleDateString('en-GB');
   const currentTimePlaceholder = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+  useEffect(() => {
+    AOS.init({
+      duration: 800, // animation duration in ms
+      once: true,    // only animate once
+    });
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -347,7 +356,7 @@ const Home = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-5">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             {/* Booking Form on Top (mobile), Left (desktop) */}
-            <div className="order-1 lg:order-1 flex justify-center">
+            <div className="order-1 lg:order-1 flex justify-center" data-aos="fade-up">
               <div className="bg-white rounded-lg shadow p-4 w-full max-w-md border border-gray-100 flex flex-col gap-3 sm:p-6">
                 <h2 className="text-2xl font-bold text-gray-900 text-center mb-1">Rent a Bike in Your City</h2>
                 <p className="text-xs text-gray-500 text-center mb-1">Quickly find the best scooter or bike for your needs.</p>
@@ -508,12 +517,12 @@ const Home = () => {
               </div>
             </div>
             {/* Hero Text below form (mobile), Right (desktop) */}
-            <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start">
+            <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start" data-aos="fade-up">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-4">
                 Your <span className='text-yellow-400 '>Ride.</span> <br />
                 Your City.
               </h1>
-              <p className="text-xl mb-8 text-gray-300">
+              <p className="text-xl mb-8 text-gray-300" data-aos="fade-up">
               Ride your way with our premium motorcycle rental service.
               </p>
             </div>
@@ -522,12 +531,12 @@ const Home = () => {
       </section>
       <FeatureBar/>
       {/* Carousel Section */}
-      <section className="w-full py-14 bg-white">
+      <section className="w-full py-14 bg-white" data-aos="fade-up">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-4">
           {/* Left: Why Choose Bike Rent */}
           <div className="flex flex-col justify-center h-full">
-            <h2 className="text-2xl md:text-3xl font-bold text-left mb-6">Why choose Bike Rent?</h2>
-            <div className="relative flex flex-col gap-0 z-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-left mb-6" data-aos="fade-up">Why choose Bike Rent?</h2>
+            <div className="relative flex flex-col gap-0 z-10" data-aos="fade-up">
               {/* Timeline Steps */}
               {[
                 { icon: FaMoneyBillWave, title: 'Different Flexible Packages', desc: 'Grab daily, weekly, fortnight and monthly packages at discounted rates' },
@@ -537,13 +546,13 @@ const Home = () => {
                 { icon: BiRupee, title: 'Book Now, Pay later', desc: 'Flexibility to decide when and how to pay.' },
                 { icon: FaHandHoldingUsd, title: 'Instant Refund', desc: 'Facing an issue while booking/pick up? We initiate instant refund.' },
               ].map((step, idx, arr) => (
-                <div key={idx} className="flex flex-row items-center relative min-h-[56px]">
+                <div key={idx} className="flex flex-row items-center relative min-h-[56px]" data-aos="fade-up">
                   {/* Vertical line (behind icons) */}
                   {idx !== arr.length - 1 && (
-                    <div className="absolute left-[22px] top-7 w-1 bg-yellow-300 z-0" style={{ height: 'calc(100% - 2px)' }}></div>
+                    <div className="absolute left-[22px] top-7 w-1 bg-yellow-300 z-0" data-aos="fade-up" style={{ height: 'calc(100% - 2px)' }}></div>
                   )}
                   {/* Icon in filled circle */}
-                  <div className="relative z-10 flex items-center justify-center mr-5">
+                  <div className="relative z-10 flex items-center justify-center mr-5" data-aos="fade-up">
                     <div className="w-12 h-12 flex items-center justify-center rounded-full bg-yellow-400">
                       <step.icon size={28} color="#fff" />
                     </div>
@@ -570,7 +579,7 @@ const Home = () => {
             `}</style>
           </div>
           {/* Right: Carousel */}
-          <div className="flex justify-center items-center h-full">
+          <div className="flex justify-center items-center h-full" data-aos="fade-up">
             <div className="relative w-full max-w-xl h-[350px] md:h-[500px] overflow-hidden rounded-2xl shadow-lg">
               {carouselImages.map((img, idx) => (
                 <img
@@ -611,7 +620,7 @@ const Home = () => {
 
 
       {/* Features Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white" data-aos="fade-up">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-12">
@@ -622,7 +631,7 @@ const Home = () => {
           </div>
 
           {/* Features Cards - Responsive Scrollable */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-aos="fade-up">
             {features.map((feature, index) => (
               <div key={index} className="text-center px-4 py-6 rounded-xl shadow-md hover:shadow-lg transition-shadow bg-white max-w-xs mx-auto border border-gray-100">
                 <div className="flex items-center justify-center mb-2">
@@ -658,23 +667,23 @@ const Home = () => {
       </section>
 
       {/* Exlore Section */}
-      <section className="relative bg-[#ffbe00] overflow-hidden">
+      <section className="relative bg-[#ffbe00] overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 "></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-8">
               <div className="space-y-4">
-                <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+                <h1 className="text-4xl lg:text-6xl font-bold leading-tight" data-aos="fade-up">
                   Explore the City
                   <span className="block text-black">Your Way</span>
                 </h1>
-                <p className="text-xl text-white leading-relaxed">
+                <p className="text-xl text-white leading-relaxed" data-aos="fade-up">
                   Premium bike rentals for urban adventures. Discover hidden gems, 
                   beat the traffic, and experience the city like never before.
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4" data-aos="fade-up">
                 <button className="bg-white hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
                   onClick={() => navigate('/bikes')}
                 >
@@ -701,7 +710,7 @@ const Home = () => {
               </div>
             </div>
             
-            <div className="relative">
+            <div className="relative" data-aos="fade-up">
               <img 
                 src="./images/bikePoster.png" 
                 alt="Premium bike rental"
@@ -714,7 +723,7 @@ const Home = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white" data-aos="fade-up">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">Top FAQ's</h2>
