@@ -40,12 +40,23 @@ const FeatureBar = () => (
       {features.map((f, i) => (
         <div
           key={i}
-          className="flex flex-row items-center h-full min-h-[56px] md:min-h-[64px] justify-center bg-white rounded-xl shadow-sm border border-gray-100 px-1.5 py-2 md:py-3 transition hover:shadow-md text-left gap-2 md:gap-2 min-w-0 max-w-full"
+          className="bg-white rounded-xl shadow-sm border border-gray-100 px-3 py-4 md:py-4 transition hover:shadow-md"
         >
-          <div className="flex items-center justify-center shrink-0 w-10 h-full">{f.icon}</div>
-          <div className="flex flex-col justify-center min-w-0 max-w-full h-full">
-            <div className="text-[11px] md:text-[13px] font-bold text-gray-800 leading-tight truncate max-w-full">{f.title}</div>
-            <div className="text-[10px] md:text-[12px] text-gray-500 -mt-0.5 truncate max-w-full">{f.subtitle}</div>
+          <div className="flex items-start space-x-3">
+            {/* Icon container with fixed dimensions */}
+            <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+              {f.icon}
+            </div>
+            
+            {/* Text container */}
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] md:text-[13px] font-bold text-gray-800 leading-tight truncate">
+                {f.title}
+              </div>
+              <div className="text-[10px] md:text-[12px] text-gray-500 leading-tight truncate mt-0.5">
+                {f.subtitle}
+              </div>
+            </div>
           </div>
         </div>
       ))}
