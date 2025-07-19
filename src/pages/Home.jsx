@@ -522,55 +522,52 @@ const Home = () => {
       </section>
       <FeatureBar/>
       {/* Carousel Section */}
-      <section className="w-full py-12 bg-white">
+      <section className="w-full py-14 bg-white">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-4">
           {/* Left: Why Choose Bike Rent */}
           <div className="flex flex-col justify-center h-full">
             <h2 className="text-2xl md:text-3xl font-bold text-left mb-6">Why choose Bike Rent?</h2>
-            <div className="flex flex-col gap-5">
-              <div className="flex items-start gap-3">
-                <span className="mt-1"><FaMoneyBillWave size={28} color="#FACC15" /></span>
-                <div>
-                  <div className="font-semibold text-base">Different Flexible Packages</div>
-                  <div className="text-gray-700 text-xs">Grab daily, weekly, fortnight and monthly packages at discounted rates</div>
+            <div className="relative flex flex-col gap-0 z-10">
+              {/* Timeline Steps */}
+              {[
+                { icon: FaMoneyBillWave, title: 'Different Flexible Packages', desc: 'Grab daily, weekly, fortnight and monthly packages at discounted rates' },
+                { icon: FaMotorcycle, title: 'Wide Range', desc: 'Looking for a particular brand or location? We have probably got it.' },
+                { icon: MdOutlineMiscellaneousServices, title: 'Highly Maintained Fleet', desc: 'Get high quality and serviced vehicles.' },
+                { icon: FaRegClock, title: '24*7 At Service', desc: 'Day or night, rent a bike' },
+                { icon: BiRupee, title: 'Book Now, Pay later', desc: 'Flexibility to decide when and how to pay.' },
+                { icon: FaHandHoldingUsd, title: 'Instant Refund', desc: 'Facing an issue while booking/pick up? We initiate instant refund.' },
+              ].map((step, idx, arr) => (
+                <div key={idx} className="flex flex-row items-center relative min-h-[56px]">
+                  {/* Vertical line (behind icons) */}
+                  {idx !== arr.length - 1 && (
+                    <div className="absolute left-[22px] top-7 w-1 bg-yellow-300 z-0" style={{ height: 'calc(100% - 2px)' }}></div>
+                  )}
+                  {/* Icon in filled circle */}
+                  <div className="relative z-10 flex items-center justify-center mr-5">
+                    <div className="w-12 h-12 flex items-center justify-center rounded-full bg-yellow-400">
+                      <step.icon size={28} color="#fff" />
+                    </div>
+                  </div>
+                  {/* Text with hover effect - only this box animates, add margin and border-transparent */}
+                  <div className="flex-1">
+                    <div className={`p-3 rounded-lg border border-transparent transition-all duration-200 hover:bg-white hover:shadow-lg hover:border-yellow-200${idx !== arr.length - 1 ? ' mb-4' : ''}`}>
+                      <div className="font-semibold text-base">{step.title}</div>
+                      <div className="text-gray-700 text-xs">{step.desc}</div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="mt-1"><FaMotorcycle size={28} color="#FACC15" /></span>
-                <div>
-                  <div className="font-semibold text-base">Wide Range</div>
-                  <div className="text-gray-700 text-xs">Looking for a particular brand or location? We have probably got it.</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="mt-1"><MdOutlineMiscellaneousServices size={28} color="#FACC15" /></span>
-                <div>
-                  <div className="font-semibold text-base">Highly Maintained Fleet</div>
-                  <div className="text-gray-700 text-xs">Get high quality and serviced vehicles.</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="mt-1"><FaRegClock size={28} color="#FACC15" /></span>
-                <div>
-                  <div className="font-semibold text-base">24*7 At Service</div>
-                  <div className="text-gray-700 text-xs">Day or night, rent a bike</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="mt-1"><BiRupee size={28} color="#FACC15" /></span>
-                <div>
-                  <div className="font-semibold text-base">Book Now, Pay later</div>
-                  <div className="text-gray-700 text-xs">Flexibility to decide when and how to pay.</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="mt-1"><FaHandHoldingUsd size={28} color="#FACC15" /></span>
-                <div>
-                  <div className="font-semibold text-base">Instant Refund</div>
-                  <div className="text-gray-700 text-xs">Facing an issue while booking/pick up? We initiate instant refund.</div>
-                </div>
-              </div>
+              ))}
             </div>
+            {/* Mobile: Stack icons and text, hide vertical line, add spacing */}
+            <style>{`
+              @media (max-width: 768px) {
+                .timeline-mobile-stack { flex-direction: column !important; align-items: flex-start !important; }
+                .timeline-mobile-stack .timeline-icons { flex-direction: row !important; margin-right: 0 !important; margin-bottom: 1rem !important; }
+                .timeline-mobile-stack .timeline-icons .vertical-line { display: none !important; }
+                .timeline-mobile-stack .timeline-icons > div { margin-bottom: 0 !important; margin-right: 1rem !important; }
+                .timeline-mobile-stack .timeline-texts { max-width: 100% !important; }
+              }
+            `}</style>
           </div>
           {/* Right: Carousel */}
           <div className="flex justify-center items-center h-full">
