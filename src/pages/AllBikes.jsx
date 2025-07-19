@@ -183,7 +183,9 @@ export default function AllBikes({ cityOverride }) {
     try {
       await api.patch(`/api/bikes/${bookingDialog.bike._id}/booking`, {
         isBooked: !!(bookingFrom && bookingTo),
-        bookingPeriod: bookingFrom && bookingTo ? { from: bookingFrom, to: bookingTo } : { from: null, to: null },
+        bookingPeriod: bookingFrom && bookingTo
+          ? { from: dayjs(bookingFrom).toISOString(), to: dayjs(bookingTo).toISOString() }
+          : { from: null, to: null },
         bookedDays: bookingFrom && bookingTo ? dayjs(bookingTo).diff(dayjs(bookingFrom), 'day') + 1 : 0,
       });
       setSnackbar({ open: true, message: 'Booking status updated!', severity: 'success' });
