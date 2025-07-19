@@ -1,4 +1,5 @@
 import React from 'react';
+import { generateCitySlug, generateBikesSlug } from '../utils/slugUtils';
 
 const FilterSidebar = ({ location, setLocation, allLocations, bikeName, setBikeName, price, setPrice, maxPrice, navigate, compact }) => {
   const labelClass = compact ? "font-semibold text-gray-900 text-xs mb-1.5" : "font-semibold text-gray-900 text-sm mb-1";
@@ -9,6 +10,21 @@ const FilterSidebar = ({ location, setLocation, allLocations, bikeName, setBikeN
   const gapClass = compact ? "flex flex-col gap-3 mb-3" : "flex flex-col gap-1 mb-2";
   const formClass = compact ? "space-y-4 mt-2" : "space-y-4 mt-2";
   const containerClass = compact ? "flex flex-col gap-4 p-3" : "flex flex-col gap-2";
+  
+  const handleCityChange = (e) => {
+    setLocation(e.target.value);
+    const city = e.target.value.trim().toLowerCase();
+    if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(city)) {
+      // Use new slug format for navigation
+      const slug = generateCitySlug(city);
+      navigate(`/bikes/${slug}`);
+    } else if (city === "") {
+      // Use slug for main bikes page
+      const bikesSlug = generateBikesSlug();
+      navigate(`/bikes/${bikesSlug}`);
+    }
+  };
+
   return (
     <div className={containerClass}>
       <h2 className={compact ? "text-base font-extrabold mb-3 text-gray-900 tracking-wide flex items-center gap-2" : "text-xl font-extrabold mb-2 text-gray-900 tracking-wide flex items-center gap-2"}>
@@ -22,15 +38,7 @@ const FilterSidebar = ({ location, setLocation, allLocations, bikeName, setBikeN
           <select
             className={inputClass}
             value={location}
-            onChange={e => {
-              setLocation(e.target.value);
-              const city = e.target.value.trim().toLowerCase();
-              if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(city)) {
-                navigate(`/bikes/${city}`);
-              } else if (city === "") {
-                navigate('/bikes');
-              }
-            }}
+            onChange={handleCityChange}
           >
             <option value="">All Cities</option>
             {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].map(loc => (

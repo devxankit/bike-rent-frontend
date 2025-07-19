@@ -47,15 +47,35 @@ function App() {
 
             <Route path="/home" element={<Home />} />
 
+            {/* Main bikes page with slug */}
             <Route path="/bikes" element={<Bikes />} />
+            <Route path="/bikes/rent-bike-in-all-cities" element={<Bikes />} />
+            
+            {/* City pages with both old and new slug routes for backward compatibility */}
             <Route path="/bikes/indore" element={<IndoreBikesPage />} />
+            <Route path="/bikes/indore-rent-bike-in-indore" element={<IndoreBikesPage />} />
+            
             <Route path="/bikes/bhopal" element={<BhopalBikesPage />} />
+            <Route path="/bikes/bhopal-rent-bike-in-bhopal" element={<BhopalBikesPage />} />
+            
             <Route path="/bikes/mumbai" element={<MumbaiBikesPage />} />
+            <Route path="/bikes/mumbai-rent-bike-in-mumbai" element={<MumbaiBikesPage />} />
+            
             <Route path="/bikes/goa" element={<GoaBikesPage />} />
+            <Route path="/bikes/goa-rent-bike-in-goa" element={<GoaBikesPage />} />
+            
             <Route path="/bikes/haldwani" element={<HaldwaniBikesPage />} />
+            <Route path="/bikes/haldwani-rent-bike-in-haldwani" element={<HaldwaniBikesPage />} />
+            
             <Route path="/bikes/kathgodam" element={<KathgodamBikesPage />} />
+            <Route path="/bikes/kathgodam-rent-bike-in-kathgodam" element={<KathgodamBikesPage />} />
+            
             <Route path="/bikes/pithoragarh" element={<PithoragarhBikesPage />} />
+            <Route path="/bikes/pithoragarh-rent-bike-in-pithoragarh" element={<PithoragarhBikesPage />} />
+            
             <Route path="/bikes/dehradun" element={<DehradunBikesPage />} />
+            <Route path="/bikes/dehradun-rent-bike-in-dehradun" element={<DehradunBikesPage />} />
+            
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Auth />} />

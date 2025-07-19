@@ -18,6 +18,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Checkbox, FormControlLabel, Popover, MenuItem } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import DashboardNavbar from '../components/DashboardNabvar';
+import { generateCitySlug, generateBikesSlug } from '../utils/slugUtils';
 
 const initialForm = {
   name: '',
@@ -323,9 +324,13 @@ export default function AllBikes({ cityOverride }) {
                     setNameFilter(''); // Reset name filter when city changes
                     const city = selected.trim().toLowerCase();
                     if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(city)) {
-                      navigate(`/bikes/${city}`);
+                      // Use new slug format for navigation
+                      const slug = generateCitySlug(city);
+                      navigate(`/bikes/${slug}`);
                     } else if (city === "") {
-                      navigate('/bikes');
+                      // Use slug for main bikes page
+                      const bikesSlug = generateBikesSlug();
+                      navigate(`/bikes/${bikesSlug}`);
                     }
                   }}
                   size="small"

@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import FilterSidebar from '../../components/FilterSidebar';
 import { FiX } from 'react-icons/fi';
+import { generateCitySlug, generateBikesSlug } from '../../utils/slugUtils';
 
 const KathgodamBikesPage = () => {
   const [bikes, setBikes] = useState([]);
@@ -57,9 +58,13 @@ const KathgodamBikesPage = () => {
     if (location && location.toLowerCase() !== 'kathgodam') {
       const city = location.trim().toLowerCase();
       if (["indore", "bhopal", "mumbai", "goa", "haldwani", "pithoragarh", "dehradun"].includes(city)) {
-        navigate(`/bikes/${city}`);
+        // Use new slug format for navigation
+        const slug = generateCitySlug(city);
+        navigate(`/bikes/${slug}`);
       } else if (location === "") {
-        navigate('/bikes');
+        // Use slug for main bikes page
+        const bikesSlug = generateBikesSlug();
+        navigate(`/bikes/${bikesSlug}`);
       }
     }
   }, [location, navigate]);
@@ -86,15 +91,12 @@ const KathgodamBikesPage = () => {
         </aside>
         {/* Mobile Filter Popup */}
         {filterOpen && (
-          <div className="fixed inset-0 z-50 flex md:hidden">
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
-            {/* Popup */}
-            <div className="relative bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-base font-bold text-red-600">Filters</h2>
-                <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
-                  <FiX className="w-5 h-5 text-red-600" />
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden">
+            <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-lg p-4 overflow-y-auto">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-bold">Filters</h2>
+                <button onClick={() => setFilterOpen(false)} className="p-2">
+                  <FiX className="w-5 h-5" />
                 </button>
               </div>
               <FilterSidebar
@@ -107,23 +109,35 @@ const KathgodamBikesPage = () => {
                 setPrice={setPrice}
                 maxPrice={maxPrice}
                 navigate={navigate}
-                compact
+                compact={true}
               />
             </div>
           </div>
         )}
-        {/* Bike List */}
-        <main className="flex-1 p-6 overflow-y-auto" style={{ maxHeight: '100vh' }}>
-          <h1 className="text-2xl font-bold mb-6">Available Bikes</h1>
-          {loading && <div>Loading bikes...</div>}
-          {error && <div className="text-red-500">{error}</div>}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {!loading && !error && sortedBikes.length === 0 && (
-              <div>No bikes available.</div>
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-6">
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Bikes in Kathgodam</h1>
+              <p className="text-gray-600">Find the perfect bike for your journey in Kathgodam</p>
+            </div>
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
+              </div>
+            ) : error ? (
+              <div className="text-center text-red-500">{error}</div>
+            ) : sortedBikes.length === 0 ? (
+              <div className="text-center text-gray-500 py-8">
+                <p>No bikes available in Kathgodam at the moment.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {sortedBikes.map((bike) => (
+                  <BikeCard key={bike._id} bike={bike} />
+                ))}
+              </div>
             )}
-            {sortedBikes.map(bike => (
-              <BikeCard key={bike._id} bike={bike} />
-            ))}
           </div>
         </main>
       </div>

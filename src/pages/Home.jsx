@@ -17,6 +17,7 @@ import PromoToast from '../components/PromoToast';
 import api from '../utils/api';
 import RunningBanner from '../components/RunningBanner';
 import FeatureBar from '../components/FeatureBar';
+import { generateCitySlug, generateBikesSlug } from '../utils/slugUtils';
 
 // Custom styles for yellow highlight (add to global CSS if needed)
 const customDatepickerStyles = `
@@ -139,9 +140,13 @@ const Home = () => {
     localStorage.setItem('bikeRentFormData', JSON.stringify(formData));
     const cityLower = city.trim().toLowerCase();
     if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(cityLower)) {
-      navigate(`/bikes/${cityLower}`);
+      // Use new slug format for navigation
+      const slug = generateCitySlug(cityLower);
+      navigate(`/bikes/${slug}`);
     } else {
-      navigate('/bikes');
+      // Use slug for main bikes page
+      const bikesSlug = generateBikesSlug();
+      navigate(`/bikes/${bikesSlug}`);
     }
   };
 
@@ -666,7 +671,7 @@ const Home = () => {
                   Explore the City
                   <span className="block text-black">Your Way</span>
                 </h1>
-                <p className="text-xl text-blue-100 leading-relaxed">
+                <p className="text-xl text-white leading-relaxed">
                   Premium bike rentals for urban adventures. Discover hidden gems, 
                   beat the traffic, and experience the city like never before.
                 </p>
