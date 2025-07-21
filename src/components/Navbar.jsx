@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { MdDashboard, MdMenu, MdClose } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 import { FiFilter } from 'react-icons/fi';
@@ -13,7 +13,32 @@ const Navbar = ({ onFilterToggle }) => {
   const isLoggedIn = !!user;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const location = useLocation();
+
+  // Determine dropdown label based on current route
+  let dropdownLabel = 'Locations';
+  if (location.pathname.startsWith('/about')) dropdownLabel = 'About';
+  else if (location.pathname.startsWith('/contact')) dropdownLabel = 'Contact Us';
+  else if (location.pathname.startsWith('/locations')) dropdownLabel = 'Locations';
+
+  // Close dropdown on click outside
+  React.useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -23,8 +48,12 @@ const Navbar = ({ onFilterToggle }) => {
 
   // Drawer content
   const drawerLinks = (
-    <nav className="flex flex-col gap-4 mt-8">
+    <nav className="flex flex-col gap-4 mt-8 z-[10000]">
       <Link to="/" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Home</Link>
+      {/* Dropdown links as normal links in drawer */}
+      <Link to="/locations" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Locations</Link>
+      <Link to="/about" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>About</Link>
+      <Link to="/contact" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Contact Us</Link>
       <Link to="/bikes" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Bikes</Link>
       {isLoggedIn && (
         <Link to="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>
@@ -43,7 +72,7 @@ const Navbar = ({ onFilterToggle }) => {
   );
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-[10000]">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
@@ -57,6 +86,26 @@ const Navbar = ({ onFilterToggle }) => {
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6">
           <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Home</Link>
+          {/* Dropdown for Locations, About, Contact Us (click to open) */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              className={`text-sm font-semibold text-[#111518] hover:text-yellow-500 flex items-center gap-1 focus:outline-none px-3 py-1 rounded transition-all ${dropdownOpen ? 'bg-yellow-50' : ''}`}
+              type="button"
+              onClick={() => setDropdownOpen((open) => !open)}
+              aria-haspopup="true"
+              aria-expanded={dropdownOpen}
+            >
+              {dropdownLabel}
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            {dropdownOpen && (
+              <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-lg z-20">
+                <Link to="/locations" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Locations</Link>
+                <Link to="/about" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>About</Link>
+                <Link to="/contact" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Contact Us</Link>
+              </div>
+            )}
+          </div>
           <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Bikes</Link>
           {isLoggedIn && (
             <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-500">

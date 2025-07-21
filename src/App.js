@@ -24,6 +24,7 @@ import KathgodamBikesPage from './pages/cities-pages/Kathgodam';
 import PithoragarhBikesPage from './pages/cities-pages/Pithoragarh';
 import DehradunBikesPage from './pages/cities-pages/Dehradun';
 import ScrollToTop from './components/ScrollToTop';
+import Locations from "./pages/locations";
 
 
 function ProtectedRoute({ children, adminOnly }) {
@@ -100,6 +101,7 @@ function App() {
                 <Analytics />
               </ProtectedRoute>
             } />
+            <Route path="/locations" element={<Locations />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

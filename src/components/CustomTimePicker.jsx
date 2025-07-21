@@ -110,7 +110,7 @@ const CustomTimePicker = forwardRef(({
       {open && (
         <div
           ref={pickerRef}
-          className={`absolute z-50 bg-white rounded-lg shadow-xl max-w-[98vw] min-w-[120px] w-full sm:max-w-xs sm:min-w-[180px] p-2 border border-gray-100 max-h-60 overflow-y-auto ${popupDirection === 'up' ? 'bottom-full mb-2' : 'mt-2'}`}
+          className={`absolute z-[1000] bg-white rounded-lg shadow-xl max-w-[98vw] min-w-[120px] w-full sm:max-w-xs sm:min-w-[180px] p-2 border border-gray-100 max-h-60 overflow-y-auto ${popupDirection === 'up' ? 'bottom-full mb-2' : 'mt-2'}`}
           style={{ left: 0, right: 0, margin: '0 auto' }}
         >
           <div className="flex flex-col gap-1">

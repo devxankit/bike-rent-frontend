@@ -1,93 +1,59 @@
 import React, { useState } from 'react';
 import { Box, Paper, Typography, TextField, Button } from '@mui/material';
 import Navbar from '../components/Navbar';
+import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 const SKY_BLUE = '#12B6FA';
 const NAVY_BLUE = '#1B314D';
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-    // Here you would send the form data to your backend or email service
-  };
-
   return (
     <>
       <Navbar />
-      <Box sx={{ minHeight: '100vh', bgcolor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', py: 6 }}>
-        <Paper elevation={6} sx={{ p: 4, maxWidth: 420, width: '100%', borderRadius: 3, boxShadow: 6 }}>
-          <Typography variant="h4" fontWeight={700} color={SKY_BLUE} mb={2} align="center">
-            Contact Us
-          </Typography>
-          <Typography variant="body1" color={NAVY_BLUE} mb={3} align="center">
-            We'd love to hear from you! Fill out the form below and we'll get back to you soon.
-          </Typography>
-          {submitted ? (
-            <Typography variant="h6" color="success.main" align="center" mt={2}>
-              Thank you for contacting us! We'll be in touch soon.
-            </Typography>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Name"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                fullWidth
-                required
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                label="Email"
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={handleChange}
-                fullWidth
-                required
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                label="Phone"
-                name="phone"
-                type="tel"
-                value={form.phone}
-                onChange={handleChange}
-                fullWidth
-                required
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                label="Message"
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                fullWidth
-                required
-                multiline
-                minRows={4}
-                sx={{ mb: 3 }}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{ bgcolor: SKY_BLUE, color: 'white', fontWeight: 700, py: 1.2, fontSize: 16, borderRadius: 2, '&:hover': { bgcolor: '#0eaee6' } }}
-              >
-                Send Message
-              </Button>
-            </form>
-          )}
-        </Paper>
-      </Box>
+      <div className="min-h-screen bg-white py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-yellow-500 mb-3 text-center">Contact Us</h1>
+          <p className="text-lg text-gray-700 mb-10 max-w-2xl mx-auto text-center">
+            Bike Rent is your trusted partner for convenient, affordable, and reliable bike rentals in Indore and beyond. Our mission is to make urban mobility simple and accessible for everyone. If you have any questions, need support, or want to know more about our services, feel free to reach out!
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {/* Contact Details */}
+            <div>
+              <h2 className="text-xl font-bold text-yellow-500 mb-4">Contact Details</h2>
+              <ul className="space-y-5 text-base text-gray-800">
+                <li className="flex items-start gap-3">
+                  <PhoneIcon className="w-6 h-6 text-yellow-500 mt-1" />
+                  <span><span className="font-semibold">Phone:</span> +91 97987 74681</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <EnvelopeIcon className="w-6 h-6 text-yellow-500 mt-1" />
+                  <span><span className="font-semibold">Email:</span> support@bikerent.com</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <MapPinIcon className="w-6 h-6 text-yellow-500 mt-1" />
+                  <span><span className="font-semibold">Location:</span> Indore, Madhya Pradesh, India</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <ClockIcon className="w-6 h-6 text-yellow-500 mt-1" />
+                  <span><span className="font-semibold">Working Hours:</span> 24/7 Service Available</span>
+                </li>
+              </ul>
+            </div>
+            {/* Why Choose Us */}
+            <div>
+              <h2 className="text-xl font-bold text-yellow-500 mb-4">Why choose Bike Rent?</h2>
+              <ul className="list-disc pl-6 text-base text-gray-800 space-y-2">
+                <li>4.8/5 Customer Rating</li>
+                <li>10K+ Happy Users</li>
+                <li>Hourly, Daily & Weekly Packages</li>
+                <li>Premium Bike Collection</li>
+                <li>24/7 Roadside Assistance</li>
+                <li>Guided City Tours</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 } 

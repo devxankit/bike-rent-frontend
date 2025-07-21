@@ -346,7 +346,7 @@ const Home = () => {
       <PromoToast />
 
       {/* Hero Section */}
-      <section className="relative min-h-[500px] bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
+      <section className="relative min-h-[500px] bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 z-[1000]">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30"
@@ -517,7 +517,7 @@ const Home = () => {
               </div>
             </div>
             {/* Hero Text below form (mobile), Right (desktop) */}
-            <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start" data-aos="fade-up">
+            <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start " data-aos="fade-up" >
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-4">
                 Your <span className='text-yellow-400 '>Ride.</span> <br />
                 Your City.
@@ -531,7 +531,7 @@ const Home = () => {
       </section>
       <FeatureBar/>
       {/* Carousel Section */}
-      <section className="w-full py-14 bg-white" data-aos="fade-up">
+      <section className="w-full py-14 bg-white z-[-999]" data-aos="fade-up">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-4">
           {/* Left: Why Choose Bike Rent */}
           <div className="flex flex-col justify-center h-full">
