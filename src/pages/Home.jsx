@@ -349,7 +349,7 @@ const Home = () => {
       <section className="relative min-h-[500px] bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 z-[1000]">
         {/* Background Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
+          className="absolute inset-0 bg-cover bg-center opacity-30 z-[-99]"
           style={{ backgroundImage: "url('/images/bg-3.png')" }}
         ></div>
         {/* Content */}
@@ -517,7 +517,7 @@ const Home = () => {
               </div>
             </div>
             {/* Hero Text below form (mobile), Right (desktop) */}
-            <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start " data-aos="fade-up" >
+            <div className="order-2 lg:order-2 text-white lg:pl-12 flex flex-col items-start z-[-2]" data-aos="fade-up" >
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-4">
                 Your <span className='text-yellow-400 '>Ride.</span> <br />
                 Your City.
