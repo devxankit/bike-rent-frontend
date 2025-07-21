@@ -24,7 +24,7 @@ export default function Contact() {
           {/* Left: Contact Info and Welcome */}
           <div>
             <h2 className="text-3xl font-extrabold text-gray-900 mb-4 leading-tight">
-              Get in Touch With <span className="text-red-600">Bike Rent</span>
+              Get in Touch With <span className="text-yellow-400">Bike Rent</span>
             </h2>
             <p className="text-lg text-gray-700 mb-6">
               Have questions about our bike and scooty rentals? Need help with booking or want to know more about our services? We're here to help! Reach out to us using the contact information below. Our friendly team is ready to assist you and make your journey smooth and memorable.
