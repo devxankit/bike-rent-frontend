@@ -96,7 +96,7 @@ const Locations = () => {
             {cityList.map(city => (
               <div
                 key={city}
-                className="flex flex-col items-center bg-white rounded-lg shadow p-2 min-w-[90px] max-w-[110px] border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
+                className="flex flex-col items-center bg-white rounded-lg shadow p-2 min-w-[70px] max-w-[90px] border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
                 style={{ opacity: showCities ? 1 : 0, transition: 'opacity 0.7s' }}
                 onClick={() => navigate(`/bikes/${city.toLowerCase()}`)}
               >
