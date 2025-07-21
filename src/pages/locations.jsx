@@ -83,7 +83,7 @@ const Locations = () => {
           {/* City cards fade in after bike animation */}
           {/* Mobile: 2-column grid */}
           <div
-            className={`grid grid-cols-2 pl-[70px] gap-7 transition-opacity duration-700 md:hidden ${showCities ? 'opacity-100' : 'opacity-0'} overflow-x-auto px-2`}
+            className={`grid grid-cols-2 pl-[60px] gap-7 transition-opacity duration-700 md:hidden ${showCities ? 'opacity-100' : 'opacity-0'} overflow-x-auto px-2`}
             style={{
               position: 'relative',
               top: 0,
