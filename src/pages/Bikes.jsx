@@ -19,26 +19,40 @@ const Bikes = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch all available bikes initially to get all locations
+  // Fetch all available bikes and cities on component mount
   useEffect(() => {
-    const fetchBikes = async () => {
+    const fetchInitialData = async () => {
       try {
         setLoading(true);
-        const res = await api.get('/api/bikes', { params: { isBooked: false } });
-        setBikes(res.data);
-        // Extract unique locations for dropdown
-        const locations = Array.from(new Set(res.data.map(b => b.location).filter(Boolean)));
-        setAllLocations(locations);
-        // Find max price for slider
-        const prices = res.data.map(b => b.price).filter(Boolean);
-        // setMaxPrice(prices.length ? Math.max(...prices) : 100000); // This line is removed as maxPrice is now fixed
+        
+        // Fetch bikes
+        const bikesRes = await api.get('/api/bikes', { params: { isBooked: false } });
+        setBikes(bikesRes.data);
+        
+        // Fetch all active cities from city pages API
+        const citiesRes = await api.get('/api/cities');
+        const cityNames = citiesRes.data.map(city => city.name);
+        setAllLocations(cityNames);
+        
       } catch (err) {
-        setError('Failed to load bikes.');
+        console.error('Failed to load initial data:', err);
+        setError('Failed to load bikes and cities.');
+        
+        // Fallback: extract locations from bikes if city API fails
+        try {
+          const bikesRes = await api.get('/api/bikes', { params: { isBooked: false } });
+          setBikes(bikesRes.data);
+          const locations = Array.from(new Set(bikesRes.data.map(b => b.location).filter(Boolean)));
+          setAllLocations(locations);
+        } catch (fallbackErr) {
+          setError('Failed to load bikes.');
+        }
       } finally {
         setLoading(false);
       }
     };
-    fetchBikes();
+    
+    fetchInitialData();
     // Removed auto-set city filter from localStorage to always default to 'All Cities'
   }, []);
 

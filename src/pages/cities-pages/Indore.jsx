@@ -16,8 +16,27 @@ const IndoreBikesPage = () => {
   const [bikeName, setBikeName] = useState("");
   const [price, setPrice] = useState(0);
   const [maxPrice] = useState(10000);
-  const [filterOpen, setFilterOpen] = useState(false);
   const navigate = useNavigate();
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  useEffect(() => {
+    // Fetch all cities for the filter dropdown
+    const fetchCities = async () => {
+      try {
+        const citiesRes = await api.get('/api/cities');
+        const cityNames = citiesRes.data.map(city => city.name);
+        setAllLocations(cityNames);
+      } catch (err) {
+        // fallback: use locations from bikes if city API fails
+        try {
+          const res = await api.get('/api/bikes', { params: { isBooked: false } });
+          const locations = Array.from(new Set(res.data.map(b => b.location).filter(Boolean)));
+          setAllLocations(locations);
+        } catch {}
+      }
+    };
+    fetchCities();
+  }, []);
 
   useEffect(() => {
     const fetchBikes = async () => {
@@ -25,8 +44,6 @@ const IndoreBikesPage = () => {
         setLoading(true);
         const res = await api.get('/api/bikes', { params: { isBooked: false, location: 'Indore' } });
         setBikes(res.data);
-        const locations = Array.from(new Set(res.data.map(b => b.location).filter(Boolean)));
-        setAllLocations(locations);
       } catch (err) {
         setError('Failed to load bikes.');
       } finally {
@@ -59,7 +76,7 @@ const IndoreBikesPage = () => {
   useEffect(() => {
     if (location && location.toLowerCase() !== 'indore') {
       const city = location.trim().toLowerCase();
-      if (["bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(city)) {
+      if (["indore", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun", "bhopal"].includes(city)) {
         // Use new slug format for navigation
         const slug = generateCitySlug(city);
         navigate(`/bikes/${slug}`);
@@ -147,4 +164,4 @@ const IndoreBikesPage = () => {
   );
 };
 
-export default IndoreBikesPage; 
+export default IndoreBikesPage;

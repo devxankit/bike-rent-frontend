@@ -218,6 +218,7 @@ export default function AdminDashboard() {
     { label: 'Dashboard', icon: <MenuIcon />, path: '/admin/dashboard' },
     { label: 'Bikes', icon: <DirectionsBikeIcon />, path: '/admin/bikes' },
     { label: 'Bookings', icon: <CalendarTodayIcon />, path: '/admin/bikes?tab=1' },
+    { label: 'City Pages', icon: <SettingsIcon />, path: '/admin/city-pages' },
     { label: 'Customers', icon: <PeopleIcon />, path: '/admin/customers' },
     { label: 'Analytics', icon: <BarChartIcon />, path: '/admin/analytics' },
   ];
@@ -257,6 +258,8 @@ export default function AdminDashboard() {
                 isActive = location.pathname === '/admin/bikes' && (!new URLSearchParams(location.search).get('tab') || new URLSearchParams(location.search).get('tab') === '0');
               } else if (item.label === 'Dashboard') {
                 isActive = location.pathname === '/admin/dashboard';
+              } else if (item.label === 'City Pages') {
+                isActive = location.pathname === '/admin/city-pages';
               } else if (item.label === 'Customers') {
                 isActive = location.pathname === '/admin/customers';
               } else if (item.label === 'Analytics') {
@@ -281,6 +284,7 @@ export default function AdminDashboard() {
                     if (item.label === 'Bookings') navigate('/admin/bikes?tab=1');
                     else if (item.label === 'Bikes') navigate('/admin/bikes');
                     else if (item.label === 'Dashboard') navigate('/admin/dashboard');
+                    else if (item.label === 'City Pages') navigate('/admin/city-pages');
                     else if (item.label === 'Customers') navigate('/admin/customers');
                     else if (item.label === 'Analytics') navigate('/admin/analytics');
                   }}

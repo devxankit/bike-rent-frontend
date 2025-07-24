@@ -11,14 +11,21 @@ const FilterSidebar = ({ location, setLocation, allLocations, bikeName, setBikeN
   const formClass = compact ? "space-y-4 mt-2" : "space-y-4 mt-2";
   const containerClass = compact ? "flex flex-col gap-4 p-3" : "flex flex-col gap-2";
   
+  // Extract unique cities from allLocations
+  const uniqueCities = [...new Set(
+    allLocations
+      .filter(location => location && location.trim()) // Filter out empty cities
+      .map(location => location.trim())
+  )].sort(); // Sort alphabetically
+
   const handleCityChange = (e) => {
     setLocation(e.target.value);
-    const city = e.target.value.trim().toLowerCase();
-    if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(city)) {
-      // Use new slug format for navigation
-      const slug = generateCitySlug(city);
+    const city = e.target.value.trim();
+    if (city !== "") {
+      // Use new slug format for navigation with any city
+      const slug = generateCitySlug(city.toLowerCase());
       navigate(`/bikes/${slug}`);
-    } else if (city === "") {
+    } else {
       // Use slug for main bikes page
       const bikesSlug = generateBikesSlug();
       navigate(`/bikes/${bikesSlug}`);
@@ -41,8 +48,8 @@ const FilterSidebar = ({ location, setLocation, allLocations, bikeName, setBikeN
             onChange={handleCityChange}
           >
             <option value="">All Cities</option>
-            {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].map(loc => (
-              <option key={loc} value={loc}>{loc}</option>
+            {uniqueCities.map(city => (
+              <option key={city} value={city}>{city}</option>
             ))}
           </select>
         </div>

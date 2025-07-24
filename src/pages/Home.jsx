@@ -48,18 +48,7 @@ if (typeof document !== 'undefined' && !document.getElementById('custom-datepick
 
 
 
-// Add city image mapping
-const cityImageMap = {
-  Indore: '/images/indore.jpeg',
-  Bhopal: '/images/bhopal.jpeg',
-  Mumbai: '/images/mumbai.jpg',
-  Goa: '/images/goa.jpeg',
-  Haldwani: '/images/haldwani.jpeg',
-  Kathgodam: '/images/kathgodam.jpeg',
-  Pithoragarh: '/images/pithoragarh.jpeg',
-  Dehradun: '/images/dehradun.jpeg',
-  // Add more as needed
-};
+// City image mapping will be loaded dynamically from API
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,6 +68,7 @@ const Home = () => {
   const [cityPopupVisible, setCityPopupVisible] = useState(false);
   const cityPopupRef = useRef(null);
   const [allCities, setAllCities] = useState([]);
+  const [backendCities, setBackendCities] = useState([]);
   const [citySearch, setCitySearch] = useState('');
   const [bookingType, setBookingType] = useState('');
   // State for separate date and time pickers
@@ -187,18 +177,21 @@ const Home = () => {
     };
   }, [cityPopupOpen]);
 
-  // Fetch unique cities from bikes
+  // Fetch cities from backend API
   useEffect(() => {
-    api.get('/api/bikes').then(res => {
-      const bikes = res.data || [];
-      const cityMap = {};
-      bikes.forEach(b => {
-        if (b.location) {
-          const key = b.location.trim().toLowerCase();
-          if (!cityMap[key]) cityMap[key] = b.location.trim();
-        }
-      });
-      setAllCities(Object.values(cityMap));
+    api.get('/api/cities').then(res => {
+      const cities = res.data || [];
+      // Filter active cities only
+      const activeCities = cities.filter(city => city.isActive);
+      setBackendCities(activeCities);
+      // Also set legacy allCities for compatibility
+      setAllCities(activeCities.map(city => city.name));
+    }).catch(err => {
+      console.error('Error fetching cities:', err);
+      // Fallback to hardcoded cities if API fails
+      const fallbackCities = ["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"];
+      setAllCities(fallbackCities);
+      setBackendCities(fallbackCities.map(name => ({ name, image: '', slug: name.toLowerCase() })));
     });
   }, []);
 
@@ -377,7 +370,7 @@ const Home = () => {
                   </div>
                   {/* City Selection Popup */}
                   {cityPopupVisible && (
-                    <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/30 transition-opacity duration-200`} style={{ opacity: cityPopupOpen ? 1 : 0 }}>
+                    <div className={`fixed inset-0 z-[9999] flex items-center justify-center bg-black/30 transition-opacity duration-200`} style={{ opacity: cityPopupOpen ? 1 : 0 }}>
                       <div
                         ref={cityPopupRef}
                         className={`bg-white rounded-xl shadow-2xl w-full max-w-xs sm:max-w-lg p-3 sm:p-6 relative mx-2 transform transition-transform duration-200 ${cityPopupOpen ? 'scale-100' : 'scale-95'}`}
@@ -398,21 +391,21 @@ const Home = () => {
                           className="w-full mb-3 px-3 py-2 border border-gray-200 rounded focus:ring-2 focus:ring-yellow-200 text-sm"
                         />
                         <div className="grid grid-cols-3 gap-2 sm:gap-3 max-h-56 sm:max-h-72 overflow-y-auto">
-                          {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).map(c => (
+                          {backendCities.filter(cityObj => cityObj.name.toLowerCase().includes(citySearch.toLowerCase())).map(cityObj => (
                             <button
-                              key={c}
+                              key={cityObj.name}
                               className="flex flex-col items-center gap-1 sm:gap-1 p-0.5 sm:p-1 rounded-lg hover:bg-yellow-50 focus:bg-yellow-100 transition"
-                              onClick={() => { setCity(c); setCityPopupOpen(false); }}
+                              onClick={() => { setCity(cityObj.name); setCityPopupOpen(false); }}
                             >
                               <img
-                                src={cityImageMap[c] || '/images/default-city.png'}
-                                alt={c}
+                                src={cityObj.image || '/images/default-city.png'}
+                                alt={cityObj.name}
                                 className="w-10 h-10 object-cover rounded-lg shadow"
                               />
-                              <span className="text-xs font-semibold text-gray-700 mt-1 text-center">{c}</span>
+                              <span className="text-xs font-semibold text-gray-700 mt-1 text-center">{cityObj.name}</span>
                             </button>
                           ))}
-                          {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].filter(c => c.toLowerCase().includes(citySearch.toLowerCase())).length === 0 && (
+                          {backendCities.filter(cityObj => cityObj.name.toLowerCase().includes(citySearch.toLowerCase())).length === 0 && (
                             <span className="col-span-3 text-center text-gray-400 text-sm">No cities found</span>
                           )}
                         </div>
