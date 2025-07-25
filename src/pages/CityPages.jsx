@@ -26,6 +26,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DashboardNavbar from '../components/DashboardNabvar';
+import RichTextEditor from '../components/RichTextEditor';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 
@@ -91,6 +92,13 @@ export default function CityPages() {
     e.preventDefault();
     if (!cityForm.name.trim()) {
       setSnackbar({ open: true, message: 'City name is required', severity: 'error' });
+      return;
+    }
+    
+    // Check if description has meaningful content (not just HTML tags)
+    const plainTextDescription = cityForm.description.replace(/<[^>]*>/g, '').trim();
+    if (!plainTextDescription) {
+      setSnackbar({ open: true, message: 'City description is required', severity: 'error' });
       return;
     }
 
@@ -269,7 +277,15 @@ export default function CityPages() {
         </TableContainer>
 
         {/* Add/Edit Dialog */}
-        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md" fullWidth>
+        <Dialog 
+          open={dialogOpen} 
+          onClose={() => setDialogOpen(false)} 
+          maxWidth="lg" 
+          fullWidth
+          PaperProps={{
+            sx: { maxHeight: '90vh' }
+          }}
+        >
           <DialogTitle>
             {editingCity ? 'Edit City Page' : 'Add New City Page'}
           </DialogTitle>
@@ -285,15 +301,13 @@ export default function CityPages() {
                 sx={{ mb: 2 }}
               />
               
-              <TextField
-                fullWidth
-                label="Description"
-                name="description"
+<RichTextEditor
                 value={cityForm.description}
-                onChange={handleFormChange}
-                multiline
-                rows={3}
-                sx={{ mb: 2 }}
+                onChange={(value) => setCityForm(prev => ({ ...prev, description: value }))}
+                label="Description *"
+                placeholder="Enter a detailed description about the city and bike rental services..."
+                height={250}
+                helperText="Use the toolbar to format your text. You can add headings, bold/italic text, lists, and links."
               />
               
               {/* Enhanced Image Upload */}
