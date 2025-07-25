@@ -29,6 +29,7 @@ import DashboardNavbar from '../components/DashboardNabvar';
 import RichTextEditor from '../components/RichTextEditor';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { generateCitySlug } from '../utils/slugUtils';
 
 const initialCityForm = {
   name: '',
@@ -224,14 +225,12 @@ export default function CityPages() {
                 <TableRow key={city._id}>
                   <TableCell>{city.name}</TableCell>
                   <TableCell>
-                    <Box>
-                      <Typography variant="body2" color="primary" sx={{ fontFamily: 'monospace', fontSize: '12px' }}>
-                        /bikes/{city.name.toLowerCase()}
-                      </Typography>
-                      <Typography variant="body2" color="primary" sx={{ fontFamily: 'monospace', fontSize: '12px' }}>
-                        /bikes/{city.slug}
-                      </Typography>
-                    </Box>
+                    <Typography variant="body2" color="primary" sx={{ fontFamily: 'monospace', fontSize: '12px' }}>
+                      /bikes/{generateCitySlug(city.name)}
+                    </Typography>
+                    <Typography variant="body2" color="primary" sx={{ fontFamily: 'monospace', fontSize: '12px' }}>
+                      /bikes/{city.name}
+                    </Typography>
                   </TableCell>
                   <TableCell>
                     <FormControlLabel

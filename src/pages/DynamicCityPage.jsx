@@ -15,15 +15,9 @@ const DynamicCityPage = () => {
         setLoading(true);
         setError(false);
 
-        // Extract city name from slug
-        let cityName;
-        if (citySlug.includes('-rent-bike-in-')) {
-          // Handle slug like "sagar-rent-bike-in-sagar"
-          cityName = citySlug.split('-rent-bike-in-')[0];
-        } else {
-          // Handle simple slug like "sagar"
-          cityName = citySlug;
-        }
+        // Extract city name from slug using the slug utility
+        const { parseCityFromSlug } = await import('../utils/slugUtils');
+        const cityName = parseCityFromSlug(citySlug);
 
         // Capitalize first letter for component name
         const componentName = cityName.charAt(0).toUpperCase() + cityName.slice(1).toLowerCase();
