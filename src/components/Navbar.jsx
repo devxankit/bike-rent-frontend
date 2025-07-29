@@ -22,6 +22,8 @@ const Navbar = ({ onFilterToggle }) => {
   if (location.pathname.startsWith('/about')) dropdownLabel = 'About';
   else if (location.pathname.startsWith('/contact')) dropdownLabel = 'Contact Us';
   else if (location.pathname.startsWith('/locations')) dropdownLabel = 'Locations';
+  else if (location.pathname.startsWith('/PrivacyPolicy')) dropdownLabel = 'Privacy Policy';
+  else if (location.pathname.startsWith('/TermsAndConditions')) dropdownLabel = 'Terms&Conditions';
 
   // Close dropdown on click outside
   React.useEffect(() => {
@@ -55,6 +57,7 @@ const Navbar = ({ onFilterToggle }) => {
       <Link to="/about" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>About</Link>
       <Link to="/contact" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Contact Us</Link>
       <Link to="/bikes" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Bikes</Link>
+      <Link to="/blogs" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Blog</Link>
       {isLoggedIn && (
         <Link to="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
@@ -103,10 +106,13 @@ const Navbar = ({ onFilterToggle }) => {
                 <Link to="/locations" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Locations</Link>
                 <Link to="/about" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>About</Link>
                 <Link to="/contact" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Contact Us</Link>
+                <Link to="/PrivacyPolicy" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Privacy Policy</Link>
+                <Link to="/TermsAndConditions" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Terms&Conditions</Link>
               </div>
             )}
           </div>
           <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Bikes</Link>
+          <Link to="/blogs" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Blog</Link>
           {isLoggedIn && (
             <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-500">
               <MdDashboard className="w-5 h-5" /> Dashboard

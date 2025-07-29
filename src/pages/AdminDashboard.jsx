@@ -221,6 +221,7 @@ export default function AdminDashboard() {
     { label: 'City Pages', icon: <SettingsIcon />, path: '/admin/city-pages' },
     { label: 'Customers', icon: <PeopleIcon />, path: '/admin/customers' },
     { label: 'Analytics', icon: <BarChartIcon />, path: '/admin/analytics' },
+    { label: 'Blog', icon: <EditIcon />, path: '/admin/blogs' },
   ];
   const bottomNavItems = [
     { label: 'Help & Support', icon: <HelpOutlineIcon /> },
@@ -287,6 +288,7 @@ export default function AdminDashboard() {
                     else if (item.label === 'City Pages') navigate('/admin/city-pages');
                     else if (item.label === 'Customers') navigate('/admin/customers');
                     else if (item.label === 'Analytics') navigate('/admin/analytics');
+                    else if (item.label === 'Blog') navigate('/admin/blogs');
                   }}
                 >
                   <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#facc15' : '#fff' }}>{item.icon}</span>

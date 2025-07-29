@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 // API configuration for both development and production
 const API_BASE_URL = process.env.REACT_APP_API_URL || '';
@@ -46,6 +47,11 @@ api.interceptors.response.use(
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';
+    } else if (error.code === 'ECONNABORTED' || error.response?.status === 499) {
+      toast.error('Request timed out. Please try again later.', {
+        position: 'top-right',
+        autoClose: 4000,
+      });
     }
     return Promise.reject(error);
   }

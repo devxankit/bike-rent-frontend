@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import 'quill/dist/quill.snow.css'; // Ensure Quill CSS is loaded for editor
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -19,11 +20,21 @@ import CityPages from './pages/CityPages';
 import DynamicCityPage from './pages/DynamicCityPage';
 import ScrollToTop from './components/ScrollToTop';
 import Locations from "./pages/locations";
+import BlogList from './pages/BlogList';
+import BlogDetail from './pages/BlogDetail';
+import AdminBlogs from './pages/AdminBlogs';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
 
 
 function ProtectedRoute({ children, adminOnly }) {
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  let user = {};
+  try {
+    user = JSON.parse(localStorage.getItem('user')) || {};
+  } catch (e) {
+    user = {};
+  }
   if (!token) return <Auth />;
   if (adminOnly && !user.isAdmin) return <NotFound />;
   return children;
@@ -53,6 +64,8 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Auth />} />
             <Route path="/signup" element={<Auth />} />
+            <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+            <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute adminOnly={true}>
                 <AdminDashboard />
@@ -78,7 +91,15 @@ function App() {
                 <CityPages />
               </ProtectedRoute>
             } />
+            <Route path="/admin/blogs" element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminBlogs />
+              </ProtectedRoute>
+            } />
             <Route path="/locations" element={<Locations />} />
+            {/* Blog routes */}
+            <Route path="/blogs" element={<BlogList />} />
+            <Route path="/blogs/:slug" element={<BlogDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
