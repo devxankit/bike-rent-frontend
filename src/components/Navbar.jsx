@@ -58,6 +58,8 @@ const Navbar = ({ onFilterToggle }) => {
       <Link to="/contact" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Contact Us</Link>
       <Link to="/bikes" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Bikes</Link>
       <Link to="/blogs" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Blog</Link>
+      <Link to="/PrivacyPolicy" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Privacy Policy</Link>
+      <Link to="/TermsAndConditions" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Terms&Conditions</Link>
       {isLoggedIn && (
         <Link to="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
