@@ -56,54 +56,55 @@ const TermsAndConditions = () => {
   ];
 
   const getColorClasses = (color) => {
+    // All theme colors set to yellow
     const colorMap = {
       blue: {
-        bg: 'bg-blue-50',
-        border: 'border-blue-200',
-        text: 'text-blue-800',
-        icon: 'text-blue-600',
-        button: 'bg-blue-100 hover:bg-blue-200',
-        active: 'bg-blue-100 border-blue-500'
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        text: 'text-yellow-800',
+        icon: 'text-yellow-600',
+        button: 'bg-yellow-100 hover:bg-yellow-200',
+        active: 'bg-yellow-100 border-yellow-500'
       },
       green: {
-        bg: 'bg-green-50',
-        border: 'border-green-200',
-        text: 'text-green-800',
-        icon: 'text-green-600',
-        button: 'bg-green-100 hover:bg-green-200',
-        active: 'bg-green-100 border-green-500'
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        text: 'text-yellow-800',
+        icon: 'text-yellow-600',
+        button: 'bg-yellow-100 hover:bg-yellow-200',
+        active: 'bg-yellow-100 border-yellow-500'
       },
       purple: {
-        bg: 'bg-purple-50',
-        border: 'border-purple-200',
-        text: 'text-purple-800',
-        icon: 'text-purple-600',
-        button: 'bg-purple-100 hover:bg-purple-200',
-        active: 'bg-purple-100 border-purple-500'
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        text: 'text-yellow-800',
+        icon: 'text-yellow-600',
+        button: 'bg-yellow-100 hover:bg-yellow-200',
+        active: 'bg-yellow-100 border-yellow-500'
       },
       orange: {
-        bg: 'bg-orange-50',
-        border: 'border-orange-200',
-        text: 'text-orange-800',
-        icon: 'text-orange-600',
-        button: 'bg-orange-100 hover:bg-orange-200',
-        active: 'bg-orange-100 border-orange-500'
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        text: 'text-yellow-800',
+        icon: 'text-yellow-600',
+        button: 'bg-yellow-100 hover:bg-yellow-200',
+        active: 'bg-yellow-100 border-yellow-500'
       },
       red: {
-        bg: 'bg-red-50',
-        border: 'border-red-200',
-        text: 'text-red-800',
-        icon: 'text-red-600',
-        button: 'bg-red-100 hover:bg-red-200',
-        active: 'bg-red-100 border-red-500'
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        text: 'text-yellow-800',
+        icon: 'text-yellow-600',
+        button: 'bg-yellow-100 hover:bg-yellow-200',
+        active: 'bg-yellow-100 border-yellow-500'
       },
       indigo: {
-        bg: 'bg-indigo-50',
-        border: 'border-indigo-200',
-        text: 'text-indigo-800',
-        icon: 'text-indigo-600',
-        button: 'bg-indigo-100 hover:bg-indigo-200',
-        active: 'bg-indigo-100 border-indigo-500'
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        text: 'text-yellow-800',
+        icon: 'text-yellow-600',
+        button: 'bg-yellow-100 hover:bg-yellow-200',
+        active: 'bg-yellow-100 border-yellow-500'
       },
       yellow: {
         bg: 'bg-yellow-50',
@@ -114,29 +115,29 @@ const TermsAndConditions = () => {
         active: 'bg-yellow-100 border-yellow-500'
       },
       pink: {
-        bg: 'bg-pink-50',
-        border: 'border-pink-200',
-        text: 'text-pink-800',
-        icon: 'text-pink-600',
-        button: 'bg-pink-100 hover:bg-pink-200',
-        active: 'bg-pink-100 border-pink-500'
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        text: 'text-yellow-800',
+        icon: 'text-yellow-600',
+        button: 'bg-yellow-100 hover:bg-yellow-200',
+        active: 'bg-yellow-100 border-yellow-500'
       },
       teal: {
-        bg: 'bg-teal-50',
-        border: 'border-teal-200',
-        text: 'text-teal-800',
-        icon: 'text-teal-600',
-        button: 'bg-teal-100 hover:bg-teal-200',
-        active: 'bg-teal-100 border-teal-500'
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        text: 'text-yellow-800',
+        icon: 'text-yellow-600',
+        button: 'bg-yellow-100 hover:bg-yellow-200',
+        active: 'bg-yellow-100 border-yellow-500'
       }
     };
-    return colorMap[color] || colorMap.blue;
+    return colorMap[color] || colorMap.yellow;
   };
 
   return (
     <>
-    <Navbar />
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50">
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-yellow-100 to-yellow-200">
     
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Quick Navigation Cards */}
@@ -519,7 +520,6 @@ const TermsAndConditions = () => {
                           <td className="border border-indigo-300 p-3">Frame damage</td>
                           <td className="border border-indigo-300 p-3">₹2000-5000</td>
                           <td className="border border-indigo-300 p-3">Full cost + penalties
-                          {/* ...existing code... */}
                         </td>
                         </tr>
                         <tr className="bg-indigo-25">
@@ -724,7 +724,7 @@ const TermsAndConditions = () => {
       {showBackToTop && (
         <button 
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 z-50"
+          className="fixed bottom-6 right-6 bg-yellow-500 text-white p-3 rounded-full shadow-lg hover:bg-yellow-600 transition-all duration-300 z-50"
           aria-label="Back to top"
         >
           <ChevronUp className="w-6 h-6" />
