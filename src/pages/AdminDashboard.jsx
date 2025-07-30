@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Paper, TextField, Button, Checkbox, FormControlLabel, Snackbar, Alert, IconButton, Avatar, Tabs, Tab, Dialog, DialogTitle, DialogContent, DialogActions, Popover } from '@mui/material';
+import { Box, Typography, Paper, TextField, Button, Checkbox, FormControlLabel, Snackbar, Alert, IconButton, Avatar, Tabs, Tab, Dialog, DialogTitle, DialogContent, DialogActions, Popover, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import Navbar from '../components/Navbar';
 import api, { getApiUrl } from '../utils/api';
 import EditIcon from '@mui/icons-material/Edit';
@@ -37,6 +37,7 @@ export default function AdminDashboard() {
   const [bikes, setBikes] = useState([]);
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState(initialForm);
+  const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [editId, setEditId] = useState(null);
@@ -61,7 +62,18 @@ export default function AdminDashboard() {
       .catch(() => setError('Failed to fetch dashboard'));
     fetchBikes();
     fetchUsers();
+    fetchCities();
   }, []);
+
+  // Fetch dynamic cities from backend
+  const fetchCities = async () => {
+    try {
+      const res = await api.get('/api/cities');
+      setCities(res.data || []);
+    } catch {
+      setCities([]);
+    }
+  };
 
   const fetchBikes = async () => {
     try {
@@ -200,9 +212,11 @@ export default function AdminDashboard() {
     }
   };
 
-  // Show only 3-4 recent bikes, sorted by created date descending (newest first)
+  // Pagination for recent bikes
   const sortedBikes = [...bikes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Newest bikes first
-  const recentBikes = sortedBikes.slice(0, 3);
+  // Show 3 bikes initially, then load 10 more each time
+  const [recentBikesCount, setRecentBikesCount] = useState(3);
+  const recentBikes = sortedBikes.slice(0, recentBikesCount);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -359,21 +373,30 @@ export default function AdminDashboard() {
                 {recentBikes.length === 0 ? (
                   <Typography sx={{ fontSize: 14 }}>No bikes found.</Typography>
                 ) : (
-                  recentBikes.map(bike => (
-                    <Box key={bike._id} sx={{ display: 'flex', alignItems: 'center', mb: 1.2, p: 0.5, borderBottom: '1px solid #eee' }}>
-                      <img src={bike.image} alt={bike.name} style={{ width: 38, height: 26, objectFit: 'cover', borderRadius: 3, marginRight: 10 }} />
-                      <Box sx={{ flex: 1 }}>
-                        <Typography fontWeight={600} sx={{ fontSize: 15 }}>{bike.name}</Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: 12, display: 'block' }}>{dayjs(bike.createdAt).format('DD MMM YYYY')}</Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: 13 }}>₹{bike.price} | {bike.location}</Typography>
-                        {bike.isBooked ? (
-                          <Typography variant="caption" color="error" sx={{ fontSize: 12 }}>Booked</Typography>
-                        ) : (
-                          <Typography variant="caption" color="success.main" sx={{ fontSize: 12 }}>Available</Typography>
-                        )}
+                  <>
+                    {recentBikes.map(bike => (
+                      <Box key={bike._id} sx={{ display: 'flex', alignItems: 'center', mb: 1.2, p: 0.5, borderBottom: '1px solid #eee' }}>
+                        <img src={bike.image} alt={bike.name} style={{ width: 38, height: 26, objectFit: 'cover', borderRadius: 3, marginRight: 10 }} />
+                        <Box sx={{ flex: 1 }}>
+                          <Typography fontWeight={600} sx={{ fontSize: 15 }}>{bike.name}</Typography>
+                          <Typography variant="caption" color="text.secondary" sx={{ fontSize: 12, display: 'block' }}>{dayjs(bike.createdAt).format('DD MMM YYYY')}</Typography>
+                          <Typography variant="caption" color="text.secondary" sx={{ fontSize: 13 }}>₹{bike.price} | {bike.location}</Typography>
+                          {bike.isBooked ? (
+                            <Typography variant="caption" color="error" sx={{ fontSize: 12 }}>Booked</Typography>
+                          ) : (
+                            <Typography variant="caption" color="success.main" sx={{ fontSize: 12 }}>Available</Typography>
+                          )}
+                        </Box>
                       </Box>
-                    </Box>
-                  ))
+                    ))}
+                    {sortedBikes.length > recentBikesCount && (
+                      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+                        <Button variant="outlined" size="small" onClick={() => setRecentBikesCount(c => c + 10)}>
+                          Load More
+                        </Button>
+                      </Box>
+                    )}
+                  </>
                 )}
               </Box>
               {/* Quick Actions (desktop only) */}
@@ -418,7 +441,24 @@ export default function AdminDashboard() {
                 <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Bike Details</Typography>
                 <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr' }} gap={0.5} mb={0.7}>
                   <TextField label="Name" name="name" value={form.name} onChange={handleChange} required helperText="Enter bike name" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
-                  <TextField label="Location" name="location" value={form.location} onChange={handleChange} helperText="City or area" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                  <FormControl size="small" sx={{ minWidth: 120 }}>
+                    <InputLabel id="location-label" style={{ fontSize: 12 }}>Location</InputLabel>
+                    <Select
+                      labelId="location-label"
+                      name="location"
+                      value={form.location}
+                      label="Location"
+                      onChange={handleChange}
+                      style={{ fontSize: 12 }}
+                    >
+                      {cities.length === 0 && (
+                        <MenuItem value="" disabled>No cities found</MenuItem>
+                      )}
+                      {cities.map(city => (
+                        <MenuItem key={city._id || city.slug || city.name} value={city.name} style={{ fontSize: 12 }}>{city.name}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   <TextField label="Features (comma separated)" name="features" value={form.features} onChange={handleChange} helperText="e.g. ABS, Disc Brakes" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
                   <TextField label="Fuel Type" name="fuelType" value={form.fuelType} onChange={handleChange} helperText="e.g. Petrol, Electric" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
                   <TextField label="Seats" name="seat" value={form.seat} onChange={handleChange} type="number" helperText="Number of seats" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />

@@ -62,6 +62,7 @@ const AdminBlogs = () => {
     content: '',
     tags: '',
     thumbnailUrl: '', // for URL string
+    imageAlt: '', // NEW FIELD for image alt text
     seoTitle: '',
     seoDescription: '',
     metaKeywords: '',
@@ -98,6 +99,7 @@ const AdminBlogs = () => {
         content: blog.content || '',
         tags: blog.tags ? blog.tags.join(', ') : '',
         thumbnailUrl: blog.thumbnail || '',
+        imageAlt: blog.imageAlt || '', // NEW FIELD
         seoTitle: blog.seoTitle || '',
         seoDescription: blog.seoDescription || '',
         metaKeywords: blog.metaKeywords || '',
@@ -114,6 +116,7 @@ const AdminBlogs = () => {
         content: '',
         tags: '',
         thumbnailUrl: '',
+        imageAlt: '', // NEW FIELD
         seoTitle: '',
         seoDescription: '',
         metaKeywords: '',
@@ -135,6 +138,7 @@ const AdminBlogs = () => {
       content: '',
       tags: '',
       thumbnailUrl: '',
+      imageAlt: '', // NEW FIELD
       seoTitle: '',
       seoDescription: '',
       metaKeywords: '',
@@ -190,6 +194,7 @@ const AdminBlogs = () => {
         blogData.append('seoDescription', formData.seoDescription);
         blogData.append('metaKeywords', formData.metaKeywords);
         blogData.append('thumbnail', thumbnailFile); // File object
+        blogData.append('imageAlt', formData.imageAlt); // NEW FIELD
       } else {
         blogData = {
           title: formData.title,
@@ -201,6 +206,7 @@ const AdminBlogs = () => {
           seoTitle: formData.seoTitle,
           seoDescription: formData.seoDescription,
           metaKeywords: formData.metaKeywords,
+          imageAlt: formData.imageAlt, // NEW FIELD
           // Only include thumbnail if it's a non-empty string
           ...(formData.thumbnailUrl && formData.thumbnailUrl.trim() && { thumbnail: formData.thumbnailUrl.trim() }),
         };
@@ -605,6 +611,17 @@ const AdminBlogs = () => {
                     fullWidth
                     size="small"
                     helperText="Enter image URL directly or upload a file above"
+                  />
+                  {/* Image Alt Text Field */}
+                  <TextField
+                    name="imageAlt"
+                    label="Image Alt Text"
+                    value={formData.imageAlt}
+                    onChange={handleInputChange}
+                    fullWidth
+                    size="small"
+                    helperText="Describe the image for accessibility and SEO (e.g., 'A red bike parked in Bhopal')"
+                    sx={{ mt: 2 }}
                   />
                 </Box>
               </Box>

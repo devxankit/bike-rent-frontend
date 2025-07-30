@@ -1,27 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
-
-const cityImageMap = {
-  Indore: '/images/indore.jpeg',
-  Bhopal: '/images/bhopal.jpeg',
-  Mumbai: '/images/mumbai.jpg',
-  Goa: '/images/goa.jpeg',
-  Haldwani: '/images/haldwani.jpeg',
-  Kathgodam: '/images/kathgodam.jpeg',
-  Pithoragarh: '/images/pithoragarh.jpeg',
-  Dehradun: '/images/dehradun.jpeg',
-};
-const cityList = [
-  'Indore',
-  'Bhopal',
-  'Mumbai',
-  'Goa',
-  'Haldwani',
-  'Kathgodam',
-  'Pithoragarh',
-  'Dehradun',
-];
+import api from '../utils/api';
 
 const bikeGif = process.env.PUBLIC_URL + '/images/bike.gif';
 
@@ -29,6 +9,7 @@ const Locations = () => {
   const [start, setStart] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showCities, setShowCities] = useState(false);
+  const [cities, setCities] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,6 +27,18 @@ const Locations = () => {
     };
     // eslint-disable-next-line
   }, [isMobile]);
+
+  useEffect(() => {
+    api.get('/api/cities')
+      .then(res => {
+        const activeCities = (res.data || []).filter(city => city.isActive);
+        setCities(activeCities);
+      })
+      .catch(err => {
+        setCities([]);
+        console.error('Error fetching cities:', err);
+      });
+  }, []);
 
   // Animation values for mobile vs desktop
   const bikeStyle = {
@@ -93,19 +86,20 @@ const Locations = () => {
               pointerEvents: showCities ? 'auto' : 'none',
             }}
           >
-            {cityList.map(city => (
+            {cities.map(city => (
               <div
-                key={city}
+                key={city._id || city.slug || city.name}
                 className="flex flex-col items-center bg-white rounded-lg shadow p-2 min-w-[70px] max-w-[90px] border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
                 style={{ opacity: showCities ? 1 : 0, transition: 'opacity 0.7s' }}
-                onClick={() => navigate(`/bikes/${city.toLowerCase()}`)}
+                onClick={() => navigate(`/bikes/${city.slug || city.name.toLowerCase()}`)}
               >
                 <img
-                  src={cityImageMap[city] || '/images/default-city.png'}
-                  alt={city}
+                  src={city.image || `/images/${city.name?.toLowerCase()}.jpeg` || '/images/default-city.png'}
+                  alt={city.name}
                   className="w-10 h-10 object-cover rounded-lg shadow"
+                  onError={e => { e.target.onerror = null; e.target.src = '/images/default-city.png'; }}
                 />
-                <span className="text-xs font-semibold text-gray-700 mt-1 text-center whitespace-nowrap">{city}</span>
+                <span className="text-xs font-semibold text-gray-700 mt-1 text-center whitespace-nowrap">{city.name}</span>
               </div>
             ))}
           </div>
@@ -121,19 +115,20 @@ const Locations = () => {
               pointerEvents: showCities ? 'auto' : 'none',
             }}
           >
-            {cityList.map(city => (
+            {cities.map(city => (
               <div
-                key={city}
+                key={city._id || city.slug || city.name}
                 className="flex flex-col items-center bg-white rounded-lg shadow p-3 min-w-[110px] max-w-[110px] border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
                 style={{ opacity: showCities ? 1 : 0, transition: 'opacity 0.7s' }}
-                onClick={() => navigate(`/bikes/${city.toLowerCase()}`)}
+                onClick={() => navigate(`/bikes/${city.slug || city.name.toLowerCase()}`)}
               >
                 <img
-                  src={cityImageMap[city] || '/images/default-city.png'}
-                  alt={city}
+                  src={city.image || `/images/${city.name?.toLowerCase()}.jpeg` || '/images/default-city.png'}
+                  alt={city.name}
                   className="w-14 h-14 object-cover rounded-lg shadow"
+                  onError={e => { e.target.onerror = null; e.target.src = '/images/default-city.png'; }}
                 />
-                <span className="text-sm font-semibold text-gray-700 mt-1 text-center whitespace-nowrap">{city}</span>
+                <span className="text-sm font-semibold text-gray-700 mt-1 text-center whitespace-nowrap">{city.name}</span>
               </div>
             ))}
           </div>

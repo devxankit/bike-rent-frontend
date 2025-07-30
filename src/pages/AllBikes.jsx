@@ -61,6 +61,7 @@ export default function AllBikes({ cityOverride }) {
   const [cityFilter, setCityFilter] = useState(cityOverride || '');
   const [nameFilter, setNameFilter] = useState('');
   const [ready, setReady] = useState(false);
+  const [cityOptions, setCityOptions] = useState([]);
 
   // Get unique city list from bikes (case-insensitive, display original casing)
   const cityMap = {};
@@ -70,7 +71,7 @@ export default function AllBikes({ cityOverride }) {
       if (!cityMap[key]) cityMap[key] = b.location.trim();
     }
   });
-  const cityOptions = Object.values(cityMap);
+  // const cityOptions = Object.values(cityMap); // This line is no longer needed
 
   // Handlers for edit, booking, delete
   const handleChange = e => {
@@ -223,8 +224,26 @@ export default function AllBikes({ cityOverride }) {
     }
   }, [cityOverride]);
 
+  useEffect(() => {
+    // Fetch all cities for dropdowns
+    const fetchCities = async () => {
+      try {
+        const res = await api.get('/api/cities');
+        const names = res.data.map(city => city.name);
+        setCityOptions(names);
+      } catch {
+        // fallback: use unique locations from bikes if city API fails
+        const unique = Array.from(new Set(bikes.map(b => b.location).filter(Boolean)));
+        setCityOptions(unique);
+      }
+    };
+    fetchCities();
+  }, [bikes]);
+
   // Sort bikes so newest appear first (descending by createdAt)
   const sortedBikes = [...bikes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  // Pagination for all bikes
+  const [visibleBikesCount, setVisibleBikesCount] = useState(10);
   // Apply tab and name filter only (city filter is handled by backend fetch)
   const filteredBikes = sortedBikes.filter(bike => {
     if (tab === 1 && !bike.isBooked) return false;
@@ -232,6 +251,7 @@ export default function AllBikes({ cityOverride }) {
     if (nameFilter && !bike.name.toLowerCase().includes(nameFilter.toLowerCase())) return false;
     return true;
   });
+  const paginatedBikes = filteredBikes.slice(0, visibleBikesCount);
 
   // Sidebar navigation items
   const navItems = [
@@ -323,14 +343,12 @@ export default function AllBikes({ cityOverride }) {
                   onChange={e => {
                     const selected = e.target.value;
                     setCityFilter(selected);
-                    setNameFilter(''); // Reset name filter when city changes
+                    setNameFilter('');
                     const city = selected.trim().toLowerCase();
-                    if (["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"].includes(city)) {
-                      // Use new slug format for navigation
+                    if (cityOptions.map(c => c.toLowerCase()).includes(city)) {
                       const slug = generateCitySlug(city);
                       navigate(`/bikes/${slug}`);
                     } else if (city === "") {
-                      // Use slug for main bikes page
                       const bikesSlug = generateBikesSlug();
                       navigate(`/bikes/${bikesSlug}`);
                     }
@@ -339,7 +357,7 @@ export default function AllBikes({ cityOverride }) {
                   sx={{ minWidth: 180 }}
                 >
                   <MenuItem value="">All Cities</MenuItem>
-                  {["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"].map(city => (
+                  {cityOptions.map(city => (
                     <MenuItem key={city} value={city}>{city}</MenuItem>
                   ))}
                 </TextField>
@@ -365,28 +383,37 @@ export default function AllBikes({ cityOverride }) {
               {ready && (
                 filteredBikes.length === 0
                   ? <Typography>No bikes found.</Typography>
-                  : filteredBikes.map(bike => (
-                      <Box key={bike._id} sx={{ display: 'flex', alignItems: 'center', mb: 2, p: 1, borderBottom: '1px solid #eee' }}>
-                        <img src={bike.image} alt={bike.name} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 4, marginRight: 16 }} />
-                        <Box sx={{ flex: 1 }}>
-                          <Typography fontWeight={600}>{bike.name}</Typography>
-                          <Typography variant="caption" color="text.secondary" sx={{ fontSize: 12, display: 'block' }}>{dayjs(bike.createdAt).format('DD MMM YYYY')}</Typography>
-                          <Typography variant="body2" color="text.secondary">₹{bike.price} | {bike.location}</Typography>
-                          {bike.isBooked ? (
-                            <Typography variant="body2" color="error">
-                              Booked: {bike.bookingPeriod?.from ? dayjs(bike.bookingPeriod.from).format('DD/MM/YYYY') : ''} - {bike.bookingPeriod?.to ? dayjs(bike.bookingPeriod.to).format('DD/MM/YYYY') : ''} ({bike.bookedDays} days)
-                            </Typography>
-                          ) : (
-                            <Typography variant="body2" color="success.main">Available</Typography>
-                          )}
+                  : <>
+                      {paginatedBikes.map(bike => (
+                        <Box key={bike._id} sx={{ display: 'flex', alignItems: 'center', mb: 2, p: 1, borderBottom: '1px solid #eee' }}>
+                          <img src={bike.image} alt={bike.name} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 4, marginRight: 16 }} />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography fontWeight={600}>{bike.name}</Typography>
+                            <Typography variant="caption" color="text.secondary" sx={{ fontSize: 12, display: 'block' }}>{dayjs(bike.createdAt).format('DD MMM YYYY')}</Typography>
+                            <Typography variant="body2" color="text.secondary">₹{bike.price} | {bike.location}</Typography>
+                            {bike.isBooked ? (
+                              <Typography variant="body2" color="error">
+                                Booked: {bike.bookingPeriod?.from ? dayjs(bike.bookingPeriod.from).format('DD/MM/YYYY') : ''} - {bike.bookingPeriod?.to ? dayjs(bike.bookingPeriod.to).format('DD/MM/YYYY') : ''} ({bike.bookedDays} days)
+                              </Typography>
+                            ) : (
+                              <Typography variant="body2" color="success.main">Available</Typography>
+                            )}
+                          </Box>
+                          <IconButton onClick={() => handleEdit(bike)}><EditIcon /></IconButton>
+                          <IconButton color={bike.isBooked ? 'error' : 'primary'} title={bike.isBooked ? 'Mark as available' : 'Book this bike'} onClick={() => openBookingDialog(bike)}>
+                            <EventAvailableIcon />
+                          </IconButton>
+                          <IconButton color="error" onClick={e => handleDelete(bike._id, e)}><DeleteIcon /></IconButton>
                         </Box>
-                        <IconButton onClick={() => handleEdit(bike)}><EditIcon /></IconButton>
-                        <IconButton color={bike.isBooked ? 'error' : 'primary'} title={bike.isBooked ? 'Mark as available' : 'Book this bike'} onClick={() => openBookingDialog(bike)}>
-                          <EventAvailableIcon />
-                        </IconButton>
-                        <IconButton color="error" onClick={e => handleDelete(bike._id, e)}><DeleteIcon /></IconButton>
-                      </Box>
-                    ))
+                      ))}
+                      {filteredBikes.length > visibleBikesCount && (
+                        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                          <Button variant="outlined" size="small" onClick={() => setVisibleBikesCount(c => c + 10)}>
+                            Load More
+                          </Button>
+                        </Box>
+                      )}
+                    </>
               )}
             </Paper>
           </Box>
@@ -422,7 +449,24 @@ export default function AllBikes({ cityOverride }) {
             <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Bike Details</Typography>
             <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr' }} gap={0.5} mb={0.7}>
               <TextField label="Name" name="name" value={form.name} onChange={handleChange} required helperText="Enter bike name" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
-              <TextField label="Location" name="location" value={form.location} onChange={handleChange} helperText="City or area" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+              <TextField
+                select
+                label="Location"
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+                helperText="Select city"
+                size="small"
+                sx={{ fontSize: 12 }}
+                InputProps={{ style: { fontSize: 12 } }}
+                InputLabelProps={{ style: { fontSize: 12 } }}
+                FormHelperTextProps={{ style: { fontSize: 11 } }}
+                required
+              >
+                {cityOptions.map(city => (
+                  <MenuItem key={city} value={city}>{city}</MenuItem>
+                ))}
+              </TextField>
               <TextField label="Features (comma separated)" name="features" value={form.features} onChange={handleChange} helperText="e.g. ABS, Disc Brakes" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
               <TextField label="Fuel Type" name="fuelType" value={form.fuelType} onChange={handleChange} helperText="e.g. Petrol, Electric" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
               <TextField label="Seats" name="seat" value={form.seat} onChange={handleChange} type="number" helperText="Number of seats" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />

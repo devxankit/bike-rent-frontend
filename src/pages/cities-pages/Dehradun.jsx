@@ -7,11 +7,11 @@ import FilterSidebar from '../../components/FilterSidebar';
 import { FiX } from 'react-icons/fi';
 import { generateCitySlug, generateBikesSlug } from '../../utils/slugUtils';
 
-const IndoreBikesPage = () => {
+const DehradunBikesPage = () => {
   const [bikes, setBikes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState('Indore');
+  const [location, setLocation] = useState('Dehradun');
   const [allLocations, setAllLocations] = useState([]);
   const [bikeName, setBikeName] = useState("");
   const [price, setPrice] = useState(0);
@@ -42,7 +42,7 @@ const IndoreBikesPage = () => {
     const fetchBikes = async () => {
       try {
         setLoading(true);
-        const res = await api.get('/api/bikes', { params: { isBooked: false, location: 'Indore' } });
+        const res = await api.get('/api/bikes', { params: { isBooked: false, location: 'Dehradun' } });
         setBikes(res.data);
       } catch (err) {
         setError('Failed to load bikes.');
@@ -74,7 +74,7 @@ const IndoreBikesPage = () => {
 
   // Redirect to city route on city change
   useEffect(() => {
-    if (location && location.toLowerCase() !== 'indore') {
+    if (location && location.toLowerCase() !== 'dehradun') {
       const city = location.trim().toLowerCase();
       if (["indore", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun", "bhopal"].includes(city)) {
         // Use new slug format for navigation
@@ -137,8 +137,8 @@ const IndoreBikesPage = () => {
         <main className="flex-1 overflow-y-auto">
           <div className="p-6">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Bikes in Indore</h1>
-              <p className="text-gray-600">Find the perfect bike for your journey in Indore</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Bikes in Dehradun</h1>
+              <p className="text-gray-600">Find the perfect bike for your journey in Dehradun</p>
             </div>
             {loading ? (
               <div className="flex justify-center items-center h-64">
@@ -148,7 +148,7 @@ const IndoreBikesPage = () => {
               <div className="text-center text-red-500">{error}</div>
             ) : sortedBikes.length === 0 ? (
               <div className="text-center text-gray-500 py-8">
-                <p>No bikes available in Indore at the moment.</p>
+                <p>No bikes available in Dehradun at the moment.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -164,4 +164,4 @@ const IndoreBikesPage = () => {
   );
 };
 
-export default IndoreBikesPage;
+export default DehradunBikesPage;

@@ -248,6 +248,22 @@ const BlogDetail = () => {
             </Box>
 
             {/* Blog Content */}
+            {blog.thumbnail && (
+              <Box mb={4}>
+                <CardMedia
+                  component="img"
+                  image={blog.thumbnail}
+                  alt={blog.imageAlt || blog.title}
+                  sx={{
+                    width: '100%',
+                    maxHeight: 400,
+                    objectFit: 'cover',
+                    borderRadius: 2,
+                    mb: 2
+                  }}
+                />
+              </Box>
+            )}
             <Box
               sx={{
                 '& p': { mb: 2, lineHeight: 1.7 },
@@ -357,7 +373,7 @@ const BlogDetail = () => {
                           component="img"
                           height="120"
                           image={relatedBlog.thumbnail}
-                          alt={relatedBlog.title}
+                          alt={relatedBlog.imageAlt || relatedBlog.title}
                           sx={{ 
                             objectFit: 'cover',
                             borderRadius: 1,

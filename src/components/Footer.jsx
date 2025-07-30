@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Star, Shield, Users, Award } from 'lucide-react';
+import api from '../utils/api';
 
 const Footer = () => {
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    api.get('/api/cities')
+      .then(res => {
+        const activeCities = (res.data || []).filter(city => city.isActive);
+        setCities(activeCities);
+      })
+      .catch(() => setCities([]));
+  }, []);
+
   return (
     <footer className="bg-gray-900 text-white">
       {/* Main Footer Content */}
@@ -133,6 +145,36 @@ const Footer = () => {
         </div>
        
       </div>
+
+      {/* Dynamic City Links */}
+      {cities.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 pb-2">
+          <h4 className="text-lg font-bold text-white mb-2 text-center">Our Locations</h4>
+          <div
+            className={
+              `flex flex-col items-start justify-center text-sm text-white border-t border-white/20 pt-4 pb-2
+              sm:flex-row sm:items-center sm:justify-center sm:gap-x-8 sm:space-y-0 gap-y-2`
+            }
+            style={{ flexWrap: 'wrap' }}
+          >
+            {cities.map((city, idx) => (
+              <React.Fragment key={city._id || city.slug || city.name}>
+                <a
+                  href={`/bikes/${city.slug || city.name.toLowerCase()}`}
+                  className="hover:text-yellow-400 transition-colors px-2 font-medium"
+                  style={{ whiteSpace: 'nowrap' }}
+                >
+                  {city.name}
+                </a>
+                {/* Only show separator on desktop and if not last */}
+                {idx < cities.length - 1 && (
+                  <span className="hidden sm:inline text-white/50">|</span>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Bottom Copyright Section */}
       <div className="border-t border-white">
