@@ -33,7 +33,7 @@ const FilterSidebar = ({ location, setLocation, allLocations, bikeName, setBikeN
   };
 
   return (
-    <div className={containerClass}>
+    <div className={containerClass + " z-[100010] relative"}>
       <h2 className={compact ? "text-base font-extrabold mb-3 text-gray-900 tracking-wide flex items-center gap-2" : "text-xl font-extrabold mb-2 text-gray-900 tracking-wide flex items-center gap-2"}>
         <span className={compact ? "inline-block bg-yellow-100 p-1.5 rounded-full shadow-sm" : "inline-block bg-yellow-100 p-2 rounded-full shadow-sm"}><svg xmlns='http://www.w3.org/2000/svg' className={compact ? 'h-4 w-4 text-yellow-500' : 'h-5 w-5 text-yellow-500'} fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z' /></svg></span>
         Find Your Ride

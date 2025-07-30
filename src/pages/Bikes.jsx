@@ -101,11 +101,11 @@ const Bikes = () => {
         </aside>
         {/* Mobile Filter Popup */}
         {filterOpen && (
-          <div className="fixed inset-0 z-50 flex md:hidden">
+          <div className="fixed inset-0 z-[100010] flex md:hidden">
             {/* Overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
-            {/* Popup */}
-            <div className="relative bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
+            {/* Popup - always slide in from left */}
+            <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-base font-bold text-yellow-500">Filters</h2>
                 <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
