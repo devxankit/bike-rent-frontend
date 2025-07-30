@@ -198,12 +198,12 @@ const BlogList = () => {
                       />
                     )}
                     {/* Author/Category Badge */}
-                    <Box sx={{ position: 'absolute', top: 12, left: 12, bgcolor: '#e53e3e', color: '#fff', px: 1.5, py: 0.5, borderRadius: 1, fontSize: 12, fontWeight: 600, zIndex: 2 }}>
+                    <Box sx={{ position: 'absolute', top: 12, left: 12, bgcolor: '#FFDF00', color: '#000', px: 1.5, py: 0.5, borderRadius: 1, fontSize: 12, fontWeight: 600, zIndex: 2 }}>
                       {blog.author?.name || 'Author'}
                     </Box>
                   </Box>
                   <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', p: 2 }}>
-                    <Typography variant="h6" fontWeight={700} sx={{ mb: 1, fontSize: 17, cursor: 'pointer', '&:hover': { color: '#e53e3e' } }}>
+                    <Typography variant="h6" fontWeight={700} sx={{ mb: 1, fontSize: 17, cursor: 'pointer', '&:hover': { color: '#FFDF00' } }}>
                       {blog.title}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontSize: 14 }}>
