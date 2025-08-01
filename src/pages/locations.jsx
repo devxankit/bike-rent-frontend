@@ -74,9 +74,9 @@ const Locations = () => {
             />
           )}
           {/* City cards fade in after bike animation */}
-          {/* Mobile: 2-column grid */}
+          {/* Mobile: responsive grid */}
           <div
-            className={`grid grid-cols-2 pl-[60px] gap-7 transition-opacity duration-700 md:hidden ${showCities ? 'opacity-100' : 'opacity-0'} overflow-x-auto px-2`}
+            className={`grid grid-cols-3 sm:grid-cols-4 gap-3 transition-opacity duration-700 md:hidden ${showCities ? 'opacity-100' : 'opacity-0'} px-4 max-w-md mx-auto`}
             style={{
               position: 'relative',
               top: 0,
@@ -89,28 +89,31 @@ const Locations = () => {
             {cities.map(city => (
               <div
                 key={city._id || city.slug || city.name}
-                className="flex flex-col items-center bg-white rounded-lg shadow p-2 min-w-[70px] max-w-[90px] border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
+                className="flex flex-col items-center bg-white rounded-lg shadow p-2 border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
                 style={{ opacity: showCities ? 1 : 0, transition: 'opacity 0.7s' }}
                 onClick={() => navigate(`/bikes/${city.slug || city.name.toLowerCase()}`)}
               >
                 <img
-                  src={city.image || `/images/${city.name?.toLowerCase()}.jpeg` || '/images/default-city.png'}
+                  src={city.image || `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iI0YzRjRGNiIvPgo8cGF0aCBkPSJNMTIgMTZIMjhWMTJIMTJWMjRIMjhWMjBIMTJWMjRIMjgiIHN0cm9rZT0iIzk5QTNBRiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=`}
                   alt={city.name}
                   className="w-10 h-10 object-cover rounded-lg shadow"
-                  onError={e => { e.target.onerror = null; e.target.src = '/images/default-city.png'; }}
+                  onError={e => { 
+                    e.target.onerror = null; 
+                    e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iI0YzRjRGNiIvPgo8cGF0aCBkPSJNMTIgMTZIMjhWMTJIMTJWMjRIMjhWMjBIMTJWMjRIMjgiIHN0cm9rZT0iIzk5QTNBRiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo='; 
+                  }}
                 />
                 <span className="text-xs font-semibold text-gray-700 mt-1 text-center whitespace-nowrap">{city.name}</span>
               </div>
             ))}
           </div>
-          {/* Desktop: horizontal row */}
+          {/* Desktop: horizontal rows with 8 cities per row */}
           <div
-            className={`hidden md:flex flex-row items-center justify-center gap-8 transition-opacity duration-700 ${showCities ? 'opacity-100' : 'opacity-0'}`}
+            className={`hidden md:flex md:flex-wrap md:justify-center gap-8 transition-opacity duration-700 ${showCities ? 'opacity-100' : 'opacity-0'} px-4 max-w-6xl mx-auto`}
             style={{
               position: 'relative',
               top: 0,
               width: '100%',
-              minHeight: '150px',
+              minHeight: '90px',
               zIndex: 3,
               pointerEvents: showCities ? 'auto' : 'none',
             }}
@@ -118,23 +121,26 @@ const Locations = () => {
             {cities.map(city => (
               <div
                 key={city._id || city.slug || city.name}
-                className="flex flex-col items-center bg-white rounded-lg shadow p-3 min-w-[110px] max-w-[110px] border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
+                className="flex flex-col items-center bg-white rounded-lg shadow p-2 w-[90px] border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
                 style={{ opacity: showCities ? 1 : 0, transition: 'opacity 0.7s' }}
                 onClick={() => navigate(`/bikes/${city.slug || city.name.toLowerCase()}`)}
               >
                 <img
-                  src={city.image || `/images/${city.name?.toLowerCase()}.jpeg` || '/images/default-city.png'}
+                  src={city.image || `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iOCIgZmlsbD0iI0YzRjRGNiIvPgo8cGF0aCBkPSJNMTQgMTlIMzRWMThIMTRWMjZIMzRWMjVIMTRWMjZIMzQiIHN0cm9rZT0iIzk5QTNBRiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=`}
                   alt={city.name}
-                  className="w-14 h-14 object-cover rounded-lg shadow"
-                  onError={e => { e.target.onerror = null; e.target.src = '/images/default-city.png'; }}
+                  className="w-12 h-12 object-cover rounded-lg shadow"
+                  onError={e => { 
+                    e.target.onerror = null; 
+                    e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iOCIgZmlsbD0iI0YzRjRGNiIvPgo8cGF0aCBkPSJNMTQgMTlIMzRWMThIMTRWMjZIMzRWMjVIMTRWMjZIMzQiIHN0cm9rZT0iIzk5QTNBRiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo='; 
+                  }}
                 />
-                <span className="text-sm font-semibold text-gray-700 mt-1 text-center whitespace-nowrap">{city.name}</span>
+                <span className="text-xs font-semibold text-gray-700 mt-1 text-center whitespace-nowrap">{city.name}</span>
               </div>
             ))}
           </div>
         </div>
         {/* Full-width banner image below city cards and bike animation */}
-        <div className={`w-full flex justify-center mt-8 pt-[450px] md:pt-[300px]  transition-opacity duration-700 ${showCities ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`w-full flex justify-center mt-8 pt-[450px] md:pt-[350px] lg:pt-[300px] transition-opacity duration-700 ${showCities ? 'opacity-100' : 'opacity-0'}`}>
           <img
             src={process.env.PUBLIC_URL + '/images/bike-banner-4.jpg'}
             alt="Bike Banner"
