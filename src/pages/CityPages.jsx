@@ -34,6 +34,7 @@ import { generateCitySlug } from '../utils/slugUtils';
 const initialCityForm = {
   name: '',
   description: '',
+  content: '',
   image: null,
   seoTitle: '',
   seoDescription: '',
@@ -108,6 +109,7 @@ export default function CityPages() {
       let formData = new FormData();
       formData.append('name', cityForm.name);
       formData.append('description', cityForm.description);
+      formData.append('content', cityForm.content);
       formData.append('seoTitle', cityForm.seoTitle);
       formData.append('seoDescription', cityForm.seoDescription);
       formData.append('metaKeywords', cityForm.metaKeywords);
@@ -145,6 +147,7 @@ export default function CityPages() {
     setCityForm({
       name: city.name,
       description: city.description || '',
+      content: city.content || '',
       image: null,
       seoTitle: city.seoTitle || '',
       seoDescription: city.seoDescription || '',
@@ -300,13 +303,22 @@ export default function CityPages() {
                 sx={{ mb: 2 }}
               />
               
-<RichTextEditor
+              <RichTextEditor
                 value={cityForm.description}
                 onChange={(value) => setCityForm(prev => ({ ...prev, description: value }))}
                 label="Description *"
                 placeholder="Enter a detailed description about the city and bike rental services..."
                 height={250}
-                helperText="Use the toolbar to format your text. You can add headings, bold/italic text, lists, and links."
+                helperText="Use the toolbar to format your text. You can add headings, bold/italic text, lists, links, and more."
+              />
+              
+              <RichTextEditor
+                value={cityForm.content}
+                onChange={(value) => setCityForm(prev => ({ ...prev, content: value }))}
+                label="City Page Content"
+                placeholder="Enter the main content that will be displayed on the city page below the bike listings..."
+                height={400}
+                helperText="This content will appear on the city page below the bike listings. You can add headings, images, videos, links, tables, and formatted text. Use the image button in the toolbar to upload images directly into the content."
               />
               
               {/* Enhanced Image Upload */}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '../styles/quill-custom.css';
@@ -14,29 +14,99 @@ const RichTextEditor = ({
   helperText = "",
   disabled = false
 }) => {
-  // Custom toolbar configuration
+  const quillRef = useRef(null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  // Enhanced toolbar configuration with image upload
   const modules = useMemo(() => ({
     toolbar: {
       container: [
-        [{ 'header': [1, 2, 3, false] }],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
+        ['blockquote', 'code-block'],
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],
         [{ 'indent': '-1'}, { 'indent': '+1' }],
+        [{ 'direction': 'rtl' }],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'font': [] }],
         [{ 'align': [] }],
-        ['link', 'blockquote'],
+        ['link', 'image', 'video'],
         ['clean']
       ],
+      handlers: {
+        image: imageHandler
+      }
     },
     clipboard: {
       matchVisual: false,
     }
   }), []);
 
+  // Image upload handler
+  function imageHandler() {
+    if (isUploading) return; // Prevent multiple uploads
+    
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files[0];
+      if (file) {
+        try {
+          setIsUploading(true);
+          // Create FormData for image upload
+          const formData = new FormData();
+          formData.append('image', file);
+
+          // Get auth token from localStorage
+          const token = localStorage.getItem('token');
+          
+          // Upload to your server endpoint
+          const response = await fetch('/api/admin/upload/image', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+            body: formData,
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const url = data.url;
+            
+            // Get the quill instance
+            const quill = quillRef.current.getEditor();
+            const range = quill.getSelection();
+            
+            // Insert the image at cursor position
+            quill.insertEmbed(range.index, 'image', url);
+            quill.setSelection(range.index + 1);
+          } else {
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Image upload failed:', errorData);
+            alert(`Image upload failed: ${errorData.message || 'Please try again.'}`);
+          }
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          alert(`Error uploading image: ${error.message || 'Please try again.'}`);
+        } finally {
+          setIsUploading(false);
+        }
+      }
+    };
+  }
+
   const formats = [
-    'header', 'bold', 'italic', 'underline', 'strike',
-    'color', 'background', 'list', 'bullet', 'indent',
-    'align', 'link', 'blockquote'
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'video',
+    'color', 'background',
+    'align', 'script',
+    'code-block'
   ];
 
   const customStyles = {
@@ -81,6 +151,19 @@ const RichTextEditor = ({
       borderColor: error ? '#d32f2f' : '#1976d2',
       borderWidth: '2px',
     },
+    // Image styles
+    '& .ql-editor img': {
+      maxWidth: '100%',
+      height: 'auto',
+      borderRadius: '4px',
+      margin: '8px 0',
+    },
+    // Video styles
+    '& .ql-editor iframe': {
+      maxWidth: '100%',
+      borderRadius: '4px',
+      margin: '8px 0',
+    },
   };
 
   return (
@@ -98,8 +181,9 @@ const RichTextEditor = ({
         </Typography>
       )}
       
-      <Box sx={customStyles}>
+      <Box sx={{ ...customStyles, position: 'relative' }}>
         <ReactQuill
+          ref={quillRef}
           theme="snow"
           value={value}
           onChange={onChange}
@@ -111,6 +195,23 @@ const RichTextEditor = ({
             backgroundColor: disabled ? '#f5f5f5' : 'white',
           }}
         />
+        {isUploading && (
+          <Box sx={{ 
+            position: 'absolute', 
+            top: '50%', 
+            left: '50%', 
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1000,
+            bgcolor: 'rgba(255,255,255,0.9)',
+            p: 2,
+            borderRadius: 2,
+            boxShadow: 2
+          }}>
+            <Typography variant="body2" color="primary">
+              Uploading image...
+            </Typography>
+          </Box>
+        )}
       </Box>
       
       {helperText && (

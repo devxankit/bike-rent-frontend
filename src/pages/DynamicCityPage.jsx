@@ -2,10 +2,12 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import NotFound from './NotFound';
 import { CircularProgress, Box } from '@mui/material';
+import api from '../utils/api';
 
 const DynamicCityPage = () => {
   const { citySlug } = useParams();
   const [CityComponent, setCityComponent] = useState(null);
+  const [cityData, setCityData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -21,6 +23,15 @@ const DynamicCityPage = () => {
 
         // Capitalize first letter for component name
         const componentName = cityName.charAt(0).toUpperCase() + cityName.slice(1).toLowerCase();
+        
+        // Fetch city page data from API
+        try {
+          const cityResponse = await api.get(`/api/cities/${citySlug}`);
+          setCityData(cityResponse.data);
+        } catch (cityError) {
+          console.warn('Could not fetch city data:', cityError);
+          setCityData(null);
+        }
         
         // Dynamically import the city component
         const cityModule = await import(`./cities-pages/${componentName}.jsx`);
@@ -58,7 +69,7 @@ const DynamicCityPage = () => {
         <CircularProgress />
       </Box>
     }>
-      <CityComponent />
+      <CityComponent cityData={cityData} />
     </Suspense>
   );
 };

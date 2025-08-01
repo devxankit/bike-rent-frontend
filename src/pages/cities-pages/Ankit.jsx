@@ -9,11 +9,11 @@ import { generateCitySlug, generateBikesSlug } from '../../utils/slugUtils';
 import { Box, Typography } from '@mui/material';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
-const HaldwaniBikesPage = ({ cityData }) => {
+const AnkitBikesPage = ({ cityData }) => {
   const [bikes, setBikes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState('Haldwani');
+  const [location, setLocation] = useState('Ankit');
   const [allLocations, setAllLocations] = useState([]);
   const [bikeName, setBikeName] = useState("");
   const [price, setPrice] = useState(0);
@@ -45,7 +45,7 @@ const HaldwaniBikesPage = ({ cityData }) => {
     const fetchBikes = async () => {
       try {
         setLoading(true);
-        const res = await api.get('/api/bikes', { params: { isBooked: false, location: 'Haldwani' } });
+        const res = await api.get('/api/bikes', { params: { isBooked: false, location: 'Ankit' } });
         setBikes(res.data);
       } catch (err) {
         setError('Failed to load bikes.');
@@ -77,7 +77,7 @@ const HaldwaniBikesPage = ({ cityData }) => {
 
   // Redirect to city route on city change
   useEffect(() => {
-    if (location && location.toLowerCase() !== 'haldwani') {
+    if (location && location.toLowerCase() !== 'ankit') {
       const city = location.trim().toLowerCase();
       if (["indore", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun", "bhopal"].includes(city)) {
         // Use new slug format for navigation
@@ -114,16 +114,17 @@ const HaldwaniBikesPage = ({ cityData }) => {
         
         {/* Mobile Filter Popup */}
         {filterOpen && (
-          <div className="fixed inset-0 z-[100010] flex md:hidden">
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
-            {/* Popup - always slide in from left */}
-            <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
+         <div className="fixed inset-0 z-[100010] flex md:hidden">
+
+         {/* Overlay */}
+         <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
+         {/* Popup - always slide in from left */}
+           <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-base font-bold text-yellow-500">Filters</h2>
-                <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
-                  <FiX className="w-5 h-5 text-yellow-500" />
-                </button>
+                 <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
+                   <FiX className="w-5 h-5 text-yellow-500" />
+                  </button>
               </div>
               <FilterSidebar
                 location={location}
@@ -145,8 +146,8 @@ const HaldwaniBikesPage = ({ cityData }) => {
         <main className="flex-1 overflow-y-auto">
           <div className="p-6">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Bikes in Haldwani</h1>
-              <p className="text-gray-600">Find the perfect bike for your journey in Haldwani</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Bikes in Ankit</h1>
+              <p className="text-gray-600">Find the perfect bike for your journey in Ankit</p>
             </div>
             
             {/* Bike Listings */}
@@ -158,7 +159,7 @@ const HaldwaniBikesPage = ({ cityData }) => {
               <div className="text-center text-red-500">{error}</div>
             ) : sortedBikes.length === 0 ? (
               <div className="text-center text-gray-500 py-8">
-                <p>No bikes available in Haldwani at the moment.</p>
+                <p>No bikes available in Ankit at the moment.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -191,8 +192,7 @@ const HaldwaniBikesPage = ({ cityData }) => {
                       borderRadius: '12px 12px 0 0'
                     }
                   }}
-                >
-                
+                > 
                   
                   <Box 
                     dangerouslySetInnerHTML={{ __html: cityData.content }}
@@ -320,4 +320,4 @@ const HaldwaniBikesPage = ({ cityData }) => {
   );
 };
 
-export default HaldwaniBikesPage;
+export default AnkitBikesPage;
