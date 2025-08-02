@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Star, Shield, Users, Award } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import api from '../utils/api';
 
 const Footer = () => {
   const [cities, setCities] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     api.get('/api/cities')
@@ -13,6 +15,93 @@ const Footer = () => {
       })
       .catch(() => setCities([]));
   }, []);
+
+  // Function to get location information based on current route
+  const getLocationInfo = () => {
+    const pathname = location.pathname;
+    
+    // Check if we're on a specific city page
+    if (pathname.startsWith('/bikes/')) {
+      const citySlug = pathname.split('/bikes/')[1];
+      
+      // Parse city name from slug (handles both new and old formats)
+      let cityName = citySlug;
+      if (citySlug.startsWith('bike-rent-in-')) {
+        cityName = citySlug.replace('bike-rent-in-', '');
+      } else if (citySlug.includes('-rent-bike-in-')) {
+        const parts = citySlug.split('-rent-bike-in-');
+        if (parts.length === 2 && parts[0] === parts[1]) {
+          cityName = parts[0];
+        }
+      }
+      
+      // Define location information for each city
+      const cityLocations = {
+        'haldwani': {
+          label: 'Haldwani Location',
+          address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139'
+        },
+        'kathgodam': {
+          label: 'Kathgodam Location',
+          address: 'Near Railway Station Kathgodam, Bareilly - Nainital Rd, Haldwani, Uttarakhand 263139'
+        },
+        'pithoragarh': {
+          label: 'Pithoragarh Location',
+          address: 'Tankpur road, near bus station, Pithoragarh, Uttarakhand 262501'
+        },
+        'rishikesh': {
+          label: 'Rishikesh Location',
+          address: 'Bus stand, ISBT Rd, Adarsh Gram, Rishikesh, Dehradun, Uttarakhand 249201'
+        },
+        'haridwar': {
+          label: 'Haridwar Location',
+          address: 'Near railway station Devpura, Haridwar, Uttarakhand 249401'
+        },
+        'dehradun': {
+          label: 'Dehradun Location',
+          address: 'Gandhi Rd, Govind Nagar, Railway Station, Dehradun, Uttarakhand 248001'
+        },
+        'almora': {
+          label: 'Almora Location',
+          address: 'Mall Rd, Paltan Bazar, Dharanaula, Almora, Uttarakhand 263601'
+        },
+        'nainital': {
+          label: 'Nainital Location',
+          address: 'Near bus stand, Tallital, Nainital, Uttarakhand 263001'
+        },
+        'indore': {
+          label: 'Indore Location',
+          address: 'Indore, Madhya Pradesh, India'
+        },
+        'bhopal': {
+          label: 'Bhopal Location',
+          address: 'Bhopal, Madhya Pradesh, India'
+        },
+        'mumbai': {
+          label: 'Mumbai Location',
+          address: 'Mumbai, Maharashtra, India'
+        },
+        'goa': {
+          label: 'Goa Location',
+          address: 'Goa, India'
+        }
+      };
+      
+      // Return city-specific location or default
+      return cityLocations[cityName.toLowerCase()] || {
+        label: 'Location',
+        address: 'Indore, Madhya Pradesh, India'
+      };
+    }
+    
+    // Default location for home page and other pages
+    return {
+      label: 'Head Office',
+      address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139'
+    };
+  };
+
+  const locationInfo = getLocationInfo();
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -47,7 +136,7 @@ const Footer = () => {
           <div className="space-y-3">
             <h3 className="text-lg font-bold text-white mb-3">Our Locations</h3>
             <div className="space-y-1">
-              {cities.slice(0, 6).map((city) => (
+              {cities.map((city) => (
                 <a
                   key={city._id || city.slug || city.name}
                   href={`/bikes/${city.slug || city.name.toLowerCase()}`}
@@ -114,8 +203,8 @@ const Footer = () => {
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-white flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-white">Location</p>
-                  <p className="text-white font-medium text-xs">Indore, Madhya Pradesh, India</p>
+                  <p className="text-xs text-white">{locationInfo.label}</p>
+                  <p className="text-white font-medium text-xs">{locationInfo.address}</p>
                 </div>
               </div>
               
