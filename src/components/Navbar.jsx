@@ -80,7 +80,7 @@ const Navbar = ({ onFilterToggle }) => {
       <Link to="/locations" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`} onClick={() => setDrawerOpen(false)}>Locations</Link>
       <Link to="/about" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/about'))}`} onClick={() => setDrawerOpen(false)}>About</Link>
       <Link to="/contact" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/contact'))}`} onClick={() => setDrawerOpen(false)}>Contact Us</Link>
-      <Link to="/bikes" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`} onClick={() => setDrawerOpen(false)}>Bikes</Link>
+      <Link to="/locations" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`} onClick={() => setDrawerOpen(false)}>Bikes</Link>
       <Link to="/blogs" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`} onClick={() => setDrawerOpen(false)}>Blog</Link>
       <Link to="/PrivacyPolicy" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/PrivacyPolicy'))}`} onClick={() => setDrawerOpen(false)}>Privacy Policy</Link>
       <Link to="/TermsAndConditions" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/TermsAndConditions'))}`} onClick={() => setDrawerOpen(false)}>Terms&Conditions</Link>
