@@ -80,7 +80,7 @@ const Navbar = ({ onFilterToggle }) => {
       <Link to="/locations" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`} onClick={() => setDrawerOpen(false)}>Locations</Link>
       <Link to="/about" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/about'))}`} onClick={() => setDrawerOpen(false)}>About</Link>
       <Link to="/contact" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/contact'))}`} onClick={() => setDrawerOpen(false)}>Contact Us</Link>
-      <Link to="/bikes" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/bikes'))}`} onClick={() => setDrawerOpen(false)}>Bikes</Link>
+      <Link to="/bikes" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`} onClick={() => setDrawerOpen(false)}>Bikes</Link>
       <Link to="/blogs" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`} onClick={() => setDrawerOpen(false)}>Blog</Link>
       <Link to="/PrivacyPolicy" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/PrivacyPolicy'))}`} onClick={() => setDrawerOpen(false)}>Privacy Policy</Link>
       <Link to="/TermsAndConditions" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/TermsAndConditions'))}`} onClick={() => setDrawerOpen(false)}>Terms&Conditions</Link>
@@ -137,7 +137,7 @@ const Navbar = ({ onFilterToggle }) => {
               </div>
             )}
           </div>
-          <Link to="/bikes" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/bikes'))}`}>Bikes</Link>
+          <Link to="/locations" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`}>Bikes</Link>
           <Link to="/blogs" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`}>Blog</Link>
           {isLoggedIn && (
             <Link to="/admin/dashboard" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`}>
@@ -165,7 +165,7 @@ const Navbar = ({ onFilterToggle }) => {
             </button>
           )}
           {/* Bikes link for mobile */}
-          <Link to="/bikes" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/bikes'))} px-2 py-1 rounded transition-all`}>
+          <Link to="/locations" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))} px-2 py-1 rounded transition-all`}>
             Bikes
             <FaMotorcycle className={`w-4 h-4 ${isActiveLink('/bikes') ? 'text-yellow-500' : 'text-yellow-500'}`} />
           </Link>

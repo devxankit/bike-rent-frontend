@@ -47,7 +47,7 @@ const FilterSidebar = ({ location, setLocation, allLocations, bikeName, setBikeN
             value={location}
             onChange={handleCityChange}
           >
-            <option value="">All Cities</option>
+            {/* <option value="">All Cities</option> */}
             {uniqueCities.map(city => (
               <option key={city} value={city}>{city}</option>
             ))}
