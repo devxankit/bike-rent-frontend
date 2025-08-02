@@ -16,8 +16,8 @@ const bannerText = messages.concat(messages).join('   •   ');
 
 export default function RunningBanner() {
   return (
-    <div className="w-full h-[25px] bg-gradient-to-r from-yellow-400 to-yellow-400 flex items-center overflow-hidden relative shadow-sm z-0">
-      <div className="absolute left-0 top-0 w-full h-full pointer-events-none" style={{ background: 'linear-gradient(to right, #fde047 0%, #fde047 80%, transparent 100%)' }} />
+    <div className="w-full h-[25px] bg-gradient-to-r from-[#FDB813] to-[#FDB813] flex items-center overflow-hidden relative shadow-sm z-0">
+      <div className="absolute left-0 top-0 w-full h-full pointer-events-none" style={{ background: 'linear-gradient(to right, #FDB813 0%, #FDB813 80%, transparent 100%)' }} />
       <div className="whitespace-nowrap animate-marquee text-white text-[15px] flex items-center h-full px-4" style={{ fontFamily: 'Fira Mono, JetBrains Mono, Menlo, monospace', fontWeight: 400, letterSpacing: '0.04em' }}>
         {bannerText}
       </div>

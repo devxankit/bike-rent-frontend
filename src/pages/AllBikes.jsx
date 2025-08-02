@@ -300,10 +300,10 @@ export default function AllBikes({ cityOverride }) {
                     px: 1.5,
                     py: 0.7,
                     cursor: item.path ? 'pointer' : 'default',
-                    borderLeft: isActive ? '3px solid #facc15' : '3px solid transparent',
+                    borderLeft: isActive ? '3px solid #FDB813' : '3px solid transparent',
                     bgcolor: 'transparent',
                     fontWeight: isActive ? 700 : 500,
-                    color: isActive ? '#facc15' : '#fff',
+                    color: isActive ? '#FDB813' : '#fff',
                     mb: 0.5
                   }}
                   onClick={() => {
@@ -314,7 +314,7 @@ export default function AllBikes({ cityOverride }) {
                     else if (item.label === 'Analytics') navigate('/admin/analytics');
                   }}
                 >
-                  <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#facc15' : '#fff' }}>{item.icon}</span>
+                  <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#FDB813' : '#fff' }}>{item.icon}</span>
                   <Typography sx={{ ml: 1, fontWeight: isActive ? 700 : 500, fontSize: 13 }}>{item.label}</Typography>
                 </Box>
               );

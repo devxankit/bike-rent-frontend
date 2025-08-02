@@ -25,15 +25,15 @@ import 'aos/dist/aos.css';
 const customDatepickerStyles = `
 .custom-calendar .react-datepicker__day--selected,
 .custom-calendar .react-datepicker__time-list-item--selected {
-  background-color: #FACC15 !important;
+  background-color: #FDB813 !important;
   color: #fff !important;
 }
 .custom-calendar .react-datepicker__day--keyboard-selected {
-  background-color: #fef08a !important;
+  background-color: #FEF9E7 !important;
   color: #222 !important;
 }
 .custom-calendar .react-datepicker__time-list-item--selected {
-  background-color: #FACC15 !important;
+  background-color: #FDB813 !important;
   color: #fff !important;
 }
 `;
@@ -664,7 +664,7 @@ const Home = () => {
       </section>
 
       {/* Exlore Section */}
-      <section className="relative bg-[#ffbe00] overflow-hidden" data-aos="fade-up">
+      <section className="relative bg-[#FDB813] overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 "></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">

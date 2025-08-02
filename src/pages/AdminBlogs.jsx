@@ -343,7 +343,7 @@ const AdminBlogs = () => {
             variant="contained"
             startIcon={<AddIcon />}
             onClick={() => handleOpenDialog()}
-            sx={{ bgcolor: '#facc15', '&:hover': { bgcolor: '#eab308' } }}
+            sx={{ bgcolor: '#FDB813', '&:hover': { bgcolor: '#E6A612' } }}
           >
             Create Blog
           </Button>
@@ -673,7 +673,7 @@ const AdminBlogs = () => {
               onClick={handleSubmit}
               variant="contained"
               disabled={loading}
-              sx={{ bgcolor: '#facc15', '&:hover': { bgcolor: '#eab308' } }}
+              sx={{ bgcolor: '#FDB813', '&:hover': { bgcolor: '#E6A612' } }}
             >
               {loading ? 'Saving...' : (editingBlog ? 'Update' : 'Create')}
             </Button>

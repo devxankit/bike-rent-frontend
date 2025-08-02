@@ -206,7 +206,7 @@ export default function CityPages() {
             variant="contained"
             startIcon={<AddIcon />}
             onClick={openAddDialog}
-            sx={{ bgcolor: '#facc15', '&:hover': { bgcolor: '#f59e0b' } }}
+            sx={{ bgcolor: '#FDB813', '&:hover': { bgcolor: '#E6A612' } }}
           >
             Add New City
           </Button>
@@ -378,8 +378,8 @@ export default function CityPages() {
                           bgcolor: '#fafafa',
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            borderColor: '#facc15',
-                            bgcolor: '#fffbf0'
+                            borderColor: '#FDB813',
+                            bgcolor: '#FEF9E7'
                           }
                         }}
                       >
@@ -432,7 +432,7 @@ export default function CityPages() {
               onClick={handleSubmit}
               variant="contained"
               disabled={loading}
-              sx={{ bgcolor: '#facc15', '&:hover': { bgcolor: '#f59e0b' } }}
+              sx={{ bgcolor: '#FDB813', '&:hover': { bgcolor: '#E6A612' } }}
             >
               {editingCity ? 'Update' : 'Create'}
             </Button>

@@ -289,10 +289,10 @@ export default function AdminDashboard() {
                     px: 1.5,
                     py: 0.7,
                     cursor: item.path ? 'pointer' : 'default',
-                    borderLeft: isActive ? '3px solid #facc15' : '3px solid transparent',
+                    borderLeft: isActive ? '3px solid #FDB813' : '3px solid transparent',
                     bgcolor: 'transparent',
                     fontWeight: isActive ? 700 : 500,
-                    color: isActive ? '#facc15' : '#fff',
+                    color: isActive ? '#FDB813' : '#fff',
                     mb: 0.5
                   }}
                   onClick={() => {
@@ -305,7 +305,7 @@ export default function AdminDashboard() {
                     else if (item.label === 'Blog') navigate('/admin/blogs');
                   }}
                 >
-                  <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#facc15' : '#fff' }}>{item.icon}</span>
+                  <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#FDB813' : '#fff' }}>{item.icon}</span>
                   <Typography sx={{ ml: 1, fontWeight: isActive ? 700 : 500, fontSize: 13 }}>{item.label}</Typography>
                 </Box>
               );
@@ -333,7 +333,7 @@ export default function AdminDashboard() {
         <Box sx={{ flex: 1, pl: { md: 0 }, pr: 0 }}>
           <Box sx={{ maxWidth: 950, mx: 'auto', mt: 2, px: 1 }}>
             {/* Welcome Section */}
-            <Box sx={{ bgcolor: '#facc15', color: '#fff', borderRadius: 2, p: 2, mb: 2 }}>
+                            <Box sx={{ bgcolor: '#FDB813', color: '#fff', borderRadius: 2, p: 2, mb: 2 }}>
               <Typography variant="h5" fontWeight={700} sx={{ fontSize: 26 }}>Welcome back, Admin!</Typography>
               <Typography variant="body2" mt={0.5} sx={{ fontSize: 15 }}>Here's what's happening with your bike rental business today.</Typography>
             </Box>
@@ -341,7 +341,7 @@ export default function AdminDashboard() {
             <Box sx={{ display: { xs: 'block', md: 'none' }, bgcolor: '#fff', borderRadius: 1.5, p: 2, mb: 2, boxShadow: 1 }}>
               <Typography variant="subtitle1" fontWeight={700} mb={1} sx={{ fontSize: 16 }}>Quick Actions</Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2 }}>
-                <Button variant="contained" fullWidth sx={{ bgcolor: '#facc15', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
+                <Button variant="contained" fullWidth sx={{ bgcolor: '#FDB813', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
                   Add New Bike
                 </Button>
                 <Button variant="contained" fullWidth sx={{ bgcolor: '#22c55e', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => navigate('/admin/bikes?tab=1')}>
@@ -403,7 +403,7 @@ export default function AdminDashboard() {
               <Box sx={{ bgcolor: '#fff', borderRadius: 1.5, p: 2, display: { xs: 'none', md: 'flex' }, flexDirection: 'column', gap: 1.2 }}>
                 <Typography variant="subtitle1" fontWeight={700} mb={1} sx={{ fontSize: 16 }}>Quick Actions</Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2 }}>
-                  <Button variant="contained" fullWidth sx={{ bgcolor: '#facc15', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: '#FDB813', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
                     Add New Bike
                   </Button>
                   <Button variant="contained" fullWidth sx={{ bgcolor: '#22c55e', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => navigate('/admin/bikes?tab=1')}>

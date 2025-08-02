@@ -6,32 +6,32 @@ import 'aos/dist/aos.css';
 
 const features = [
   {
-    icon: <FaShieldAlt size={26} color="#facc15" />, // Govt. Compliant
+    icon: <FaShieldAlt size={26} color="#FDB813" />, // Govt. Compliant
     title: 'Govt. Compliant',
     subtitle: 'Safe Vehicles',
   },
   {
-    icon: <FaHome size={26} color="#facc15" />, // Doorstep Delivery
+    icon: <FaHome size={26} color="#FDB813" />, // Doorstep Delivery
     title: 'Doorstep Delivery',
     subtitle: 'To Your Location',
   },
   {
-    icon: <FaCreditCard size={26} color="#facc15" />, // Secure Payments
+    icon: <FaCreditCard size={26} color="#FDB813" />, // Secure Payments
     title: 'Secure Payments',
     subtitle: 'Instant & Easy',
   },
   {
-    icon: <FaTools size={26} color="#facc15" />, // Regular Service
+    icon: <FaTools size={26} color="#FDB813" />, // Regular Service
     title: 'Regular Service',
     subtitle: 'Well Maintained',
   },
   {
-    icon: <FaMotorcycle size={26} color="#facc15" />, // Sanitized Bikes
+    icon: <FaMotorcycle size={26} color="#FDB813" />, // Sanitized Bikes
     title: 'Sanitized Bikes',
     subtitle: 'Clean & Ready',
   },
   {
-    icon: <FaHardHat size={26} color="#facc15" />, // Free Helmet
+    icon: <FaHardHat size={26} color="#FDB813" />, // Free Helmet
     title: 'Free Helmet',
     subtitle: 'Every Ride Safe',
   },

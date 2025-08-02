@@ -187,7 +187,7 @@ const PithoragarhBikesPage = ({ cityData }) => {
                       left: 0,
                       right: 0,
                       height: '4px',
-                      background: 'linear-gradient(90deg, #facc15 0%, #f59e0b 100%)',
+                      background: 'linear-gradient(90deg, #FDB813 0%, #E6A612 100%)',
                       borderRadius: '12px 12px 0 0'
                     }
                   }}
@@ -229,20 +229,20 @@ const PithoragarhBikesPage = ({ cityData }) => {
                       },
                       '& ul li::before': {
                         content: '"•"',
-                        color: '#facc15',
+                        color: '#FDB813',
                         fontWeight: 'bold',
                         position: 'absolute',
                         left: '-1.5rem'
                       },
                       '& a': {
-                        color: '#facc15',
+                        color: '#FDB813',
                         textDecoration: 'none',
                         fontWeight: 500,
                         borderBottom: '1px solid transparent',
                         transition: 'all 0.3s ease',
                         '&:hover': {
-                          borderBottomColor: '#facc15',
-                          color: '#f59e0b'
+                          borderBottomColor: '#FDB813',
+                          color: '#E6A612'
                         }
                       },
                       '& img': {
@@ -257,7 +257,7 @@ const PithoragarhBikesPage = ({ cityData }) => {
                         }
                       },
                       '& blockquote': {
-                        borderLeft: '4px solid #facc15',
+                        borderLeft: '4px solid #FDB813',
                         pl: 3,
                         ml: 0,
                         fontStyle: 'italic',
@@ -300,8 +300,8 @@ const PithoragarhBikesPage = ({ cityData }) => {
                         padding: '12px',
                         textAlign: 'left'
                       },
-                      '& th': {
-                        bgcolor: '#facc15',
+                                              '& th': {
+                          bgcolor: '#FDB813',
                         color: '#1f2937',
                         fontWeight: 600
                       },

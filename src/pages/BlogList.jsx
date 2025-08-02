@@ -212,10 +212,10 @@ const BlogList = () => {
                     {/* Category/Tags */}
                     <Box sx={{ mb: 1, display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                       {blog.tags && blog.tags.slice(0, 2).map((tag) => (
-                        <Chip key={tag} label={tag} size="small" sx={{ bgcolor: '#facc15', color: '#111', fontWeight: 600 }} />
+                        <Chip key={tag} label={tag} size="small" sx={{ bgcolor: '#FDB813', color: '#111', fontWeight: 600 }} />
                       ))}
                       {blog.tags && blog.tags.length > 2 && (
-                        <Chip label={`+${blog.tags.length - 2}`} size="small" sx={{ bgcolor: '#facc15', color: '#111', fontWeight: 600 }} />
+                        <Chip label={`+${blog.tags.length - 2}`} size="small" sx={{ bgcolor: '#FDB813', color: '#111', fontWeight: 600 }} />
                       )}
                     </Box>
                     {/* Meta Info */}

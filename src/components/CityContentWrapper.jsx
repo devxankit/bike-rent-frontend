@@ -31,7 +31,7 @@ const CityContentWrapper = ({ children, cityData }) => {
                 left: 0,
                 right: 0,
                 height: '4px',
-                background: 'linear-gradient(90deg, #facc15 0%, #f59e0b 100%)',
+                                    background: 'linear-gradient(90deg, #FDB813 0%, #E6A612 100%)',
                 borderRadius: '12px 12px 0 0'
               }
             }}
@@ -71,24 +71,24 @@ const CityContentWrapper = ({ children, cityData }) => {
                   mb: 1.5,
                   position: 'relative'
                 },
-                '& ul li::before': {
-                  content: '"•"',
-                  color: '#facc15',
-                  fontWeight: 'bold',
-                  position: 'absolute',
-                  left: '-1.5rem'
-                },
-                '& a': {
-                  color: '#facc15',
-                  textDecoration: 'none',
-                  fontWeight: 500,
-                  borderBottom: '1px solid transparent',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    borderBottomColor: '#facc15',
-                    color: '#f59e0b'
-                  }
-                },
+                                  '& ul li::before': {
+                    content: '"•"',
+                    color: '#FDB813',
+                    fontWeight: 'bold',
+                    position: 'absolute',
+                    left: '-1.5rem'
+                  },
+                                  '& a': {
+                    color: '#FDB813',
+                    textDecoration: 'none',
+                    fontWeight: 500,
+                    borderBottom: '1px solid transparent',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      borderBottomColor: '#FDB813',
+                      color: '#E6A612'
+                    }
+                  },
                 '& img': {
                   maxWidth: '100%',
                   height: 'auto',
@@ -100,8 +100,8 @@ const CityContentWrapper = ({ children, cityData }) => {
                     transform: 'scale(1.02)'
                   }
                 },
-                '& blockquote': {
-                  borderLeft: '4px solid #facc15',
+                                  '& blockquote': {
+                    borderLeft: '4px solid #FDB813',
                   pl: 3,
                   ml: 0,
                   fontStyle: 'italic',
@@ -144,8 +144,8 @@ const CityContentWrapper = ({ children, cityData }) => {
                   padding: '12px',
                   textAlign: 'left'
                 },
-                '& th': {
-                  bgcolor: '#facc15',
+                                  '& th': {
+                    bgcolor: '#FDB813',
                   color: '#1f2937',
                   fontWeight: 600
                 },

@@ -78,7 +78,7 @@ const CustomDatePicker = forwardRef(({ value, onChange, label = '', minDate, pop
         onFocus={onFocus}
       />
       <span className="absolute pt-4 right-3 inset-y-0 my-auto flex items-center pointer-events-none h-5">
-        <svg width="18" height="18" fill="none" stroke="#ffbe00" strokeWidth="2" viewBox="0 0 24 24" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <svg width="18" height="18" fill="none" stroke="#FDB813" strokeWidth="2" viewBox="0 0 24 24" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
       </span>
       {open && (
         <div

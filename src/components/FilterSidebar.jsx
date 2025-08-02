@@ -82,7 +82,7 @@ const FilterSidebar = ({ location, setLocation, allLocations, bikeName, setBikeN
               onChange={e => setPrice(Number(e.target.value))}
               className={sliderClass}
               style={{
-                background: `linear-gradient(90deg, #facc15 ${(price / maxPrice) * 100}%, #fef9c3 ${(price / maxPrice) * 100}%)`,
+                background: `linear-gradient(90deg, #FDB813 ${(price / maxPrice) * 100}%, #FEF9E7 ${(price / maxPrice) * 100}%)`,
                 borderRadius: '6px',
               }}
             />
