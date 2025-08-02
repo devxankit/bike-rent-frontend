@@ -17,6 +17,30 @@ const Navbar = ({ onFilterToggle }) => {
   const dropdownRef = useRef(null);
   const location = useLocation();
 
+  // Helper function to check if a link is active
+  const isActiveLink = (path) => {
+    if (path === '/') {
+      return location.pathname === '/' || location.pathname === '/home';
+    }
+    if (path === '/bikes') {
+      return location.pathname.startsWith('/bikes');
+    }
+    if (path === '/blogs') {
+      return location.pathname.startsWith('/blogs');
+    }
+    if (path === '/admin/dashboard') {
+      return location.pathname.startsWith('/admin');
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  // Helper function to get active link styles
+  const getActiveLinkStyles = (isActive) => {
+    return isActive 
+      ? 'text-yellow-500 font-bold' 
+      : 'text-[#111518] hover:text-yellow-500';
+  };
+
   // Determine dropdown label based on current route
   let dropdownLabel = 'Locations';
   if (location.pathname.startsWith('/about')) dropdownLabel = 'About';
@@ -51,17 +75,17 @@ const Navbar = ({ onFilterToggle }) => {
   // Drawer content
   const drawerLinks = (
     <nav className="flex flex-col gap-4 mt-8 z-[10000]">
-      <Link to="/" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Home</Link>
+      <Link to="/" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`} onClick={() => setDrawerOpen(false)}>Home</Link>
       {/* Dropdown links as normal links in drawer */}
-      <Link to="/locations" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Locations</Link>
-      <Link to="/about" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>About</Link>
-      <Link to="/contact" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Contact Us</Link>
-      <Link to="/bikes" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Bikes</Link>
-      <Link to="/blogs" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Blog</Link>
-      <Link to="/PrivacyPolicy" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Privacy Policy</Link>
-      <Link to="/TermsAndConditions" className="text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>Terms&Conditions</Link>
+      <Link to="/locations" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`} onClick={() => setDrawerOpen(false)}>Locations</Link>
+      <Link to="/about" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/about'))}`} onClick={() => setDrawerOpen(false)}>About</Link>
+      <Link to="/contact" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/contact'))}`} onClick={() => setDrawerOpen(false)}>Contact Us</Link>
+      <Link to="/bikes" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/bikes'))}`} onClick={() => setDrawerOpen(false)}>Bikes</Link>
+      <Link to="/blogs" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`} onClick={() => setDrawerOpen(false)}>Blog</Link>
+      <Link to="/PrivacyPolicy" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/PrivacyPolicy'))}`} onClick={() => setDrawerOpen(false)}>Privacy Policy</Link>
+      <Link to="/TermsAndConditions" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/TermsAndConditions'))}`} onClick={() => setDrawerOpen(false)}>Terms&Conditions</Link>
       {isLoggedIn && (
-        <Link to="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-yellow-500" onClick={() => setDrawerOpen(false)}>
+        <Link to="/admin/dashboard" className={`flex items-center gap-2 text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`} onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
         </Link>
       )}
@@ -90,11 +114,11 @@ const Navbar = ({ onFilterToggle }) => {
         </Link>
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Home</Link>
+          <Link to="/" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`}>Home</Link>
           {/* Dropdown for Locations, About, Contact Us (click to open) */}
           <div className="relative" ref={dropdownRef}>
             <button
-              className={`text-sm font-semibold text-[#111518] hover:text-yellow-500 flex items-center gap-1 focus:outline-none px-3 py-1 rounded transition-all ${dropdownOpen ? 'bg-yellow-50' : ''}`}
+              className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/locations') || isActiveLink('/about') || isActiveLink('/contact') || isActiveLink('/PrivacyPolicy') || isActiveLink('/TermsAndConditions'))} flex items-center gap-1 focus:outline-none px-3 py-1 rounded transition-all ${dropdownOpen ? 'bg-yellow-50' : ''}`}
               type="button"
               onClick={() => setDropdownOpen((open) => !open)}
               aria-haspopup="true"
@@ -105,18 +129,18 @@ const Navbar = ({ onFilterToggle }) => {
             </button>
             {dropdownOpen && (
               <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-lg z-20">
-                <Link to="/locations" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Locations</Link>
-                <Link to="/about" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>About</Link>
-                <Link to="/contact" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Contact Us</Link>
-                <Link to="/PrivacyPolicy" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Privacy Policy</Link>
-                <Link to="/TermsAndConditions" className="block px-4 py-2 text-sm text-[#111518] hover:bg-yellow-50 hover:text-yellow-500" onClick={() => setDropdownOpen(false)}>Terms&Conditions</Link>
+                <Link to="/locations" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/locations'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>Locations</Link>
+                <Link to="/about" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/about'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>About</Link>
+                <Link to="/contact" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/contact'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>Contact Us</Link>
+                <Link to="/PrivacyPolicy" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/PrivacyPolicy'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>Privacy Policy</Link>
+                <Link to="/TermsAndConditions" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/TermsAndConditions'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>Terms&Conditions</Link>
               </div>
             )}
           </div>
-          <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Bikes</Link>
-          <Link to="/blogs" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Blog</Link>
+          <Link to="/bikes" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/bikes'))}`}>Bikes</Link>
+          <Link to="/blogs" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`}>Blog</Link>
           {isLoggedIn && (
-            <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-500">
+            <Link to="/admin/dashboard" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`}>
               <MdDashboard className="w-5 h-5" /> Dashboard
             </Link>
           )}
@@ -141,9 +165,9 @@ const Navbar = ({ onFilterToggle }) => {
             </button>
           )}
           {/* Bikes link for mobile */}
-          <Link to="/bikes" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-500 px-2 py-1 rounded transition-all">
+          <Link to="/bikes" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/bikes'))} px-2 py-1 rounded transition-all`}>
             Bikes
-            <FaMotorcycle className="w-4 h-4 text-yellow-500" />
+            <FaMotorcycle className={`w-4 h-4 ${isActiveLink('/bikes') ? 'text-yellow-500' : 'text-yellow-500'}`} />
           </Link>
           <button
             className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
