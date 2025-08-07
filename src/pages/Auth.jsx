@@ -36,11 +36,6 @@ export default function Auth() {
   }, []);
 
   if (auth.token) {
-    const pending = localStorage.getItem('pendingBikeBooking');
-    if (pending) {
-      localStorage.removeItem('pendingBikeBooking');
-      return <Navigate to="/bikes" replace />;
-    }
     return <Navigate to="/" replace />;
   }
 

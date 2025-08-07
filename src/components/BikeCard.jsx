@@ -1,26 +1,10 @@
 import { motion } from "framer-motion";
 import PropTypes from 'prop-types';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 // BikeCard displays a single bike's info
 export default function BikeCard({ bike }) {
-  const navigate = useNavigate();
-  // Get logged-in user info from localStorage
-  let userName = 'User';
-  let userPhone = 'XXXXXXXXXX';
-  let userEmail = '';
-  let isLoggedIn = false;
-  try {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.name && user.phone && user.email) {
-      isLoggedIn = true;
-      userName = user.name || userName;
-      userPhone = user.phone || userPhone;
-      userEmail = user.email || '';
-    }
-  } catch (e) {}
+  // No longer need user info for WhatsApp booking
 
   // Format owner's phone number for WhatsApp
   let ownerPhone = bike.ownerPhone || '';
@@ -45,7 +29,7 @@ export default function BikeCard({ bike }) {
     formData = JSON.parse(localStorage.getItem('bikeRentFormData'));
   } catch {}
 
-  // Build WhatsApp message with form data if available
+  // Build WhatsApp message with form data if available (no user personal info)
   const message = encodeURIComponent(
     `Hi, I want to book this bike:\n\nBike: ${bike.name}\nLocation: ${bike.location}\nPrice: ₹${bike.price}/day` +
     (formData ?
@@ -53,20 +37,12 @@ export default function BikeCard({ bike }) {
       :
       ''
     ) +
-    `\n\nMy Name: ${userName}\nMy Phone: ${userPhone}\nMy Email: ${userEmail}\n\nBike Link: ${bikeUrl}`
+    `\n\nBike Link: ${bikeUrl}`
   );
   // Send to bike owner's WhatsApp number
   const whatsappUrl = `https://wa.me/${ownerPhone}?text=${message}`;
 
-  const handleWhatsAppClick = (e) => {
-    if (!isLoggedIn) {
-      e.preventDefault();
-      // Save booking intent and form data
-      localStorage.setItem('pendingBikeBooking', JSON.stringify({ bikeId: bike._id }));
-      toast.info('Please log in to send WhatsApp messages.');
-      navigate('/login');
-    }
-  };
+
 
   return (
     <motion.div
@@ -108,7 +84,6 @@ export default function BikeCard({ bike }) {
         title="Book on WhatsApp"
         className="mt-4 inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold rounded px-4 py-2 transition-all duration-200 shadow-sm hover:shadow-lg hover:scale-105"
         style={{ textDecoration: 'none' }}
-        onClick={handleWhatsAppClick}
       >
         <WhatsAppIcon sx={{ color: 'white', fontSize: 22, mr: 1 }} />
         Book on WhatsApp
