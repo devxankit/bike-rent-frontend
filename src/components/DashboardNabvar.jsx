@@ -11,6 +11,7 @@ const DashboardNavbar = ({ onFilterToggle }) => {
     user = JSON.parse(localStorage.getItem('user'));
   } catch (e) {}
   const isLoggedIn = !!user;
+  const isAdmin = user && user.isAdmin;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
@@ -29,7 +30,7 @@ const DashboardNavbar = ({ onFilterToggle }) => {
       <Link to="/admin/bikes?tab=1" className="text-lg font-semibold text-[#111518] hover:text-yellow-600" onClick={() => setDrawerOpen(false)}>Booking</Link>
       <Link to="/admin/customers" className="text-lg font-semibold text-[#111518] hover:text-yellow-600" onClick={() => setDrawerOpen(false)}>Customers</Link>
       <Link to="/admin/analytics" className="text-lg font-semibold text-[#111518] hover:text-yellow-600" onClick={() => setDrawerOpen(false)}>Analytics</Link>
-      {isLoggedIn && (
+      {isAdmin && (
         <Link to="/admin/dashboard" className="flex items-center gap-2 text-lg font-semibold text-[#111518] hover:text-blue-600" onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
         </Link>
@@ -61,7 +62,7 @@ const DashboardNavbar = ({ onFilterToggle }) => {
         <nav className="hidden md:flex items-center gap-6">
           <Link to="/" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Home</Link>
           <Link to="/bikes" className="text-sm font-semibold text-[#111518] hover:text-yellow-500">Bikes</Link>
-          {isLoggedIn && (
+          {isAdmin && (
             <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm font-semibold text-[#111518] hover:text-yellow-500">
               <MdDashboard className="w-5 h-5" /> Dashboard
             </Link>

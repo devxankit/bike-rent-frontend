@@ -11,6 +11,7 @@ const Navbar = ({ onFilterToggle }) => {
     user = JSON.parse(localStorage.getItem('user'));
   } catch (e) {}
   const isLoggedIn = !!user;
+  const isAdmin = user && user.isAdmin;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -84,7 +85,7 @@ const Navbar = ({ onFilterToggle }) => {
       <Link to="/blogs" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`} onClick={() => setDrawerOpen(false)}>Blog</Link>
       <Link to="/PrivacyPolicy" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/PrivacyPolicy'))}`} onClick={() => setDrawerOpen(false)}>Privacy Policy</Link>
       <Link to="/TermsAndConditions" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/TermsAndConditions'))}`} onClick={() => setDrawerOpen(false)}>Terms&Conditions</Link>
-      {isLoggedIn && (
+      {isAdmin && (
         <Link to="/admin/dashboard" className={`flex items-center gap-2 text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`} onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
         </Link>
@@ -139,7 +140,7 @@ const Navbar = ({ onFilterToggle }) => {
           </div>
           <Link to="/locations" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`}>Bikes</Link>
           <Link to="/blogs" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`}>Blog</Link>
-          {isLoggedIn && (
+          {isAdmin && (
             <Link to="/admin/dashboard" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`}>
               <MdDashboard className="w-5 h-5" /> Dashboard
             </Link>
