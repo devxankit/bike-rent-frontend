@@ -43,7 +43,7 @@ const Footer = () => {
         },
         'kathgodam': {
           label: 'Kathgodam Location',
-          address: 'Near Railway Station Kathgodam, Bareilly - Nainital Rd, Haldwani, Uttarakhand 263139'
+          address: 'NH-87, Bareilly - Nainital Rd, Near Kathgodam Railway station, Kathgodam, Haldwani, Uttarakhand 263139'
         },
         'pithoragarh': {
           label: 'Pithoragarh Location',
@@ -69,22 +69,7 @@ const Footer = () => {
           label: 'Nainital Location',
           address: 'Near bus stand, Tallital, Nainital, Uttarakhand 263001'
         },
-        'indore': {
-          label: 'Indore Location',
-          address: 'Indore, Madhya Pradesh, India'
-        },
-        'bhopal': {
-          label: 'Bhopal Location',
-          address: 'Bhopal, Madhya Pradesh, India'
-        },
-        'mumbai': {
-          label: 'Mumbai Location',
-          address: 'Mumbai, Maharashtra, India'
-        },
-        'goa': {
-          label: 'Goa Location',
-          address: 'Goa, India'
-        }
+        
       };
       
       // Return city-specific location or default
@@ -188,7 +173,7 @@ const Footer = () => {
                 <Phone className="h-4 w-4 text-white flex-shrink-0" />
                 <div>
                   <p className="text-xs text-white">Call Us</p>
-                  <p className="text-white font-medium text-xs">+91 97987 74681</p>
+                  <p className="text-white font-medium text-xs">+91 9368584334</p>
                 </div>
               </div>
               
