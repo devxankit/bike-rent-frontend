@@ -107,7 +107,7 @@ const Navbar = ({ onFilterToggle }) => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <img
-            src="/images/bike-rent-logo-2.png"
+            src="/images/bike-rent-logo-3.png"
             alt="Bike Rent Logo"
             className="w-20 h-20 object-contain"
           />
