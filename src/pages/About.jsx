@@ -1,8 +1,75 @@
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 
 export default function About() {
   return (
     <>
+      <Helmet>
+        {/* Primary Meta Tags */}
+        <title>About BookYourRide | Your Trusted Bike Rental Partner</title>
+        <meta name="title" content="About BookYourRide | Your Trusted Bike Rental Partner" />
+        <meta name="description" content="Discover BookYourRide reliable, affordable bike rentals in Uttarakhand. Learn our story, values, and commitment to safe, hassle-free journeys for all riders." />
+        <meta name="keywords" content="about BookYourRide, bike rental company, motorcycle rental service, scooter rental Uttarakhand, bike rent company history, trusted bike rental" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="author" content="BookYourRide" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.bookyourride.in/about" />
+        <meta property="og:title" content="About BookYourRide | Your Trusted Bike Rental Partner" />
+        <meta property="og:description" content="Discover BookYourRide reliable, affordable bike rentals in Uttarakhand. Learn our story, values, and commitment to safe, hassle-free journeys for all riders." />
+        <meta property="og:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
+        <meta property="og:site_name" content="BookYourRide" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.bookyourride.in/about" />
+        <meta property="twitter:title" content="About BookYourRide | Your Trusted Bike Rental Partner" />
+        <meta property="twitter:description" content="Discover BookYourRide reliable, affordable bike rentals in Uttarakhand. Learn our story, values, and commitment to safe, hassle-free journeys for all riders." />
+        <meta property="twitter:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#FDB813" />
+        <link rel="canonical" href="https://www.bookyourride.in/about" />
+        
+        {/* Schema.org structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "About BookYourRide | Your Trusted Bike Rental Partner",
+            "description": "Discover BookYourRide reliable, affordable bike rentals in Uttarakhand. Learn our story, values, and commitment to safe, hassle-free journeys for all riders.",
+            "url": "https://www.bookyourride.in/about",
+            "mainEntity": {
+              "@type": "Organization",
+              "name": "BookYourRide",
+              "url": "https://www.bookyourride.in/",
+              "logo": "https://www.bookyourride.in/images/bike-rent-logo-2.png",
+              "description": "BookYourRide is more than just a bike rental platform—it's a movement to transform the way people experience urban mobility. Founded with a vision to make transportation accessible, sustainable, and enjoyable.",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "9368584334",
+                "contactType": "customer service"
+              },
+              "foundingDate": "2020",
+              "numberOfEmployees": "25+",
+              "serviceArea": {
+                "@type": "GeoCircle",
+                "geoMidpoint": {
+                  "@type": "GeoCoordinates",
+                  "latitude": 30.0668,
+                  "longitude": 79.0193
+                },
+                "geoRadius": "200000"
+              }
+            }
+          })}
+        </script>
+      </Helmet>
+      
       <Navbar />
       {/* Hero Section */}
       <section className="relative min-h-[320px] md:min-h-[400px] flex items-center justify-center bg-gray-900">

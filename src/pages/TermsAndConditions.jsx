@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from 'react-helmet-async';
 import Navbar from "../components/Navbar";
 
 const terms = [
@@ -77,6 +78,58 @@ const terms = [
 export default function TermsAndConditions() {
   return (
     <>
+      <Helmet>
+        {/* Primary Meta Tags */}
+        <title>Terms & Conditions | BookYourRide – Safe & Clear Rentals</title>
+        <meta name="title" content="Terms & Conditions | BookYourRide – Safe & Clear Rentals" />
+        <meta name="description" content="Explore BookYourRide's terms and conditions. Know rental policies, rider responsibilities, and safety rules for a smooth and secure bike booking experience." />
+        <meta name="keywords" content="terms and conditions, bike rental terms, motorcycle rental policies, rental agreement, bike rent rules, safety guidelines" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="author" content="BookYourRide" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.bookyourride.in/TermsAndConditions" />
+        <meta property="og:title" content="Terms & Conditions | BookYourRide – Safe & Clear Rentals" />
+        <meta property="og:description" content="Explore BookYourRide's terms and conditions. Know rental policies, rider responsibilities, and safety rules for a smooth and secure bike booking experience." />
+        <meta property="og:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
+        <meta property="og:site_name" content="BookYourRide" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.bookyourride.in/TermsAndConditions" />
+        <meta property="twitter:title" content="Terms & Conditions | BookYourRide – Safe & Clear Rentals" />
+        <meta property="twitter:description" content="Explore BookYourRide's terms and conditions. Know rental policies, rider responsibilities, and safety rules for a smooth and secure bike booking experience." />
+        <meta property="twitter:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#FDB813" />
+        <link rel="canonical" href="https://www.bookyourride.in/TermsAndConditions" />
+        
+        {/* Schema.org structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Terms & Conditions | BookYourRide – Safe & Clear Rentals",
+            "description": "Explore BookYourRide's terms and conditions. Know rental policies, rider responsibilities, and safety rules for a smooth and secure bike booking experience.",
+            "url": "https://www.bookyourride.in/TermsAndConditions",
+            "mainEntity": {
+              "@type": "Organization",
+              "name": "BookYourRide",
+              "url": "https://www.bookyourride.in/",
+              "logo": "https://www.bookyourride.in/images/bike-rent-logo-2.png",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "9368584334",
+                "contactType": "customer service"
+              }
+            }
+          })}
+        </script>
+      </Helmet>
     <Navbar />
     <div className="min-h-screen bg-white p-6 sm:p-10">
       <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8">Our Terms & Conditions</h1>

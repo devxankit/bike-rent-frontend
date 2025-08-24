@@ -1,8 +1,63 @@
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 
 export default function Contact() {
   return (
     <>
+      <Helmet>
+        {/* Primary Meta Tags */}
+        <title>Contact Us | BookYourRide - Get in Touch for Bike Rentals</title>
+        <meta name="title" content="Contact Us | BookYourRide - Get in Touch for Bike Rentals" />
+        <meta name="description" content="Contact BookYourRide for bike rental inquiries, support, or bookings. Reach out to our customer service team for assistance with motorcycle and scooter rentals across Uttarakhand." />
+        <meta name="keywords" content="contact BookYourRide, bike rental contact, motorcycle rental support, customer service, bike rent help, rental inquiries" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="author" content="BookYourRide" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.bookyourride.in/contact" />
+        <meta property="og:title" content="Contact Us | BookYourRide - Get in Touch for Bike Rentals" />
+        <meta property="og:description" content="Contact BookYourRide for bike rental inquiries, support, or bookings. Reach out to our customer service team for assistance with motorcycle and scooter rentals across Uttarakhand." />
+        <meta property="og:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
+        <meta property="og:site_name" content="BookYourRide" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.bookyourride.in/contact" />
+        <meta property="twitter:title" content="Contact Us | BookYourRide - Get in Touch for Bike Rentals" />
+        <meta property="twitter:description" content="Contact BookYourRide for bike rental inquiries, support, or bookings. Reach out to our customer service team for assistance with motorcycle and scooter rentals across Uttarakhand." />
+        <meta property="twitter:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#FDB813" />
+        <link rel="canonical" href="https://www.bookyourride.in/contact" />
+        
+        {/* Schema.org structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "name": "Contact Us | BookYourRide - Get in Touch for Bike Rentals",
+            "description": "Contact BookYourRide for bike rental inquiries, support, or bookings. Reach out to our customer service team for assistance with motorcycle and scooter rentals across Uttarakhand.",
+            "url": "https://www.bookyourride.in/contact",
+            "mainEntity": {
+              "@type": "Organization",
+              "name": "BookYourRide",
+              "url": "https://www.bookyourride.in/",
+              "logo": "https://www.bookyourride.in/images/bike-rent-logo-2.png",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "9368584334",
+                "contactType": "customer service",
+                "availableLanguage": "English, Hindi"
+              }
+            }
+          })}
+        </script>
+      </Helmet>
       <Navbar />
       {/* Hero Section */}
       <section className="relative min-h-[320px] md:min-h-[400px] flex items-center justify-center bg-gray-900">

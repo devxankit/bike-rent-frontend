@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import 'quill/dist/quill.snow.css'; // Ensure Quill CSS is loaded for editor
+import { HelmetProvider } from 'react-helmet-async';
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -43,68 +44,70 @@ function ProtectedRoute({ children, adminOnly }) {
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Router>
-        <ScrollToTop />
-        <CssBaseline />
-        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover style={{ zIndex: 999999 }} />
-        <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
+      <HelmetProvider>
+        <Router>
+          <ScrollToTop />
+          <CssBaseline />
+          <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover style={{ zIndex: 999999 }} />
+          <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
 
-            <Route path="/home" element={<Home />} />
+              <Route path="/home" element={<Home />} />
 
-            {/* Main bikes page with slug */}
-            <Route path="/bikes" element={<Bikes />} />
-            <Route path="/bikes/rent-bike-in-all-cities" element={<Bikes />} />
-            
-            {/* Dynamic city pages route - handles all city slugs */}
-            <Route path="/bikes/:citySlug" element={<DynamicCityPage />} />
-            
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Auth />} />
-            <Route path="/signup" element={<Auth />} />
-            <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-            <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
-            <Route path="/admin/dashboard" element={
-              <ProtectedRoute adminOnly={true}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/bikes" element={
-              <ProtectedRoute adminOnly={true}>
-                <AllBikes />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/customers" element={
-              <ProtectedRoute adminOnly={true}>
-                <Customers />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/analytics" element={
-              <ProtectedRoute adminOnly={true}>
-                <Analytics />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/city-pages" element={
-              <ProtectedRoute adminOnly={true}>
-                <CityPages />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/blogs" element={
-              <ProtectedRoute adminOnly={true}>
-                <AdminBlogs />
-              </ProtectedRoute>
-            } />
-            <Route path="/locations" element={<Locations />} />
-            {/* Blog routes */}
-            <Route path="/blogs" element={<BlogList />} />
-            <Route path="/blogs/:slug" element={<BlogDetail />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-        <Footer />
-      </Router>
+              {/* Main bikes page with slug */}
+              <Route path="/bikes" element={<Bikes />} />
+              <Route path="/bikes/rent-bike-in-all-cities" element={<Bikes />} />
+              
+              {/* Dynamic city pages route - handles all city slugs */}
+              <Route path="/bikes/:citySlug" element={<DynamicCityPage />} />
+              
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Auth />} />
+              <Route path="/signup" element={<Auth />} />
+              <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+              <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+              <Route path="/admin/dashboard" element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/bikes" element={
+                <ProtectedRoute adminOnly={true}>
+                  <AllBikes />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/customers" element={
+                <ProtectedRoute adminOnly={true}>
+                  <Customers />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/analytics" element={
+                <ProtectedRoute adminOnly={true}>
+                  <Analytics />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/city-pages" element={
+                <ProtectedRoute adminOnly={true}>
+                  <CityPages />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/blogs" element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminBlogs />
+                </ProtectedRoute>
+              } />
+              <Route path="/locations" element={<Locations />} />
+              {/* Blog routes */}
+              <Route path="/blogs" element={<BlogList />} />
+              <Route path="/blogs/:slug" element={<BlogDetail />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+          <Footer />
+        </Router>
+      </HelmetProvider>
     </LocalizationProvider>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { 
   Phone, Menu, X, MapPin, Calendar, Clock, Users, DollarSign, Shield,ArrowRight, Play, Bike, Star,
   ChevronDown, ChevronUp, Facebook, Twitter, Instagram, Youtube, Smartphone
@@ -333,7 +334,65 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <>
+      <Helmet>
+        {/* Primary Meta Tags */}
+        <title>Rent a Bike in Your City | BookYourRide - Best Bike Rental Service</title>
+        <meta name="title" content="Rent a Bike in Your City | BookYourRide - Best Bike Rental Service" />
+        <meta name="description" content="BookYourRide.in is a convenient online platform designed to simplify vehicle booking for local and outstation travel. Whether you need a cab for daily commuting, airport transfers, or weekend getaways, BookYourRide.in offers a streamlined booking experience with reliable service, transparent pricing, and a user-friendly interface." />
+        <meta name="keywords" content="bike rental, motorcycle rental, scooter rental, bike rent online, bike booking, two wheeler rental, bike hire, motorcycle hire, scooter hire" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="author" content="BookYourRide" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.bookyourride.in/" />
+        <meta property="og:title" content="Rent a Bike in Your City | BookYourRide - Best Bike Rental Service" />
+        <meta property="og:description" content="BookYourRide.in is a convenient online platform designed to simplify vehicle booking for local and outstation travel. Whether you need a cab for daily commuting, airport transfers, or weekend getaways, BookYourRide.in offers a streamlined booking experience with reliable service, transparent pricing, and a user-friendly interface." />
+        <meta property="og:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
+        <meta property="og:site_name" content="BookYourRide" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.bookyourride.in/" />
+        <meta property="twitter:title" content="Rent a Bike in Your City | BookYourRide - Best Bike Rental Service" />
+        <meta property="twitter:description" content="BookYourRide.in is a convenient online platform designed to simplify vehicle booking for local and outstation travel. Whether you need a cab for daily commuting, airport transfers, or weekend getaways, BookYourRide.in offers a streamlined booking experience with reliable service, transparent pricing, and a user-friendly interface." />
+        <meta property="twitter:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#FDB813" />
+        <link rel="canonical" href="https://www.bookyourride.in/" />
+        
+        {/* Schema.org structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "BookYourRide",
+            "url": "https://www.bookyourride.in/",
+            "description": "BookYourRide.in is a convenient online platform designed to simplify vehicle booking for local and outstation travel.",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.bookyourride.in/search?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "BookYourRide",
+              "url": "https://www.bookyourride.in/",
+              "logo": "https://www.bookyourride.in/images/bike-rent-logo-2.png",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "9368584334",
+                "contactType": "customer service"
+              }
+            }
+          })}
+        </script>
+      </Helmet>
+      
       <Navbar />
       <RunningBanner />
       <PromoToast />
@@ -755,7 +814,7 @@ const Home = () => {
       </section>
 
    
-    </div>
+    </>
   );
 };
 
