@@ -26,6 +26,9 @@ import BlogDetail from './pages/BlogDetail';
 import AdminBlogs from './pages/AdminBlogs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
+import MainHome from "./pages/MainHome";
+import TexiHome from "./pages/texi-pages/TexiHome";
+import Tours from "./pages/Tours";
 
 
 function ProtectedRoute({ children, adminOnly }) {
@@ -52,6 +55,10 @@ function App() {
           <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/main-home" element={<MainHome />} />
+              <Route path="/texi-home" element={<TexiHome/>} />
+              <Route path="/taxi" element={<TexiHome/>} />
+              <Route path="/tours" element={<Tours />} />
 
               <Route path="/home" element={<Home />} />
 

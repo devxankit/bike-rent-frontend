@@ -476,88 +476,76 @@ const Home = () => {
                     </div>
                   )}
                 </div>
-                <div className="grid grid-cols-1 gap-2 mt-1.5">
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="relative">
-                      <CustomDatePicker
-                        ref={pickDateRef}
-                        value={pickDate}
-                        onChange={date => {
-                          setPickDate(date);
-                          setPickDateOpen(false);
-                          if (!pickTime) setPickTimeOpen(true); // Only open if not already set
-                        }}
-                        label="Pick Up Date"
-                        minDate={new Date()}
-                        popupDirection={pickDateDirection}
-                        onFocus={handlePickDateFocus}
-                        open={pickDateOpen}
-                        setOpen={setPickDateOpen}
-                        placeholder={currentDatePlaceholder}
-                      />
-                    </div>
-                    <div className="relative">
-                      <CustomTimePicker
-                        ref={pickTimeRef}
-                        value={pickTime}
-                        onChange={time => {
-                          setPickTime(time);
-                          setPickTimeOpen(false);
-                          if (!pickDate) setPickDateOpen(true); // Only open if not already set
-                        }}
-                        label="Pick Up Time"
-                        selectedDate={pickDate}
-                        popupDirection={pickTimeDirection}
-                        onFocus={handlePickTimeFocus}
-                        open={pickTimeOpen}
-                        setOpen={setPickTimeOpen}
-                        placeholder={currentTimePlaceholder}
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="relative">
-                      <CustomDatePicker
-                        ref={dropDateRef}
-                        value={dropDate}
-                        onChange={date => {
-                          setDropDate(date);
-                          setDropDateOpen(false);
-                          if (!dropTime) setDropTimeOpen(true); // Only open if not already set
-                        }}
-                        label="Drop Off Date"
-                        minDate={pickDate || new Date()}
-                        popupDirection={dropDateDirection}
-                        onFocus={handleDropDateFocus}
-                        open={dropDateOpen}
-                        setOpen={setDropDateOpen}
-                        placeholder={currentDatePlaceholder}
-                      />
-                    </div>
-                    <div className="relative">
-                      <CustomTimePicker
-                        ref={dropTimeRef}
-                        value={dropTime}
-                        onChange={time => {
-                          setDropTime(time);
-                          setDropTimeOpen(false);
-                          if (!dropDate) setDropDateOpen(true); // Only open if not already set
-                        }}
-                        label="Drop Off Time"
-                        selectedDate={dropDate}
-                        popupDirection={dropTimeDirection}
-                        onFocus={handleDropTimeFocus}
-                        open={dropTimeOpen}
-                        setOpen={setDropTimeOpen}
-                        placeholder={currentTimePlaceholder}
-                        minDateTime={
-                          dropDate && pickDate && pickTime && dropDate.getFullYear() === pickDate.getFullYear() && dropDate.getMonth() === pickDate.getMonth() && dropDate.getDate() === pickDate.getDate()
-                            ? (() => { const d = new Date(dropDate); d.setHours(pickTime.getHours(), pickTime.getMinutes(), 0, 0); return d; })()
-                            : undefined
-                        }
-                      />
-                    </div>
-                  </div>
+                <div className="grid grid-cols-2 gap-2 mt-1.5">
+                  <CustomDatePicker
+                    ref={pickDateRef}
+                    value={pickDate}
+                    onChange={date => {
+                      setPickDate(date);
+                      setPickDateOpen(false);
+                      if (!pickTime) setPickTimeOpen(true); // Only open if not already set
+                    }}
+                    label="Pick Up Date"
+                    minDate={new Date()}
+                    popupDirection={pickDateDirection}
+                    onFocus={handlePickDateFocus}
+                    open={pickDateOpen}
+                    setOpen={setPickDateOpen}
+                    placeholder={currentDatePlaceholder}
+                  />
+                  <CustomTimePicker
+                    ref={pickTimeRef}
+                    value={pickTime}
+                    onChange={time => {
+                      setPickTime(time);
+                      setPickTimeOpen(false);
+                      if (!pickDate) setPickDateOpen(true); // Only open if not already set
+                    }}
+                    label="Pick Up Time"
+                    selectedDate={pickDate}
+                    popupDirection={pickTimeDirection}
+                    onFocus={handlePickTimeFocus}
+                    open={pickTimeOpen}
+                    setOpen={setPickTimeOpen}
+                    placeholder={currentTimePlaceholder}
+                  />
+                  <CustomDatePicker
+                    ref={dropDateRef}
+                    value={dropDate}
+                    onChange={date => {
+                      setDropDate(date);
+                      setDropDateOpen(false);
+                      if (!dropTime) setDropTimeOpen(true); // Only open if not already set
+                    }}
+                    label="Drop Off Date"
+                    minDate={pickDate || new Date()}
+                    popupDirection={dropDateDirection}
+                    onFocus={handleDropDateFocus}
+                    open={dropDateOpen}
+                    setOpen={setDropDateOpen}
+                    placeholder={currentDatePlaceholder}
+                  />
+                  <CustomTimePicker
+                    ref={dropTimeRef}
+                    value={dropTime}
+                    onChange={time => {
+                      setDropTime(time);
+                      setDropTimeOpen(false);
+                      if (!dropDate) setDropDateOpen(true); // Only open if not already set
+                    }}
+                    label="Drop Off Time"
+                    selectedDate={dropDate}
+                    popupDirection={dropTimeDirection}
+                    onFocus={handleDropTimeFocus}
+                    open={dropTimeOpen}
+                    setOpen={setDropTimeOpen}
+                    placeholder={currentTimePlaceholder}
+                    minDateTime={
+                      dropDate && pickDate && pickTime && dropDate.getFullYear() === pickDate.getFullYear() && dropDate.getMonth() === pickDate.getMonth() && dropDate.getDate() === pickDate.getDate()
+                        ? (() => { const d = new Date(dropDate); d.setHours(pickTime.getHours(), pickTime.getMinutes(), 0, 0); return d; })()
+                        : undefined
+                    }
+                  />
                 </div>
                 <hr className="my-2 border-gray-200" />
                 <div className="flex items-center justify-between text-[11px] text-gray-500 font-semibold">
