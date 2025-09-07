@@ -18,7 +18,7 @@ const messages = [
 // Repeat messages for seamless loop
 const bannerText = messages.concat(messages).join('   •   ');
 
-export default function TexiRunningBanner() {
+export default function TaxiRunningBanner() {
   return (
     <div className="w-full h-[25px] bg-gradient-to-r from-[#FDB813] to-[#FDB813] flex items-center overflow-hidden relative shadow-sm z-0">
       <div className="absolute left-0 top-0 w-full h-full pointer-events-none" style={{ background: 'linear-gradient(to right, #FDB813 0%, #FDB813 80%, transparent 100%)' }} />

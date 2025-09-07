@@ -19,6 +19,8 @@ import Customers from './pages/Customers';
 import Analytics from './pages/Analytics';
 import CityPages from './pages/CityPages';
 import DynamicCityPage from './pages/DynamicCityPage';
+import TaxiCityPages from './pages/TaxiCityPages';
+import DynamicTaxiCityPage from './pages/DynamicTaxiCityPage';
 import ScrollToTop from './components/ScrollToTop';
 import Locations from "./pages/locations";
 import BlogList from './pages/BlogList';
@@ -27,7 +29,7 @@ import AdminBlogs from './pages/AdminBlogs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
 import MainHome from "./pages/MainHome";
-import TexiHome from "./pages/texi-pages/TexiHome";
+import TaxiHome from "./pages/taxi-pages/TaxiHome";
 import Tours from "./pages/Tours";
 
 
@@ -56,8 +58,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/main-home" element={<MainHome />} />
-              <Route path="/texi-home" element={<TexiHome/>} />
-              <Route path="/taxi" element={<TexiHome/>} />
+              <Route path="/taxi-home" element={<TaxiHome/>} />
+              <Route path="/taxi" element={<TaxiHome/>} />
               <Route path="/tours" element={<Tours />} />
 
               <Route path="/home" element={<Home />} />
@@ -68,6 +70,9 @@ function App() {
               
               {/* Dynamic city pages route - handles all city slugs */}
               <Route path="/bikes/:citySlug" element={<DynamicCityPage />} />
+              
+              {/* Dynamic taxi city pages route - handles all taxi city slugs */}
+              <Route path="/taxi/:citySlug" element={<DynamicTaxiCityPage />} />
               
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
@@ -98,6 +103,11 @@ function App() {
               <Route path="/admin/city-pages" element={
                 <ProtectedRoute adminOnly={true}>
                   <CityPages />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/taxi-cities" element={
+                <ProtectedRoute adminOnly={true}>
+                  <TaxiCityPages />
                 </ProtectedRoute>
               } />
               <Route path="/admin/blogs" element={

@@ -43,4 +43,40 @@ export const getCityFromPath = (pathname) => {
 
 export const generateBikesSlug = () => {
   return 'rent-bike-in-all-cities';
+};
+
+// Taxi city slug utilities
+export const generateTaxiCitySlug = (cityName) => {
+  if (!cityName) return '';
+  const city = cityName.trim().toLowerCase();
+  return `taxi-service-in-${city}`;
+};
+
+export const parseTaxiCityFromSlug = (slug) => {
+  if (!slug) return '';
+  
+  // Handle full format: "taxi-service-in-city"
+  if (slug.startsWith('taxi-service-in-')) {
+    return slug.replace('taxi-service-in-', '');
+  }
+  
+  // Handle short format: "city" (for backward compatibility)
+  // This handles cases where just the city name is used
+  return slug;
+};
+
+export const isValidTaxiCitySlug = (slug) => {
+  if (!slug) return false;
+  const city = parseTaxiCityFromSlug(slug);
+  const validCities = ["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"];
+  return validCities.includes(city.toLowerCase());
+};
+
+export const getTaxiCityFromPath = (pathname) => {
+  // Extract city from path like "/taxi/taxi-service-in-indore" or "/taxi/indore"
+  const match = pathname.match(/\/taxi\/(.+)/);
+  if (match) {
+    return parseTaxiCityFromSlug(match[1]);
+  }
+  return '';
 }; 

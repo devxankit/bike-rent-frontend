@@ -1,11 +1,11 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
-import Navbar from '../../components/Navbar'
-import GoogleMapsLoader from '../../components/texi-components/GoogleMapsLoader'
-import TexiBookingForm from '../../components/texi-components/TexiBookingForm'
-import TexiRunningBanner from '../../components/texi-components/TexiRunningBanner'
+import TaxiNavBar from '../../components/taxi-components/TaxiNavBar'
+import GoogleMapsLoader from '../../components/taxi-components/GoogleMapsLoader'
+import TaxiBookingForm from '../../components/taxi-components/TaxiBookingForm'
+import TaxiRunningBanner from '../../components/taxi-components/TaxiRunningBanner'
 
-const TexiHome = () => {
+const TaxiHome = () => {
 
   return (
     <>
@@ -41,15 +41,15 @@ const TexiHome = () => {
       </Helmet>
       
       <GoogleMapsLoader />
-      <Navbar />
-      <TexiRunningBanner />
+      <TaxiNavBar />
+      <TaxiRunningBanner />
 
       {/* Hero Section */}
       <section className="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 z-[1000]">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30 z-[-99]"
-          style={{ backgroundImage: "url('/images/texi-bg-1.png')" }}
+          style={{ backgroundImage: "url('/images/taxi-bg-1.png')" }}
         ></div>
         
         {/* Content */}
@@ -57,7 +57,7 @@ const TexiHome = () => {
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center">
             {/* Booking Form on Top (mobile), Left (desktop) */}
             <div className="order-1 lg:order-1 flex justify-center">
-              <TexiBookingForm />
+              <TaxiBookingForm />
             </div>
             
             {/* Hero Text below form (mobile), Right (desktop) */}
@@ -77,4 +77,4 @@ const TexiHome = () => {
   )
 }
 
-export default TexiHome
+export default TaxiHome

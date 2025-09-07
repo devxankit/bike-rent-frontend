@@ -10,7 +10,7 @@ const MainHome = () => {
   const cardData = [
     {
       id: 1,
-      title: 'Texi',
+      title: 'Taxi',
       image: '/images/bike-banner-1.jpeg',
       route: '/taxi',
       description: 'Book your taxi rides'

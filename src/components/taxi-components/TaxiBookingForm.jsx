@@ -20,7 +20,7 @@ import {
   Search as SearchIcon
 } from '@mui/icons-material'
 
-const TexiBookingForm = () => {
+const TaxiBookingForm = () => {
   // Form state
   const [tripType, setTripType] = useState('round-trip');
   const [pickupLocation, setPickupLocation] = useState('');
@@ -359,4 +359,4 @@ const TexiBookingForm = () => {
   );
 };
 
-export default TexiBookingForm;
+export default TaxiBookingForm;

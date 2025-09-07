@@ -15,6 +15,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { FaTaxi } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardNavbar from '../components/DashboardNabvar';
 
@@ -233,6 +234,7 @@ export default function AdminDashboard() {
     { label: 'Bikes', icon: <DirectionsBikeIcon />, path: '/admin/bikes' },
     { label: 'Bookings', icon: <CalendarTodayIcon />, path: '/admin/bikes?tab=1' },
     { label: 'City Pages', icon: <SettingsIcon />, path: '/admin/city-pages' },
+    { label: 'Taxi Cities', icon: <FaTaxi />, path: '/admin/taxi-cities' },
     { label: 'Customers', icon: <PeopleIcon />, path: '/admin/customers' },
     { label: 'Analytics', icon: <BarChartIcon />, path: '/admin/analytics' },
     { label: 'Blog', icon: <EditIcon />, path: '/admin/blogs' },
@@ -275,6 +277,8 @@ export default function AdminDashboard() {
                 isActive = location.pathname === '/admin/dashboard';
               } else if (item.label === 'City Pages') {
                 isActive = location.pathname === '/admin/city-pages';
+              } else if (item.label === 'Taxi Cities') {
+                isActive = location.pathname === '/admin/taxi-cities';
               } else if (item.label === 'Customers') {
                 isActive = location.pathname === '/admin/customers';
               } else if (item.label === 'Analytics') {
@@ -300,6 +304,7 @@ export default function AdminDashboard() {
                     else if (item.label === 'Bikes') navigate('/admin/bikes');
                     else if (item.label === 'Dashboard') navigate('/admin/dashboard');
                     else if (item.label === 'City Pages') navigate('/admin/city-pages');
+                    else if (item.label === 'Taxi Cities') navigate('/admin/taxi-cities');
                     else if (item.label === 'Customers') navigate('/admin/customers');
                     else if (item.label === 'Analytics') navigate('/admin/analytics');
                     else if (item.label === 'Blog') navigate('/admin/blogs');
