@@ -472,7 +472,7 @@ const GoogleMapsAutocomplete = ({
           placeholder={placeholder}
           InputLabelProps={{ style: { color: '#666', fontWeight: 600, fontSize: 15 } }}
           InputProps={{
-            style: { fontSize: 15, background: '#f8f8f8', borderRadius: 2, height: 48 },
+            style: { fontSize: 15, background: 'white', borderRadius: 2, height: 48 },
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
