@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom slider styles */
+.slider-thumb-glow::-webkit-slider-thumb {
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #FDB813;
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(253, 184, 19, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.slider-thumb-glow::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 6px rgba(253, 184, 19, 0.3), 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.1);
+}
+
+.slider-thumb-glow::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #FDB813;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 0 4px rgba(253, 184, 19, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.slider-thumb-glow::-moz-range-thumb:hover {
+  box-shadow: 0 0 0 6px rgba(253, 184, 19, 0.3), 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.1);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

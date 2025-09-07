@@ -95,7 +95,9 @@ export default function TaxiCityPages() {
 
   const handleTaxiTypesChange = (event) => {
     const value = event.target.value;
-    setCityForm(prev => ({ ...prev, taxiTypes: typeof value === 'string' ? value.split(',') : value }));
+    // Ensure we're working with strings for the form
+    const stringValues = Array.isArray(value) ? value.map(v => typeof v === 'string' ? v : v.type || v) : (typeof value === 'string' ? value.split(',') : []);
+    setCityForm(prev => ({ ...prev, taxiTypes: stringValues }));
   };
 
   const handleServiceAreasChange = (event) => {
@@ -180,7 +182,7 @@ export default function TaxiCityPages() {
       description: city.description || '',
       content: city.content || '',
       image: null,
-      taxiTypes: city.taxiTypes || [],
+      taxiTypes: Array.isArray(city.taxiTypes) ? city.taxiTypes.map(t => typeof t === 'string' ? t : t.type || t) : [],
       serviceAreas: city.serviceAreas || [],
       seoTitle: city.seoTitle || '',
       seoDescription: city.seoDescription || '',
@@ -365,7 +367,7 @@ export default function TaxiCityPages() {
                       renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                           {selected.map((value) => (
-                            <Chip key={value} label={value} size="small" />
+                            <Chip key={typeof value === 'string' ? value : value.type || value._id} label={typeof value === 'string' ? value : value.type || 'Unknown'} size="small" />
                           ))}
                         </Box>
                       )}

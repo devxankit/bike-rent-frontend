@@ -1,282 +1,335 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { Box, Typography, Container, Grid, Card, CardContent, Button, Chip, Alert, CircularProgress } from '@mui/material';
-import { FaTaxi, FaMapMarkerAlt, FaClock, FaMoneyBillWave, FaStar, FaPhone, FaEnvelope } from 'react-icons/fa';
-import TaxiNavBar from '../components/taxi-components/TaxiNavBar';
 import api from '../utils/api';
-import { parseTaxiCityFromSlug } from '../utils/slugUtils';
+import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
+import TaxiFilterSidebar from '../components/TaxiFilterSidebar';
+import { FiX } from 'react-icons/fi';
+import { generateTaxiCitySlug, parseTaxiCityFromSlug } from '../utils/slugUtils';
+import { Box, Typography } from '@mui/material';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const DynamicTaxiCityPage = () => {
   const { citySlug } = useParams();
   const [taxiCity, setTaxiCity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [location, setLocation] = useState('');
+  const [allLocations, setAllLocations] = useState([]);
+  const [taxiName, setTaxiName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [maxPrice] = useState(10000);
+  const navigate = useNavigate();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const scrollRef = useScrollAnimation();
 
   useEffect(() => {
     fetchTaxiCity();
   }, [citySlug]);
 
+  useEffect(() => {
+    // Fetch all cities for the filter dropdown
+    const fetchCities = async () => {
+      try {
+        const citiesRes = await api.get('/api/taxi-cities');
+        const cityNames = citiesRes.data.map(city => city.name);
+        setAllLocations(cityNames);
+      } catch (err) {
+        console.error('Failed to fetch cities:', err);
+        setAllLocations([]);
+      }
+    };
+    fetchCities();
+  }, []);
+
   const fetchTaxiCity = async () => {
     try {
       setLoading(true);
-      console.log('Fetching taxi city with slug:', citySlug);
+      setError('');
       
-      // Parse the city name from the slug (handles both short and full formats)
-      const cityName = parseTaxiCityFromSlug(citySlug);
-      console.log('Parsed city name:', cityName);
+      const response = await api.get(`/api/taxi-cities/${citySlug}`);
+      const cityData = response.data;
       
-      // Try to fetch by the original slug first (for full slugs like "taxi-service-in-indore")
-      let response;
-      try {
-        response = await api.get(`/api/taxi-cities/${citySlug}`);
-      } catch (slugError) {
-        // If that fails, try with just the city name (for short slugs like "indore")
-        console.log('Trying with city name:', cityName);
-        response = await api.get(`/api/taxi-cities/${cityName}`);
-      }
-      
-      console.log('Taxi city data received:', response.data);
-      setTaxiCity(response.data);
+      setTaxiCity(cityData);
+      setLocation(cityData.name || parseTaxiCityFromSlug(citySlug));
     } catch (err) {
       console.error('Error fetching taxi city:', err);
       setError('Taxi city not found');
+      setLocation(parseTaxiCityFromSlug(citySlug));
     } finally {
       setLoading(false);
     }
   };
 
+  // Redirect to city route on city change
+  useEffect(() => {
+    if (location && location.toLowerCase() !== parseTaxiCityFromSlug(citySlug).toLowerCase()) {
+      const city = location.trim().toLowerCase();
+      if (city) {
+        const slug = generateTaxiCitySlug(city);
+        navigate(`/taxi/${slug}`);
+      } else {
+        navigate(`/taxi`);
+      }
+    }
+  }, [location, navigate, citySlug]);
+
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <CircularProgress />
-      </Box>
+      <>
+        <Navbar onFilterToggle={() => setFilterOpen(true)} />
+        <div className="flex min-h-screen bg-gray-50 items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading taxi services...</p>
+          </div>
+        </div>
+      </>
     );
   }
 
-  if (error || !taxiCity) {
+  if (error) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <Alert severity="error">{error}</Alert>
-      </Box>
+      <>
+        <Navbar onFilterToggle={() => setFilterOpen(true)} />
+        <div className="flex min-h-screen bg-gray-50 items-center justify-center">
+          <div className="text-center">
+            <div className="text-6xl mb-4">🚕</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Taxi City Not Found</h2>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <button
+              onClick={() => navigate('/taxi')}
+              className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
+            >
+              Back to Taxi Services
+            </button>
+          </div>
+        </div>
+      </>
     );
   }
 
   return (
     <>
-      <Helmet>
-        <title>{taxiCity.seoTitle || `Taxi Service in ${taxiCity.name} | BookYourRide`}</title>
-        <meta name="description" content={taxiCity.seoDescription || `Book reliable taxi services in ${taxiCity.name}. Professional drivers, comfortable vehicles, and transparent pricing.`} />
-        <meta name="keywords" content={taxiCity.metaKeywords || `taxi service ${taxiCity.name}, cab booking ${taxiCity.name}, taxi rental ${taxiCity.name}`} />
-        <meta property="og:title" content={taxiCity.seoTitle || `Taxi Service in ${taxiCity.name}`} />
-        <meta property="og:description" content={taxiCity.seoDescription || `Book reliable taxi services in ${taxiCity.name}. Professional drivers, comfortable vehicles, and transparent pricing.`} />
-        <meta property="og:image" content={taxiCity.image || '/images/taxi-bg-1.png'} />
-      </Helmet>
-      
-      <TaxiNavBar />
-      
-      {/* Hero Section */}
-      <Box
-        sx={{
-          backgroundImage: taxiCity.image ? `url(${taxiCity.image})` : "url('/images/taxi-bg-1.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          minHeight: '400px',
-          display: 'flex',
-          alignItems: 'center',
-          position: 'relative',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 1
-          }
-        }}
-      >
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
-          <Box sx={{ color: 'white', textAlign: 'center' }}>
-            <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
-              Taxi Service in {taxiCity.name}
-            </Typography>
-            <Typography variant="h5" sx={{ mb: 3, opacity: 0.9 }}>
-              Professional taxi services with comfortable vehicles and experienced drivers
-            </Typography>
-            <Button
-              variant="contained"
-              size="large"
-              startIcon={<FaTaxi />}
-              sx={{ 
-                bgcolor: '#FDB813', 
-                '&:hover': { bgcolor: '#E6A612' },
-                px: 4,
-                py: 1.5
-              }}
-            >
-              Book Your Taxi Now
-            </Button>
-          </Box>
-        </Container>
-      </Box>
-
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        {/* City Description */}
-        {taxiCity.description && (
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ color: '#FDB813', fontWeight: 'bold', mb: 3 }}>
-              About {taxiCity.name} Taxi Services
-            </Typography>
-            <Box 
-              sx={{ 
-                '& p': { mb: 2 },
-                '& h1, & h2, & h3, & h4, & h5, & h6': { color: '#FDB813', fontWeight: 'bold', mb: 1, mt: 2 },
-                '& ul, & ol': { pl: 3, mb: 2 },
-                '& li': { mb: 0.5 }
-              }}
-              dangerouslySetInnerHTML={{ __html: taxiCity.description }}
-            />
-          </Box>
+      <Navbar onFilterToggle={() => setFilterOpen(true)} />
+      <div className="flex min-h-screen bg-gray-50">
+        {/* Filters - Left Sidebar */}
+        <aside className="w-80 p-4 bg-white border-r hidden md:block sticky top-0 h-screen shadow-lg rounded-r-3xl" style={{ alignSelf: 'flex-start' }}>
+          <TaxiFilterSidebar
+            location={location}
+            setLocation={setLocation}
+            allLocations={allLocations}
+            taxiName={taxiName}
+            setTaxiName={setTaxiName}
+            price={price}
+            setPrice={setPrice}
+            maxPrice={maxPrice}
+            navigate={navigate}
+          />
+        </aside>
+        
+        {/* Mobile Filter Popup */}
+        {filterOpen && (
+         <div className="fixed inset-0 z-[100010] flex md:hidden">
+         {/* Overlay */}
+         <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
+         {/* Popup - always slide in from left */}
+           <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-base font-bold text-yellow-500">Taxi Filters</h2>
+                 <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
+                   <FiX className="w-5 h-5 text-yellow-500" />
+                  </button>
+              </div>
+              <TaxiFilterSidebar
+                location={location}
+                setLocation={setLocation}
+                allLocations={allLocations}
+                taxiName={taxiName}
+                setTaxiName={setTaxiName}
+                price={price}
+                setPrice={setPrice}
+                maxPrice={maxPrice}
+                navigate={navigate}
+                compact
+              />
+            </div>
+          </div>
         )}
-
-        {/* Taxi Types Section */}
-        {taxiCity.taxiTypes && taxiCity.taxiTypes.length > 0 && (
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ color: '#FDB813', fontWeight: 'bold', mb: 3 }}>
-              Available Taxi Types
-            </Typography>
-            <Grid container spacing={3}>
-              {taxiCity.taxiTypes.map((taxiType, index) => (
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)' } }}>
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Box display="flex" alignItems="center" mb={2}>
-                        <FaTaxi style={{ marginRight: 8, color: '#FDB813', fontSize: '1.5rem' }} />
-                        <Typography variant="h6" component="h3" sx={{ fontWeight: 'bold' }}>
-                          {taxiType.type || taxiType}
-                        </Typography>
-                      </Box>
-                      
-                      {taxiType.description && (
-                        <Typography variant="body2" color="text.secondary" paragraph>
-                          {taxiType.description}
-                        </Typography>
-                      )}
-                      
-                      <Box mb={2}>
-                        {taxiType.basePrice && (
-                          <Typography variant="h6" color="primary" sx={{ fontWeight: 'bold' }}>
-                            ₹{taxiType.basePrice}
-                            {taxiType.pricePerKm && ` + ₹${taxiType.pricePerKm}/km`}
-                          </Typography>
-                        )}
-                      </Box>
-                      
-                      <Box mb={2}>
-                        <Chip
-                          label={taxiType.isAvailable ? 'Available' : 'Not Available'}
-                          color={taxiType.isAvailable ? 'success' : 'error'}
-                          size="small"
-                        />
-                      </Box>
-                      
-                      <Button
-                        variant="contained"
-                        fullWidth
-                        startIcon={<FaTaxi />}
-                        disabled={!taxiType.isAvailable}
-                        sx={{ mt: 'auto' }}
-                      >
-                        Book {taxiType.type || taxiType}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        )}
-
-        {/* Service Areas */}
-        {taxiCity.serviceAreas && taxiCity.serviceAreas.length > 0 && (
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ color: '#FDB813', fontWeight: 'bold', mb: 3 }}>
-              Service Areas
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {taxiCity.serviceAreas.map((area, index) => (
-                <Chip
-                  key={index}
-                  label={area}
-                  icon={<FaMapMarkerAlt />}
-                  color="primary"
-                  variant="outlined"
-                  sx={{ mb: 1 }}
-                />
-              ))}
-            </Box>
-          </Box>
-        )}
-
-        {/* City Content */}
-        {taxiCity.content && (
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ color: '#FDB813', fontWeight: 'bold', mb: 3 }}>
-              More About {taxiCity.name}
-            </Typography>
-            <Box 
-              sx={{ 
-                '& p': { mb: 2 },
-                '& h1, & h2, & h3, & h4, & h5, & h6': { color: '#FDB813', fontWeight: 'bold', mb: 1, mt: 2 },
-                '& ul, & ol': { pl: 3, mb: 2 },
-                '& li': { mb: 0.5 },
-                '& img': { maxWidth: '100%', height: 'auto', borderRadius: 1 }
-              }}
-              dangerouslySetInnerHTML={{ __html: taxiCity.content }}
-            />
-          </Box>
-        )}
-
-        {/* Contact Section */}
-        <Box sx={{ mb: 4 }}>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ color: '#FDB813', fontWeight: 'bold', mb: 3 }}>
-              Book Your Taxi
-            </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <Card sx={{ p: 3, textAlign: 'center' }}>
-                <FaPhone style={{ fontSize: '2rem', color: '#FDB813', marginBottom: '1rem' }} />
-                <Typography variant="h6" gutterBottom>
-                  Call Now
-                </Typography>
-                <Typography variant="body1" color="text.secondary" paragraph>
-                  Speak to our customer service team
-                </Typography>
-                <Button variant="contained" startIcon={<FaPhone />}>
-                  +91 9876543210
-                </Button>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Card sx={{ p: 3, textAlign: 'center' }}>
-                <FaEnvelope style={{ fontSize: '2rem', color: '#FDB813', marginBottom: '1rem' }} />
-                <Typography variant="h6" gutterBottom>
-                  Email Us
-                </Typography>
-                <Typography variant="body1" color="text.secondary" paragraph>
-                  Send us your requirements
-                </Typography>
-                <Button variant="outlined" startIcon={<FaEnvelope />}>
-                  info@bookyourride.in
-                </Button>
-              </Card>
-            </Grid>
-          </Grid>
-        </Box>
-      </Container>
+        
+        {/* Main Content - Right Side */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-6">
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Taxis in {location}</h1>
+              <p className="text-gray-600">Find the perfect taxi for your journey in {location}</p>
+            </div>
+            
+            {/* No Taxis Message */}
+            <div className="text-center py-12">
+              <div className="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto">
+                <div className="text-6xl mb-4">🚕</div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No Taxis Available Yet
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  We're working on adding taxi services to {location}. 
+                  Check back soon for available taxis!
+                </p>
+                <div className="text-sm text-gray-500">
+                  <p>• Economy Taxis</p>
+                  <p>• Premium Taxis</p>
+                  <p>• Luxury Vehicles</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* City Page Content - Displayed below taxi listings in main content area */}
+            {taxiCity && taxiCity.content && (
+              <div ref={scrollRef} className="animate-fade-in-up mt-8">
+                <Box 
+                  sx={{ 
+                    p: 4,
+                    bgcolor: 'white',
+                    borderRadius: 3,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    border: '1px solid #e5e7eb',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                      background: 'linear-gradient(90deg, #FDB813 0%, #E6A612 100%)',
+                      borderRadius: '12px 12px 0 0'
+                    }
+                  }}
+                >
+                  <Box 
+                    dangerouslySetInnerHTML={{ __html: taxiCity.content }}
+                    sx={{
+                      '& h1, & h2, & h3, & h4, & h5, & h6': {
+                        color: '#1f2937',
+                        fontWeight: 600,
+                        mb: 2,
+                        mt: 3,
+                        lineHeight: 1.3
+                      },
+                      '& h1': { fontSize: { xs: '1.75rem', md: '2rem' } },
+                      '& h2': { fontSize: { xs: '1.5rem', md: '1.75rem' } },
+                      '& h3': { fontSize: { xs: '1.25rem', md: '1.5rem' } },
+                      '& h4': { fontSize: { xs: '1.125rem', md: '1.25rem' } },
+                      '& h5': { fontSize: { xs: '1rem', md: '1.125rem' } },
+                      '& h6': { fontSize: '1rem' },
+                      '& p': {
+                        color: '#4b5563',
+                        lineHeight: 1.8,
+                        mb: 3,
+                        fontSize: '1rem',
+                        textAlign: 'justify'
+                      },
+                      '& ul, & ol': {
+                        color: '#4b5563',
+                        lineHeight: 1.8,
+                        mb: 3,
+                        pl: 4
+                      },
+                      '& li': {
+                        mb: 1.5,
+                        position: 'relative'
+                      },
+                      '& ul li::before': {
+                        content: '"•"',
+                        color: '#FDB813',
+                        fontWeight: 'bold',
+                        position: 'absolute',
+                        left: '-1.5rem'
+                      },
+                      '& a': {
+                        color: '#FDB813',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        borderBottom: '1px solid transparent',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          borderBottomColor: '#FDB813',
+                          color: '#E6A612'
+                        }
+                      },
+                      '& img': {
+                        maxWidth: '100%',
+                        height: 'auto',
+                        borderRadius: 2,
+                        my: 3,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                          transform: 'scale(1.02)'
+                        }
+                      },
+                      '& blockquote': {
+                        borderLeft: '4px solid #FDB813',
+                        pl: 3,
+                        ml: 0,
+                        fontStyle: 'italic',
+                        color: '#6b7280',
+                        bgcolor: '#f9fafb',
+                        p: 3,
+                        borderRadius: 2,
+                        my: 3,
+                        position: 'relative',
+                        '&::before': {
+                          content: '""',
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background: 'linear-gradient(135deg, rgba(250, 204, 21, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%)',
+                          borderRadius: 2,
+                          zIndex: -1
+                        }
+                      },
+                      '& strong, & b': {
+                        fontWeight: 700,
+                        color: '#1f2937'
+                      },
+                      '& em, & i': {
+                        fontStyle: 'italic',
+                        color: '#6b7280'
+                      },
+                      '& table': {
+                        width: '100%',
+                        borderCollapse: 'collapse',
+                        my: 3,
+                        borderRadius: 2,
+                        overflow: 'hidden',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                      },
+                      '& th, & td': {
+                        border: '1px solid #e5e7eb',
+                        padding: '12px',
+                        textAlign: 'left'
+                      },
+                      '& th': {
+                        bgcolor: '#FDB813',
+                        color: '#1f2937',
+                        fontWeight: 600
+                      },
+                      '& tr:nth-of-type(even)': {
+                        bgcolor: '#f9fafb'
+                      }
+                    }}
+                  />
+                </Box>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
     </>
   );
 };
