@@ -32,23 +32,48 @@ const initialForm = {
   ownerPhone: '',
 };
 
+const initialTaxiForm = {
+  name: '',
+  type: '',
+  image: '',
+  location: '',
+  seatingCapacity: '',
+  pricePerKm: '',
+  pricePerTrip: '',
+  rentalPricePerDay: '',
+  acType: '',
+  luggageCapacity: '',
+  fuelType: '',
+  features: '',
+  ownerPhone: '',
+  tripsCount: '',
+  payAtPickup: false,
+};
+
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
   const [bikes, setBikes] = useState([]);
+  const [taxis, setTaxis] = useState([]);
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState(initialForm);
+  const [taxiForm, setTaxiForm] = useState(initialTaxiForm);
   const [cities, setCities] = useState([]);
+  const [taxiCities, setTaxiCities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [editId, setEditId] = useState(null);
+  const [taxiEditId, setTaxiEditId] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
+  const [taxiImagePreview, setTaxiImagePreview] = useState('');
   const [tab, setTab] = useState(0);
   const [bookingDialog, setBookingDialog] = useState({ open: false, bike: null });
   const [bookingFrom, setBookingFrom] = useState(null);
   const [bookingTo, setBookingTo] = useState(null);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, bikeId: null, anchorEl: null });
+  const [taxiDeleteDialog, setTaxiDeleteDialog] = useState({ open: false, taxiId: null, anchorEl: null });
   const [bikeFormOpen, setBikeFormOpen] = useState(false);
+  const [taxiFormOpen, setTaxiFormOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -62,8 +87,10 @@ export default function AdminDashboard() {
       })
       .catch(() => setError('Failed to fetch dashboard'));
     fetchBikes();
+    fetchTaxis();
     fetchUsers();
     fetchCities();
+    fetchTaxiCities();
   }, []);
 
   // Fetch dynamic cities from backend
@@ -76,12 +103,30 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchTaxiCities = async () => {
+    try {
+      const res = await api.get('/api/taxi-cities');
+      setTaxiCities(res.data || []);
+    } catch {
+      setTaxiCities([]);
+    }
+  };
+
   const fetchBikes = async () => {
     try {
       const res = await api.get('/api/bikes');
       setBikes(res.data);
     } catch {
       setSnackbar({ open: true, message: 'Failed to fetch bikes', severity: 'error' });
+    }
+  };
+
+  const fetchTaxis = async () => {
+    try {
+      const res = await api.get('/api/taxis');
+      setTaxis(res.data);
+    } catch {
+      setSnackbar({ open: true, message: 'Failed to fetch taxis', severity: 'error' });
     }
   };
 
@@ -103,6 +148,18 @@ export default function AdminDashboard() {
       setForm(f => ({ ...f, [name]: checked }));
     } else {
       setForm(f => ({ ...f, [name]: value }));
+    }
+  };
+
+  const handleTaxiChange = e => {
+    const { name, value, type, checked, files } = e.target;
+    if (name === 'image' && files && files[0]) {
+      setTaxiForm(f => ({ ...f, image: files[0] }));
+      setTaxiImagePreview(URL.createObjectURL(files[0]));
+    } else if (type === 'checkbox') {
+      setTaxiForm(f => ({ ...f, [name]: checked }));
+    } else {
+      setTaxiForm(f => ({ ...f, [name]: value }));
     }
   };
 
@@ -148,6 +205,53 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleTaxiSubmit = async e => {
+    e.preventDefault();
+    setLoading(true);
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('name', taxiForm.name);
+    formData.append('type', taxiForm.type);
+    formData.append('location', taxiForm.location);
+    formData.append('seatingCapacity', taxiForm.seatingCapacity);
+    formData.append('pricePerKm', taxiForm.pricePerKm);
+    formData.append('pricePerTrip', taxiForm.pricePerTrip);
+    formData.append('rentalPricePerDay', taxiForm.rentalPricePerDay);
+    formData.append('acType', taxiForm.acType);
+    formData.append('luggageCapacity', taxiForm.luggageCapacity);
+    formData.append('fuelType', taxiForm.fuelType);
+    formData.append('features', taxiForm.features);
+    formData.append('ownerPhone', taxiForm.ownerPhone);
+    formData.append('tripsCount', taxiForm.tripsCount);
+    formData.append('payAtPickup', taxiForm.payAtPickup);
+    if (taxiForm.image && taxiForm.image instanceof File) {
+      formData.append('image', taxiForm.image);
+    } else if (taxiEditId && typeof taxiForm.image === 'string') {
+      formData.append('image', taxiForm.image);
+    }
+    try {
+      if (taxiEditId) {
+        await api.put(`/api/taxis/${taxiEditId}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        setSnackbar({ open: true, message: 'Taxi updated!', severity: 'success' });
+      } else {
+        await api.post('/api/taxis', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        setSnackbar({ open: true, message: 'Taxi added!', severity: 'success' });
+      }
+      setTaxiForm(initialTaxiForm);
+      setTaxiEditId(null);
+      setTaxiImagePreview('');
+      fetchTaxis();
+    } catch {
+      setSnackbar({ open: true, message: 'Failed to save taxi', severity: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleEdit = bike => {
     setEditId(bike._id);
     setForm({
@@ -165,8 +269,34 @@ export default function AdminDashboard() {
     setImagePreview(bike.image || '');
   };
 
+  const handleTaxiEdit = taxi => {
+    setTaxiEditId(taxi._id);
+    setTaxiForm({
+      name: taxi.name || '',
+      type: taxi.type || '',
+      image: taxi.image || '',
+      location: taxi.location || '',
+      seatingCapacity: taxi.seatingCapacity || '',
+      pricePerKm: taxi.pricePerKm || '',
+      pricePerTrip: taxi.pricePerTrip || '',
+      rentalPricePerDay: taxi.rentalPricePerDay || '',
+      acType: taxi.acType || '',
+      luggageCapacity: taxi.luggageCapacity || '',
+      fuelType: taxi.fuelType || '',
+      features: taxi.features ? taxi.features.join(', ') : '',
+      ownerPhone: taxi.ownerPhone || '',
+      tripsCount: taxi.tripsCount || '',
+      payAtPickup: !!taxi.payAtPickup,
+    });
+    setTaxiImagePreview(taxi.image || '');
+  };
+
   const handleDelete = (id, event) => {
     setDeleteDialog({ open: true, bikeId: id, anchorEl: event.currentTarget });
+  };
+
+  const handleTaxiDelete = (id, event) => {
+    setTaxiDeleteDialog({ open: true, taxiId: id, anchorEl: event.currentTarget });
   };
 
   const confirmDelete = async () => {
@@ -184,6 +314,23 @@ export default function AdminDashboard() {
 
   const cancelDelete = () => {
     setDeleteDialog({ open: false, bikeId: null, anchorEl: null });
+  };
+
+  const confirmTaxiDelete = async () => {
+    setSnackbar({ open: true, message: 'Deleting taxi...', severity: 'info' });
+    try {
+      await api.delete(`/api/taxis/${taxiDeleteDialog.taxiId}`);
+      setSnackbar({ open: true, message: 'Taxi deleted!', severity: 'success' });
+      fetchTaxis();
+    } catch {
+      setSnackbar({ open: true, message: 'Failed to delete taxi', severity: 'error' });
+    } finally {
+      setTaxiDeleteDialog({ open: false, taxiId: null, anchorEl: null });
+    }
+  };
+
+  const cancelTaxiDelete = () => {
+    setTaxiDeleteDialog({ open: false, taxiId: null, anchorEl: null });
   };
 
   // Booking status dialog logic
@@ -247,10 +394,12 @@ export default function AdminDashboard() {
   // Real stats
   const activeBookings = bikes.filter(b => b.isBooked).length;
   const totalBikes = bikes.length;
+  const totalTaxis = taxis.length;
   const totalCustomers = users.length;
   const stats = [
     { label: 'Active Bookings', value: activeBookings, icon: <CalendarTodayIcon color="success" /> },
     { label: 'Total Bikes', value: totalBikes, icon: <DirectionsBikeIcon color="primary" /> },
+    { label: 'Total Taxis', value: totalTaxis, icon: <FaTaxi color="info" /> },
     { label: 'Total Customers', value: totalCustomers, icon: <PeopleIcon color="warning" /> },
   ];
 
@@ -349,16 +498,19 @@ export default function AdminDashboard() {
                 <Button variant="contained" fullWidth sx={{ bgcolor: '#FDB813', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
                   Add New Bike
                 </Button>
+                <Button variant="contained" fullWidth sx={{ bgcolor: '#3b82f6', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setTaxiFormOpen(true); setTaxiEditId(null); setTaxiForm(initialTaxiForm); setTaxiImagePreview(''); }}>
+                  Add New Taxi
+                </Button>
                 <Button variant="contained" fullWidth sx={{ bgcolor: '#22c55e', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => navigate('/admin/bikes?tab=1')}>
                   View Bookings
                 </Button>
-                <Button variant="contained" fullWidth sx={{ bgcolor: '#a21caf', color: '#fff', fontWeight: 600, fontSize: 14, py: 1 }} onClick={async () => { await fetchBikes(); await fetchUsers(); setSnackbar({ open: true, message: 'Dashboard data refreshed!', severity: 'success' }); }}>
+                <Button variant="contained" fullWidth sx={{ bgcolor: '#a21caf', color: '#fff', fontWeight: 600, fontSize: 14, py: 1 }} onClick={async () => { await fetchBikes(); await fetchTaxis(); await fetchUsers(); await fetchTaxiCities(); setSnackbar({ open: true, message: 'Dashboard data refreshed!', severity: 'success' }); }}>
                   Refresh Dashboard Data
                 </Button>
               </Box>
             </Box>
             {/* Stats Cards */}
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' }, gap: 1.5, mb: 2 }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr 1fr' }, gap: 1.5, mb: 2 }}>
               {stats.map(stat => (
                 <Box key={stat.label} sx={{ bgcolor: '#fff', borderRadius: 1.5, p: 1.5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minHeight: 70 }}>
                   <Box sx={{ mb: 0.5, fontSize: 20 }}>{stat.icon}</Box>
@@ -411,10 +563,13 @@ export default function AdminDashboard() {
                   <Button variant="contained" fullWidth sx={{ bgcolor: '#FDB813', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setBikeFormOpen(true); setEditId(null); setForm(initialForm); setImagePreview(''); }}>
                     Add New Bike
                   </Button>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: '#3b82f6', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => { setTaxiFormOpen(true); setTaxiEditId(null); setTaxiForm(initialTaxiForm); setTaxiImagePreview(''); }}>
+                    Add New Taxi
+                  </Button>
                   <Button variant="contained" fullWidth sx={{ bgcolor: '#22c55e', color: '#fff', fontWeight: 600, mb: 0.5, fontSize: 14, py: 1 }} onClick={() => navigate('/admin/bikes?tab=1')}>
                     View Bookings
                   </Button>
-                  <Button variant="contained" fullWidth sx={{ bgcolor: '#a21caf', color: '#fff', fontWeight: 600, fontSize: 14, py: 1 }} onClick={async () => { await fetchBikes(); await fetchUsers(); setSnackbar({ open: true, message: 'Dashboard data refreshed!', severity: 'success' }); }}>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: '#a21caf', color: '#fff', fontWeight: 600, fontSize: 14, py: 1 }} onClick={async () => { await fetchBikes(); await fetchTaxis(); await fetchUsers(); await fetchTaxiCities(); setSnackbar({ open: true, message: 'Dashboard data refreshed!', severity: 'success' }); }}>
                     Refresh Dashboard Data
                   </Button>
                 </Box>
@@ -545,6 +700,126 @@ export default function AdminDashboard() {
               <Button onClick={confirmDelete} color="error" variant="contained" size="small">Delete</Button>
             </Box>
           </Popover>
+          {/* Taxi Delete Popover */}
+          <Popover
+            open={taxiDeleteDialog.open}
+            anchorEl={taxiDeleteDialog.anchorEl}
+            onClose={cancelTaxiDelete}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            PaperProps={{ sx: { p: 2, minWidth: 200 } }}
+          >
+            <Typography variant="subtitle1" mb={1}>Confirm Delete</Typography>
+            <Typography variant="body2" mb={2}>Are you sure you want to delete this taxi?</Typography>
+            <Box display="flex" justifyContent="flex-end" gap={1}>
+              <Button onClick={cancelTaxiDelete} size="small">Cancel</Button>
+              <Button onClick={confirmTaxiDelete} color="error" variant="contained" size="small">Delete</Button>
+            </Box>
+          </Popover>
+          {/* Add Taxi Modal */}
+          <Dialog open={taxiFormOpen} onClose={() => setTaxiFormOpen(false)} maxWidth="md" fullWidth>
+            <DialogTitle sx={{ fontSize: 15, py: 0.7, position: 'relative', pr: 4 }}>
+              {taxiEditId ? 'Edit Taxi' : 'Add New Taxi'}
+              <IconButton
+                aria-label="close"
+                onClick={() => setTaxiFormOpen(false)}
+                sx={{
+                  position: 'absolute',
+                  right: 8,
+                  top: 8,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+                size="small"
+              >
+                <span style={{ fontSize: 22, fontWeight: 'bold', lineHeight: 1 }}>&times;</span>
+              </IconButton>
+            </DialogTitle>
+            <DialogContent sx={{ p: 1 }}>
+              <form onSubmit={handleTaxiSubmit} style={{ width: '100%' }} encType="multipart/form-data">
+                {/* Taxi Details Section */}
+                <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Taxi Details</Typography>
+                <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr' }} gap={0.5} mb={0.7}>
+                  <TextField label="Name" name="name" value={taxiForm.name} onChange={handleTaxiChange} required helperText="Enter taxi name" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                  <TextField label="Type" name="type" value={taxiForm.type} onChange={handleTaxiChange} required helperText="e.g. Maruti Suzuki Baleno" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                  <FormControl size="small" sx={{ minWidth: 120 }}>
+                    <InputLabel id="taxi-location-label" style={{ fontSize: 12 }}>Location</InputLabel>
+                    <Select
+                      labelId="taxi-location-label"
+                      name="location"
+                      value={taxiForm.location}
+                      label="Location"
+                      onChange={handleTaxiChange}
+                      style={{ fontSize: 12 }}
+                    >
+                      {taxiCities.length === 0 && (
+                        <MenuItem value="" disabled>No taxi cities found</MenuItem>
+                      )}
+                      {taxiCities.map(city => (
+                        <MenuItem key={city._id || city.slug || city.name} value={city.name} style={{ fontSize: 12 }}>{city.name}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <TextField label="Seating Capacity" name="seatingCapacity" value={taxiForm.seatingCapacity} onChange={handleTaxiChange} required type="number" helperText="Number of seats" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                </Box>
+                {/* Pricing Section */}
+                <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Pricing</Typography>
+                <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr' }} gap={0.5} mb={0.7}>
+                  <TextField label="Price per km" name="pricePerKm" value={taxiForm.pricePerKm} onChange={handleTaxiChange} required type="number" helperText="Price per kilometer" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                  <TextField label="Price per trip" name="pricePerTrip" value={taxiForm.pricePerTrip} onChange={handleTaxiChange} required type="number" helperText="Price per trip" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                  <TextField label="Rental price per day" name="rentalPricePerDay" value={taxiForm.rentalPricePerDay} onChange={handleTaxiChange} required type="number" helperText="Daily rental price" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                </Box>
+                {/* Taxi Specifications */}
+                <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Specifications</Typography>
+                <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr' }} gap={0.5} mb={0.7}>
+                  <FormControl size="small" sx={{ minWidth: 120 }}>
+                    <InputLabel id="acType-label" style={{ fontSize: 12 }}>AC Type</InputLabel>
+                    <Select
+                      labelId="acType-label"
+                      name="acType"
+                      value={taxiForm.acType}
+                      label="AC Type"
+                      onChange={handleTaxiChange}
+                      style={{ fontSize: 12 }}
+                    >
+                      <MenuItem value="AC" style={{ fontSize: 12 }}>AC</MenuItem>
+                      <MenuItem value="Non-AC" style={{ fontSize: 12 }}>Non-AC</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <TextField label="Luggage Capacity" name="luggageCapacity" value={taxiForm.luggageCapacity} onChange={handleTaxiChange} required helperText="e.g. 2 large bags" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                  <TextField label="Fuel Type" name="fuelType" value={taxiForm.fuelType} onChange={handleTaxiChange} required helperText="e.g. Petrol, Diesel, CNG" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                  <TextField label="Features (comma separated)" name="features" value={taxiForm.features} onChange={handleTaxiChange} helperText="e.g. GPS, Music System" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                </Box>
+                {/* Owner Details Section */}
+                <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Owner Details</Typography>
+                <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr' }} gap={0.5} mb={0.7}>
+                  <TextField label="Owner Phone Number" name="ownerPhone" value={taxiForm.ownerPhone} onChange={handleTaxiChange} required helperText="Enter valid phone number" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                  <TextField label="Trips Count" name="tripsCount" value={taxiForm.tripsCount} onChange={handleTaxiChange} type="number" helperText="Number of trips completed" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
+                </Box>
+                {/* Image Upload */}
+                <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Image</Typography>
+                <Box display="flex" alignItems="center" gap={0.5} mb={0.7}>
+                  <Button variant="outlined" component="label" size="small" sx={{ fontSize: 11, py: 0.1, px: 0.7, minWidth: 0, height: 26 }}>
+                    {taxiForm.image && taxiForm.image instanceof File ? 'Change Image' : 'Upload Image'}
+                    <input type="file" name="image" accept="image/*" hidden onChange={handleTaxiChange} />
+                  </Button>
+                  {taxiImagePreview && (
+                    <Avatar src={taxiImagePreview} alt="Preview" sx={{ width: 26, height: 26 }} />
+                  )}
+                </Box>
+                {/* Rental Details Section */}
+                <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Rental Details</Typography>
+                <Box display="flex" alignItems="center" gap={0.5} mb={0.7}>
+                  <FormControlLabel control={<Checkbox checked={taxiForm.payAtPickup} onChange={handleTaxiChange} name="payAtPickup" size="small" sx={{ p: 0.2 }} />} label={<span style={{ fontSize: 11 }}>Pay at Pickup</span>} sx={{ ml: 0 }} />
+                </Box>
+                <Box display="flex" gap={0.5} mt={1}>
+                  <Button type="submit" variant="contained" color="primary" disabled={loading} size="small" sx={{ minWidth: 70, fontSize: 12, py: 0.2, height: 28 }}>
+                    {taxiEditId ? 'Update' : 'Add'}
+                  </Button>
+                  {taxiEditId && <Button onClick={() => { setTaxiEditId(null); setTaxiForm(initialTaxiForm); setTaxiImagePreview(''); }} size="small" sx={{ fontSize: 12, py: 0.2, height: 28 }}>Cancel</Button>}
+                </Box>
+              </form>
+            </DialogContent>
+          </Dialog>
           <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={() => setSnackbar(s => ({ ...s, open: false }))}>
             <Alert onClose={() => setSnackbar(s => ({ ...s, open: false }))} severity={snackbar.severity} sx={{ width: '100%' }}>
               {snackbar.message}

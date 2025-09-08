@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import TaxiCard from '../components/TaxiCard';
 import api from '../utils/api';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +13,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 const DynamicTaxiCityPage = () => {
   const { citySlug } = useParams();
   const [taxiCity, setTaxiCity] = useState(null);
+  const [taxis, setTaxis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [location, setLocation] = useState('');
@@ -41,6 +43,53 @@ const DynamicTaxiCityPage = () => {
     };
     fetchCities();
   }, []);
+
+  // Fetch taxis for the current city
+  useEffect(() => {
+    const fetchTaxis = async () => {
+      if (!taxiCity) return;
+      
+      try {
+        setLoading(true);
+        const res = await api.get('/api/taxis', { params: { isAvailable: true, location: taxiCity.name } });
+        setTaxis(res.data);
+      } catch (err) {
+        console.error('Error fetching taxis:', err);
+        setError('Failed to load taxis.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchTaxis();
+  }, [taxiCity]);
+
+  // Fetch filtered taxis when filters change
+  useEffect(() => {
+    const fetchFilteredTaxis = async () => {
+      if (!taxiCity) return;
+      
+      setLoading(true);
+      setError(null);
+      try {
+        const params = { isAvailable: true, location: taxiCity.name };
+        if (taxiName) params.name = taxiName;
+        if (price > 0) params.rentalPricePerDay = price;
+        const res = await api.get('/api/taxis', { params });
+        setTaxis(res.data);
+      } catch (err) {
+        console.error('Error fetching filtered taxis:', err);
+        setError('Failed to load taxis.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchFilteredTaxis();
+  }, [taxiCity, taxiName, price]);
+
+  // Sort taxis so newest appear first (descending by createdAt)
+  const sortedTaxis = [...taxis].sort((a, b) => new Date(b.year || b.createdAt) - new Date(a.year || a.createdAt));
 
   const fetchTaxiCity = async () => {
     try {
@@ -165,24 +214,24 @@ const DynamicTaxiCityPage = () => {
               <p className="text-gray-600">Find the perfect taxi for your journey in {location}</p>
             </div>
             
-            {/* No Taxis Message */}
-            <div className="text-center py-12">
-              <div className="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto">
-                <div className="text-6xl mb-4">🚕</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  No Taxis Available Yet
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  We're working on adding taxi services to {location}. 
-                  Check back soon for available taxis!
-                </p>
-                <div className="text-sm text-gray-500">
-                  <p>• Economy Taxis</p>
-                  <p>• Premium Taxis</p>
-                  <p>• Luxury Vehicles</p>
-                </div>
+            {/* Taxi Listings */}
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
               </div>
-            </div>
+            ) : error ? (
+              <div className="text-center text-red-500">{error}</div>
+            ) : sortedTaxis.length === 0 ? (
+              <div className="text-center text-gray-500 py-8">
+                <p>No taxis available in {location} at the moment.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 sm:gap-6">
+                {sortedTaxis.map((taxi) => (
+                  <TaxiCard key={taxi._id} taxi={taxi} />
+                ))}
+              </div>
+            )}
             
             {/* City Page Content - Displayed below taxi listings in main content area */}
             {taxiCity && taxiCity.content && (

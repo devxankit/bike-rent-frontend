@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import TaxiCard from '../../components/TaxiCard';
 import api from '../../utils/api';
 import Navbar from '../../components/Navbar';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +10,7 @@ import { Box, Typography } from '@mui/material';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
 const IndoreTaxiPage = ({ cityData }) => {
+  const [taxis, setTaxis] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [location, setLocation] = useState('Indore');
@@ -34,6 +36,57 @@ const IndoreTaxiPage = ({ cityData }) => {
     };
     fetchCities();
   }, []);
+
+  useEffect(() => {
+    const fetchTaxis = async () => {
+      try {
+        setLoading(true);
+        console.log('🔍 Fetching taxis for Indore...');
+        const res = await api.get('/api/taxis', { params: { isAvailable: true, location: 'Indore' } });
+        console.log('📡 API Response:', res.data);
+        console.log('📊 Number of taxis received:', res.data.length);
+        setTaxis(res.data);
+      } catch (err) {
+        console.error('❌ Error fetching taxis:', err);
+        setError('Failed to load taxis.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTaxis();
+  }, []);
+
+  useEffect(() => {
+    const fetchFilteredTaxis = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const params = { isAvailable: true, location };
+        if (taxiName) params.name = taxiName;
+        if (price > 0) params.rentalPricePerDay = price;
+        console.log('🔍 Fetching filtered taxis with params:', params);
+        const res = await api.get('/api/taxis', { params });
+        console.log('📡 Filtered API Response:', res.data);
+        console.log('📊 Number of filtered taxis received:', res.data.length);
+        setTaxis(res.data);
+      } catch (err) {
+        console.error('❌ Error fetching filtered taxis:', err);
+        setError('Failed to load taxis.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFilteredTaxis();
+  }, [location, taxiName, price]);
+
+  // Sort taxis so newest appear first (descending by createdAt)
+  const sortedTaxis = [...taxis].sort((a, b) => new Date(b.year || b.createdAt) - new Date(a.year || a.createdAt));
+  
+  // Debug logging
+  console.log('🚗 Current taxis state:', taxis);
+  console.log('📋 Current sortedTaxis:', sortedTaxis);
+  console.log('📊 Loading state:', loading);
+  console.log('❌ Error state:', error);
 
   // Redirect to city route on city change
   useEffect(() => {
@@ -104,24 +157,24 @@ const IndoreTaxiPage = ({ cityData }) => {
               <p className="text-gray-600">Find the perfect taxi for your journey in Indore</p>
             </div>
             
-            {/* No Taxis Message */}
-            <div className="text-center py-12">
-              <div className="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto">
-                <div className="text-6xl mb-4">🚕</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  No Taxis Available Yet
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  We're working on adding taxi services to Indore. 
-                  Check back soon for available taxis!
-                </p>
-                <div className="text-sm text-gray-500">
-                  <p>• Economy Taxis</p>
-                  <p>• Premium Taxis</p>
-                  <p>• Luxury Vehicles</p>
-                </div>
+            {/* Taxi Listings */}
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
               </div>
-            </div>
+            ) : error ? (
+              <div className="text-center text-red-500">{error}</div>
+            ) : sortedTaxis.length === 0 ? (
+              <div className="text-center text-gray-500 py-8">
+                <p>No taxis available in Indore at the moment.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {sortedTaxis.map((taxi) => (
+                  <TaxiCard key={taxi._id} taxi={taxi} />
+                ))}
+              </div>
+            )}
             
             {/* City Page Content - Displayed below taxi listings in main content area */}
             {cityData && cityData.content && (
