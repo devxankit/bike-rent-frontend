@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import AdminDashboard from './pages/AdminDashboard';
 import Bikes from './pages/Bikes';
 import AllBikes from './pages/AllBikes';
+import AllTaxis from './pages/AllTaxis';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Customers from './pages/Customers';
@@ -88,6 +89,11 @@ function App() {
               <Route path="/admin/bikes" element={
                 <ProtectedRoute adminOnly={true}>
                   <AllBikes />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/taxis" element={
+                <ProtectedRoute adminOnly={true}>
+                  <AllTaxis />
                 </ProtectedRoute>
               } />
               <Route path="/admin/customers" element={

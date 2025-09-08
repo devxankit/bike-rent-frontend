@@ -45,6 +45,10 @@ export const generateBikesSlug = () => {
   return 'rent-bike-in-all-cities';
 };
 
+export const generateTaxisSlug = () => {
+  return 'taxi-service-in-all-cities';
+};
+
 // Taxi city slug utilities
 export const generateTaxiCitySlug = (cityName) => {
   if (!cityName) return '';
