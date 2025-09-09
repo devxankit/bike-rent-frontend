@@ -4,10 +4,8 @@ import TaxiNavBar from '../../components/taxi-components/TaxiNavBar';
 import FooterTaxi from '../../components/FooterTaxi';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
-const taxiGif = process.env.PUBLIC_URL + '/images/taxi-bg-1.png';
+const taxiGif = process.env.PUBLIC_URL + '/images/bike.gif';
 
 const TaxiLocations = () => {
   const [start, setStart] = useState(false);
@@ -16,12 +14,6 @@ const TaxiLocations = () => {
   const [taxiCities, setTaxiCities] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: true,
-    });
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -135,7 +127,6 @@ const TaxiLocations = () => {
             <div
               className={`text-black text-2xl pt-[150px] md:pt-0 md:text-3xl font-extrabold text-center mb-6 transition-opacity duration-700 ${showCities ? 'opacity-100' : 'opacity-0'}`}
               style={{letterSpacing: '0.02em'}}
-              data-aos="fade-up"
             >
               Book a taxi in your city now
             </div>
@@ -160,8 +151,6 @@ const TaxiLocations = () => {
                 zIndex: 3,
                 pointerEvents: showCities ? 'auto' : 'none',
               }}
-              data-aos="fade-up"
-              data-aos-delay="200"
             >
               {taxiCities.map(city => (
                 <div
@@ -169,8 +158,6 @@ const TaxiLocations = () => {
                   className="flex flex-col items-center bg-white rounded-lg shadow p-2 border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
                   style={{ opacity: showCities ? 1 : 0, transition: 'opacity 0.7s' }}
                   onClick={() => navigate(`/taxi/${city.slug || city.name.toLowerCase().replace(/\s+/g, '-')}`)}
-                  data-aos="zoom-in"
-                  data-aos-delay={Math.random() * 300 + 300}
                 >
                   <img
                     src={city.image || `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iI0YzRjRGNiIvPgo8cGF0aCBkPSJNMTIgMTZIMjhWMTJIMTJWMjRIMjhWMjBIMTJWMjRIMjgiIHN0cm9rZT0iIzk5QTNBRiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=`}
@@ -196,8 +183,6 @@ const TaxiLocations = () => {
                 zIndex: 3,
                 pointerEvents: showCities ? 'auto' : 'none',
               }}
-              data-aos="fade-up"
-              data-aos-delay="200"
             >
               {taxiCities.map(city => (
                 <div
@@ -205,8 +190,6 @@ const TaxiLocations = () => {
                   className="flex flex-col items-center bg-white rounded-lg shadow p-2 w-[90px] border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
                   style={{ opacity: showCities ? 1 : 0, transition: 'opacity 0.7s' }}
                   onClick={() => navigate(`/taxi/${city.slug || city.name.toLowerCase().replace(/\s+/g, '-')}`)}
-                  data-aos="zoom-in"
-                  data-aos-delay={Math.random() * 300 + 300}
                 >
                   <img
                     src={city.image || `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iOCIgZmlsbD0iI0YzRjRGNiIvPgo8cGF0aCBkPSJNMTQgMTlIMzRWMThIMTRWMjZIMzRWMjVIMTRWMjZIMzQiIHN0cm9rZT0iIzk5QTNBRiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=`}
@@ -225,7 +208,7 @@ const TaxiLocations = () => {
           {/* Full-width banner image below city cards and taxi animation */}
           <div className={`w-full flex justify-center mt-8 pt-[450px] md:pt-[350px] lg:pt-[300px] transition-opacity duration-700 ${showCities ? 'opacity-100' : 'opacity-0'}`}>
             <img
-              src={process.env.PUBLIC_URL + '/images/taxi-bg-2.png'}
+              src={process.env.PUBLIC_URL + '/images/bike-banner-4.jpg'}
               alt="Taxi Service Banner"
               className="w-full max-w-7xl object-cover rounded-lg shadow-lg"
               style={{
@@ -233,8 +216,6 @@ const TaxiLocations = () => {
                 objectFit: 'cover',
                 borderRadius: '1rem',
               }}
-              data-aos="fade-up"
-              data-aos-delay="400"
             />
           </div>
         </main>
