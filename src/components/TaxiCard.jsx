@@ -1,12 +1,57 @@
 import { motion } from "framer-motion";
 import PropTypes from 'prop-types';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { getDistance, calculateTaxiPrice } from '../utils/distanceCalculator';
 
 // TaxiCard displays a single taxi's info
 export default function TaxiCard({ taxi }) {
   const [showDialog, setShowDialog] = useState(false);
+  const [calculatedPrice, setCalculatedPrice] = useState(null);
+  const [priceCalculation, setPriceCalculation] = useState(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+
+  // Calculate distance-based pricing when component mounts
+  useEffect(() => {
+    const calculatePricing = async () => {
+      try {
+        // Get form data from localStorage
+        const formData = JSON.parse(localStorage.getItem('taxiRentFormData') || '{}');
+        
+        if (!formData.pickupCoordinates || !formData.dropCoordinates || !taxi.pricePerKm) {
+          return;
+        }
+
+        setIsCalculating(true);
+        
+        // Calculate distance
+        const distanceData = await getDistance(
+          formData.pickupCoordinates,
+          formData.dropCoordinates
+        );
+
+        // Calculate price
+        const priceData = calculateTaxiPrice(
+          distanceData.distance,
+          taxi.pricePerKm,
+          formData.tripType || 'one-way'
+        );
+
+        setCalculatedPrice(priceData);
+        setPriceCalculation(priceData);
+        
+      } catch (error) {
+        // Fallback to fixed pricing
+        setCalculatedPrice(null);
+        setPriceCalculation(null);
+      } finally {
+        setIsCalculating(false);
+      }
+    };
+
+    calculatePricing();
+  }, [taxi.pricePerKm]);
 
   // Safety check to prevent rendering if taxi is not an object
   if (!taxi || typeof taxi !== 'object' || Array.isArray(taxi)) {
@@ -52,8 +97,19 @@ export default function TaxiCard({ taxi }) {
 
   // Get the primary price to display
   const getPrimaryPrice = () => {
-    if (taxi.rentalPricePerDay > 0) return `₹${taxi.rentalPricePerDay}/day`;
+    // Show calculated price if available
+    if (calculatedPrice && !isCalculating) {
+      return `₹${calculatedPrice.totalPrice} (${calculatedPrice.distance}km × ₹${calculatedPrice.pricePerKm}/km${calculatedPrice.multiplier > 1 ? ' - Return Trip' : ''})`;
+    }
+    
+    // Show loading state
+    if (isCalculating) {
+      return 'Calculating...';
+    }
+    
+    // Fallback to fixed pricing
     if (taxi.pricePerTrip > 0) return `₹${taxi.pricePerTrip}/trip`;
+    if (taxi.rentalPricePerDay > 0) return `₹${taxi.rentalPricePerDay}/day`;
     if (taxi.pricePerKm > 0) return `₹${taxi.pricePerKm}/km`;
     return 'Price on request';
   };
@@ -212,30 +268,66 @@ export default function TaxiCard({ taxi }) {
                   </h3>
                   
                   <div className="space-y-3">
-                    {taxi.rentalPricePerDay > 0 && (
-                      <div className="flex justify-between items-center py-1">
-                        <span className="font-medium text-gray-700 text-sm">Rental:</span>
-                        <span className="text-lg font-bold text-green-600">₹{taxi.rentalPricePerDay}/day</span>
+                    {/* Show calculated pricing if available */}
+                    {calculatedPrice && !isCalculating ? (
+                      <div className="space-y-3">
+                        <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                          <div className="flex justify-between items-center py-1 mb-2">
+                            <span className="font-medium text-gray-700 text-sm">Calculated Price:</span>
+                            <span className="text-xl font-bold text-blue-600">₹{calculatedPrice.totalPrice}</span>
+                          </div>
+                          <div className="text-xs text-gray-600 space-y-1">
+                            <div>Distance: {calculatedPrice.distance}km</div>
+                            <div>Price per km: ₹{calculatedPrice.pricePerKm}</div>
+                            <div>Trip type: {calculatedPrice.tripTypeLabel}</div>
+                            {calculatedPrice.multiplier > 1 && (
+                              <div>Total distance: {calculatedPrice.totalDistance}km (Return Trip)</div>
+                            )}
+                            <div className="font-medium text-gray-800 mt-2">
+                              Calculation: {calculatedPrice.calculation}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {taxi.payAtPickup && (
+                          <div className="bg-green-50 border border-green-200 p-3 rounded-lg text-center">
+                            <span className="text-green-700 font-semibold text-sm">✓ Pay at Pickup Available</span>
+                          </div>
+                        )}
                       </div>
-                    )}
-                    
-                    {taxi.pricePerTrip > 0 && (
-                      <div className="flex justify-between items-center py-1">
-                        <span className="font-medium text-gray-700 text-sm">Per Trip:</span>
-                        <span className="text-lg font-bold text-green-600">₹{taxi.pricePerTrip}</span>
+                    ) : isCalculating ? (
+                      <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg text-center">
+                        <span className="text-yellow-700 font-semibold text-sm">Calculating price based on your route...</span>
                       </div>
-                    )}
-                    
-                    {taxi.pricePerKm > 0 && (
-                      <div className="flex justify-between items-center py-1">
-                        <span className="font-medium text-gray-700 text-sm">Per KM:</span>
-                        <span className="text-lg font-bold text-green-600">₹{taxi.pricePerKm}</span>
-                      </div>
-                    )}
+                    ) : (
+                      /* Show fixed pricing as fallback */
+                      <div className="space-y-3">
+                        {taxi.pricePerTrip > 0 && (
+                          <div className="flex justify-between items-center py-1">
+                            <span className="font-medium text-gray-700 text-sm">Per Trip:</span>
+                            <span className="text-lg font-bold text-green-600">₹{taxi.pricePerTrip}</span>
+                          </div>
+                        )}
+                        
+                        {taxi.rentalPricePerDay > 0 && (
+                          <div className="flex justify-between items-center py-1">
+                            <span className="font-medium text-gray-700 text-sm">Rental:</span>
+                            <span className="text-lg font-bold text-green-600">₹{taxi.rentalPricePerDay}/day</span>
+                          </div>
+                        )}
+                        
+                        {taxi.pricePerKm > 0 && (
+                          <div className="flex justify-between items-center py-1">
+                            <span className="font-medium text-gray-700 text-sm">Per KM:</span>
+                            <span className="text-lg font-bold text-green-600">₹{taxi.pricePerKm}</span>
+                          </div>
+                        )}
 
-                    {taxi.payAtPickup && (
-                      <div className="bg-green-50 border border-green-200 p-3 rounded-lg text-center">
-                        <span className="text-green-700 font-semibold text-sm">✓ Pay at Pickup Available</span>
+                        {taxi.payAtPickup && (
+                          <div className="bg-green-50 border border-green-200 p-3 rounded-lg text-center">
+                            <span className="text-green-700 font-semibold text-sm">✓ Pay at Pickup Available</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

@@ -49,7 +49,6 @@ const GoogleMapsAutocomplete = ({
     const loadGoogleMapsAPI = () => {
       // Check if Google Maps is already loaded
       if (window.google && window.google.maps && window.google.maps.places) {
-        console.log('Google Maps API already available');
         setIsGoogleMapsLoaded(true);
         return Promise.resolve();
       }
@@ -57,11 +56,9 @@ const GoogleMapsAutocomplete = ({
       // Check if script is already being loaded
       const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
       if (existingScript) {
-        console.log('Google Maps script already exists, waiting for load...');
         return new Promise((resolve) => {
           const checkGoogleMaps = () => {
             if (window.google && window.google.maps && window.google.maps.places) {
-              console.log('Google Maps API loaded from existing script');
               setIsGoogleMapsLoaded(true);
               resolve();
             } else {
@@ -73,7 +70,6 @@ const GoogleMapsAutocomplete = ({
       }
 
       // Load Google Maps API
-      console.log('Loading Google Maps API...');
       return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=initGoogleMaps`;
@@ -82,7 +78,6 @@ const GoogleMapsAutocomplete = ({
         
         // Global callback function
         window.initGoogleMaps = () => {
-          console.log('Google Maps API loaded successfully via callback');
           setIsGoogleMapsLoaded(true);
           resolve();
         };
@@ -207,6 +202,41 @@ const GoogleMapsAutocomplete = ({
     setShowSuggestions(true);
   };
 
+  // Debounced geocoding for typed addresses
+  const debouncedGeocode = debounce((address) => {
+    if (address && address.length > 10) {
+      geocodeAddress(address);
+    }
+  }, 1000); // Wait 1 second after user stops typing
+
+  // Trigger geocoding when user stops typing and no suggestions are shown
+  useEffect(() => {
+    if (value && value.length > 10 && !showSuggestions && suggestions.length === 0) {
+      debouncedGeocode(value);
+    }
+  }, [value, showSuggestions, suggestions.length, debouncedGeocode]);
+
+  // Geocode address to get coordinates
+  const geocodeAddress = (address) => {
+    if (!window.google || !window.google.maps) return;
+    
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ address: address }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const place = results[0];
+        if (onPlaceSelect) {
+          onPlaceSelect({
+            place_id: place.place_id,
+            description: place.formatted_address,
+            main_text: place.formatted_address,
+            secondary_text: '',
+            geometry: place.geometry
+          });
+        }
+      }
+    });
+  };
+
   // Handle suggestion selection
   const handleSuggestionSelect = (suggestion) => {
     onChange(suggestion.description);
@@ -253,7 +283,6 @@ const GoogleMapsAutocomplete = ({
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         
-        console.log('Current location:', lat, lng);
         
         // Update map center to current location
         if (mapInstanceRef.current) {
@@ -310,14 +339,6 @@ const GoogleMapsAutocomplete = ({
   useEffect(() => {
     if (mapOpen) {
       const initializeMap = () => {
-        console.log('Modal opened - attempting to initialize map...');
-        console.log('Google Maps available:', !!window.google);
-        console.log('Google Maps object available:', !!window.google?.maps);
-        console.log('Map container available:', !!mapRef.current);
-        console.log('Map container dimensions:', mapRef.current ? {
-          width: mapRef.current.offsetWidth,
-          height: mapRef.current.offsetHeight
-        } : 'No container');
         
         if (!window.google || !window.google.maps) {
           console.error('Google Maps API not loaded');
@@ -342,7 +363,6 @@ const GoogleMapsAutocomplete = ({
         }
 
         try {
-          console.log('Creating Google Map instance...');
           setMapError(null);
           setIsGoogleMapsLoaded(true);
           
@@ -363,13 +383,11 @@ const GoogleMapsAutocomplete = ({
           });
 
           mapInstanceRef.current = map;
-          console.log('Google Map created successfully');
 
           // Trigger resize to ensure proper rendering
           setTimeout(() => {
             if (window.google && window.google.maps && map) {
               window.google.maps.event.trigger(map, 'resize');
-              console.log('Map resize triggered');
             }
           }, 100);
 
@@ -378,7 +396,6 @@ const GoogleMapsAutocomplete = ({
             const lat = event.latLng.lat();
             const lng = event.latLng.lng();
             
-            console.log('Map clicked at:', lat, lng);
             
             // Remove existing marker
             if (markerRef.current) {
@@ -396,7 +413,6 @@ const GoogleMapsAutocomplete = ({
             setSelectedLocation({ lat, lng });
           });
 
-          console.log('Map initialization completed successfully');
         } catch (error) {
           console.error('Error initializing map:', error);
           setMapError('Failed to initialize map: ' + error.message);
@@ -410,7 +426,6 @@ const GoogleMapsAutocomplete = ({
     } else {
       // Clean up when modal closes
       if (mapInstanceRef.current) {
-        console.log('Cleaning up map instance');
         mapInstanceRef.current = null;
       }
       if (markerRef.current) {
@@ -435,7 +450,12 @@ const GoogleMapsAutocomplete = ({
               description: address,
               main_text: results[0].formatted_address,
               secondary_text: '',
-              geometry: { location: { lat: selectedLocation.lat, lng: selectedLocation.lng } }
+              geometry: { 
+                location: { 
+                  lat: () => selectedLocation.lat, 
+                  lng: () => selectedLocation.lng 
+                } 
+              }
             });
           }
         }
@@ -477,12 +497,24 @@ const GoogleMapsAutocomplete = ({
               <InputAdornment position="end">
                 <IconButton
                   size="small"
+                  onClick={() => {
+                    if (value && value.length > 5) {
+                      geocodeAddress(value);
+                    }
+                  }}
+                  sx={{ mr: 0.5, p: 0.5 }}
+                  title="Get coordinates for this address"
+                >
+                  <LocationOnIcon sx={{ color: iconColor, fontSize: 18 }} />
+                </IconButton>
+                <IconButton
+                  size="small"
                   onClick={handleMapClick}
                   sx={{ mr: 0.5, p: 0.5 }}
+                  title="Select location on map"
                 >
                   <MapIcon sx={{ color: iconColor, fontSize: 18 }} />
                 </IconButton>
-                <LocationOnIcon sx={{ color: iconColor, fontSize: 20 }} />
               </InputAdornment>
             ),
           }}

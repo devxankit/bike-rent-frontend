@@ -5,19 +5,12 @@ import api from '../utils/api';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import MenuIcon from '@mui/icons-material/Menu';
-import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import SettingsIcon from '@mui/icons-material/Settings';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import LogoutIcon from '@mui/icons-material/Logout';
 import dayjs from 'dayjs';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Checkbox, FormControlLabel, Popover, MenuItem } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import DashboardNavbar from '../components/DashboardNabvar';
+import AdminSidebar from '../components/AdminSidebar';
 import { generateCitySlug, generateBikesSlug } from '../utils/slugUtils';
 
 const initialForm = {
@@ -253,82 +246,13 @@ export default function AllBikes({ cityOverride }) {
   });
   const paginatedBikes = filteredBikes.slice(0, visibleBikesCount);
 
-  // Sidebar navigation items
-  const navItems = [
-    { label: 'Dashboard', icon: <MenuIcon />, path: '/admin/dashboard' },
-    { label: 'Bikes', icon: <DirectionsBikeIcon />, path: '/admin/bikes' },
-    { label: 'Bookings', icon: <CalendarTodayIcon /> },
-    { label: 'Customers', icon: <PeopleIcon /> },
-    { label: 'Analytics', icon: <BarChartIcon />, path: '/admin/analytics' },
-  ];
-  const bottomNavItems = [
-    { label: 'Settings', icon: <SettingsIcon /> },
-    { label: 'Help & Support', icon: <HelpOutlineIcon /> },
-    { label: 'Logout', icon: <LogoutIcon /> },
-  ];
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f7f9fb' }}>
       <DashboardNavbar/>
       <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
         {/* Sidebar below Navbar */}
-        <Box sx={{ width: 240, bgcolor: '#111827', color: '#fff', display: { xs: 'none', md: 'flex' }, flexDirection: 'column', py: 2, minHeight: '100%', position: 'relative' }}>
-          <Box sx={{ px: 2, mb: 2 }}>
-            <Typography variant="subtitle1" fontWeight={700} sx={{ letterSpacing: 1, fontSize: 16 }}>BikeRental</Typography>
-            <Typography variant="caption" color="#bdbdbd" sx={{ fontSize: 12 }}>Pro Dashboard</Typography>
-          </Box>
-          <Box sx={{ flex: 1 }}>
-            {navItems.map((item, idx) => {
-              let isActive = false;
-              if (item.label === 'Bookings') {
-                isActive = location.pathname === '/admin/bikes' && new URLSearchParams(location.search).get('tab') === '1';
-              } else if (item.label === 'Bikes') {
-                isActive = location.pathname === '/admin/bikes' && (!new URLSearchParams(location.search).get('tab') || new URLSearchParams(location.search).get('tab') === '0');
-              } else if (item.label === 'Dashboard') {
-                isActive = location.pathname === '/admin/dashboard';
-              } else if (item.label === 'Customers') {
-                isActive = location.pathname === '/admin/customers';
-              } else if (item.label === 'Analytics') {
-                isActive = location.pathname === '/admin/analytics';
-              }
-              return (
-                <Box
-                  key={item.label}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    px: 1.5,
-                    py: 0.7,
-                    cursor: item.path ? 'pointer' : 'default',
-                    borderLeft: isActive ? '3px solid #FDB813' : '3px solid transparent',
-                    bgcolor: 'transparent',
-                    fontWeight: isActive ? 700 : 500,
-                    color: isActive ? '#FDB813' : '#fff',
-                    mb: 0.5
-                  }}
-                  onClick={() => {
-                    if (item.label === 'Bookings') navigate('/admin/bikes?tab=1');
-                    else if (item.label === 'Bikes') navigate('/admin/bikes');
-                    else if (item.label === 'Dashboard') navigate('/admin/dashboard');
-                    else if (item.label === 'Customers') navigate('/admin/customers');
-                    else if (item.label === 'Analytics') navigate('/admin/analytics');
-                  }}
-                >
-                  <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#FDB813' : '#fff' }}>{item.icon}</span>
-                  <Typography sx={{ ml: 1, fontWeight: isActive ? 700 : 500, fontSize: 13 }}>{item.label}</Typography>
-                </Box>
-              );
-            })}
-          </Box>
-          <Box>
-            {bottomNavItems.map(item => (
-              <Box key={item.label} sx={{ display: 'flex', alignItems: 'center', px: 1.5, py: 0.7, cursor: 'pointer', color: '#bdbdbd', borderRadius: 2, mb: 0.5 }}>
-                <span style={{ fontSize: 16, display: 'flex', alignItems: 'center' }}>{item.icon}</span>
-                <Typography sx={{ ml: 1, fontSize: 12 }}>{item.label}</Typography>
-              </Box>
-            ))}
-          </Box>
-        </Box>
+        <AdminSidebar />
         {/* Main Content */}
         <Box sx={{ flex: 1, pl: { md: 0 }, pr: 0 }}>
           <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 4, px: 2 }}>

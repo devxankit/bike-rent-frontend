@@ -2,29 +2,12 @@ import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
 import Navbar from '../components/Navbar';
 import { Box, Typography, Paper } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate, useLocation } from 'react-router-dom';
 // For charting, use recharts (or chart.js if preferred)
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import DashboardNavbar from '../components/DashboardNabvar';
+import AdminSidebar from '../components/AdminSidebar';
 
-const navItems = [
-  { label: 'Dashboard', icon: <MenuIcon />, path: '/admin/dashboard' },
-  { label: 'Bikes', icon: <DirectionsBikeIcon />, path: '/admin/bikes' },
-  { label: 'Bookings', icon: <CalendarTodayIcon />, path: '/admin/bikes?tab=1' },
-  { label: 'Customers', icon: <PeopleIcon />, path: '/admin/customers' },
-  { label: 'Analytics', icon: <BarChartIcon />, path: '/admin/analytics' },
-];
-const bottomNavItems = [
-  { label: 'Help & Support', icon: <HelpOutlineIcon /> },
-  { label: 'Logout', icon: <LogoutIcon /> },
-];
 
 // Example data for charts
 const bookingsData = [
@@ -92,68 +75,7 @@ export default function Analytics() {
       <DashboardNavbar/>
       <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 56px)' }}>
         {/* Sidebar */}
-        <Box sx={{ width: 240, bgcolor: '#111827', color: '#fff', display: { xs: 'none', md: 'flex' }, flexDirection: 'column', py: 2, minHeight: '100%', position: 'relative' }}>
-          <Box sx={{ px: 2, mb: 2 }}>
-            <Typography variant="subtitle1" fontWeight={700} sx={{ letterSpacing: 1, fontSize: 16 }}>BikeRental</Typography>
-            <Typography variant="caption" color="#bdbdbd" sx={{ fontSize: 12 }}>Pro Dashboard</Typography>
-          </Box>
-          <Box sx={{ flex: 1 }}>
-            {navItems.map((item) => {
-              let isActive = false;
-              if (item.label === 'Bookings') {
-                isActive = location.pathname === '/admin/bikes' && new URLSearchParams(location.search).get('tab') === '1';
-              } else if (item.label === 'Bikes') {
-                isActive = location.pathname === '/admin/bikes' && (!new URLSearchParams(location.search).get('tab') || new URLSearchParams(location.search).get('tab') === '0');
-              } else if (item.label === 'Dashboard') {
-                isActive = location.pathname === '/admin/dashboard';
-              } else if (item.label === 'Customers') {
-                isActive = location.pathname === '/admin/customers';
-              } else if (item.label === 'Analytics') {
-                isActive = location.pathname === '/admin/analytics';
-              }
-              return (
-                <Box
-                  key={item.label}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    px: 1.5,
-                    py: 0.7,
-                    cursor: item.path ? 'pointer' : 'default',
-                    borderLeft: isActive ? '3px solid #FDB813' : '3px solid transparent',
-                    bgcolor: 'transparent',
-                    fontWeight: isActive ? 700 : 500,
-                    color: isActive ? '#FDB813' : '#fff',
-                    mb: 0.5
-                  }}
-                  onClick={() => {
-                    if (item.path) navigate(item.path);
-                  }}
-                >
-                  <span style={{ fontSize: 18, display: 'flex', alignItems: 'center', color: isActive ? '#FDB813' : '#fff' }}>{item.icon}</span>
-                  <Typography sx={{ ml: 1, fontWeight: isActive ? 700 : 500, fontSize: 13 }}>{item.label}</Typography>
-                </Box>
-              );
-            })}
-          </Box>
-          <Box>
-            {bottomNavItems.map(item => (
-              <Box
-                key={item.label}
-                sx={{ display: 'flex', alignItems: 'center', px: 1.5, py: 0.7, cursor: 'pointer', color: '#bdbdbd', borderRadius: 2, mb: 0.5 }}
-                onClick={() => {
-                  if (item.label === 'Logout') {
-                    localStorage.removeItem('token');
-                    navigate('/login');
-                  }
-                }}
-              >
-                <span style={{ fontSize: 16, display: 'flex', alignItems: 'center' }}>{item.icon}</span>
-                <Typography sx={{ ml: 1, fontSize: 12 }}>{item.label}</Typography>
-              </Box>
-            ))}
-          </Box>
-        </Box>
+        <AdminSidebar />
         {/* Main Content */}
         <Box sx={{ flex: 1, pl: { md: 0 }, pr: 0 }}>
           <Box sx={{ maxWidth: 950, mx: 'auto', mt: 2, px: 1 }}>

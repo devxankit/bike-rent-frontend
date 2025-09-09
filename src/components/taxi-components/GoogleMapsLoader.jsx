@@ -5,14 +5,12 @@ const GoogleMapsLoader = () => {
     const loadGoogleMaps = () => {
       // Check if already loaded
       if (window.google && window.google.maps) {
-        console.log('Google Maps already loaded');
         return;
       }
 
       // Check if script already exists
       const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
       if (existingScript) {
-        console.log('Google Maps script already exists');
         return;
       }
 
@@ -23,7 +21,6 @@ const GoogleMapsLoader = () => {
       script.defer = true;
       
       script.onload = () => {
-        console.log('Google Maps API loaded successfully');
       };
       
       script.onerror = (error) => {

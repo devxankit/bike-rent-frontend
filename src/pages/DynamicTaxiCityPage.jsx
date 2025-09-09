@@ -209,10 +209,10 @@ const DynamicTaxiCityPage = () => {
         {/* Main Content - Right Side */}
         <main className="flex-1 overflow-y-auto">
           <div className="p-6">
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Taxis in {location}</h1>
-              <p className="text-gray-600">Find the perfect taxi for your journey in {location}</p>
-            </div>
+                <div className="mb-6">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">Taxis in {location}</h1>
+                  <p className="text-gray-600">Find the perfect taxi for your journey in {location}</p>
+                </div>
             
             {/* Taxi Listings */}
             {loading ? (
