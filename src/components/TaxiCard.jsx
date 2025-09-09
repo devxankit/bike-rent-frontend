@@ -82,16 +82,64 @@ export default function TaxiCard({ taxi }) {
     formData = JSON.parse(localStorage.getItem('taxiRentFormData'));
   } catch {}
 
-  // Build WhatsApp message with form data if available
-  const message = encodeURIComponent(
-    `Hi, I want to book this taxi:\n\nTaxi: ${taxi.name || taxi.type}\nLocation: ${taxi.location}\nPrice per km: ₹${taxi.pricePerKm || 0}\nPrice per trip: ₹${taxi.pricePerTrip || 0}` +
-    (formData ?
-      `\n\nBooking Details:\nCity: ${formData.city || ''}\nPick Up: ${formData.pickDateTime ? new Date(formData.pickDateTime).toLocaleString() : ''}\nDrop Off: ${formData.dropDateTime ? new Date(formData.dropDateTime).toLocaleString() : ''}`
-      :
-      ''
-    ) +
-    `\n\nTaxi Link: ${taxiUrl}`
-  );
+  // Build comprehensive WhatsApp message with all booking data
+  const buildWhatsAppMessage = () => {
+    let message = `🚗 *Taxi Booking Request*\n\n`;
+    
+    // Taxi Information
+    message += `*Taxi Details:*\n`;
+    message += `• Taxi Name: ${taxi.name || taxi.type || 'N/A'}\n`;
+    message += `• Model: ${taxi.type || taxi.name || 'N/A'}\n`;
+    message += `• City: ${taxi.location || 'N/A'}\n`;
+    message += `• Seating: ${taxi.seatingCapacity || 4} + Driver\n`;
+    
+    // Pricing Information
+    message += `\n*Pricing:*\n`;
+    if (calculatedPrice && !isCalculating) {
+      message += `• Distance: ${calculatedPrice.distance}km\n`;
+      message += `• Price per km: ₹${calculatedPrice.pricePerKm}\n`;
+      message += `• Trip Type: ${calculatedPrice.tripTypeLabel}\n`;
+      message += `• Total Price: ₹${calculatedPrice.totalPrice}\n`;
+      message += `• Calculation: ${calculatedPrice.calculation}\n`;
+    } else {
+      message += `• Price per km: ₹${taxi.pricePerKm || 0}\n`;
+      message += `• Price per trip: ₹${taxi.pricePerTrip || 0}\n`;
+      if (taxi.rentalPricePerDay > 0) {
+        message += `• Rental per day: ₹${taxi.rentalPricePerDay}\n`;
+      }
+    }
+    
+    // Booking Details (if form data available)
+    if (formData) {
+      message += `\n*Booking Details:*\n`;
+      message += `• City: ${formData.city || 'N/A'}\n`;
+      message += `• Trip Type: ${formData.tripType || 'N/A'}\n`;
+      message += `• Vehicle Type: ${formData.vehicleType || 'N/A'}\n`;
+      message += `• Pickup Location: ${formData.pickupLocation || 'N/A'}\n`;
+      message += `• Drop Location: ${formData.dropLocation || 'N/A'}\n`;
+      message += `• Pickup Date: ${formData.pickDate || 'N/A'}\n`;
+      message += `• Pickup Time: ${formData.pickTime || 'N/A'}\n`;
+      message += `• Drop Date: ${formData.dropDate || 'N/A'}\n`;
+      message += `• Drop Time: ${formData.dropTime || 'N/A'}\n`;
+      message += `• Duration: ${formData.duration || 'N/A'}\n`;
+    }
+    
+    // Additional Features
+    if (taxi.features && taxi.features.length > 0) {
+      message += `\n*Features:*\n`;
+      taxi.features.forEach(feature => {
+        message += `• ${feature}\n`;
+      });
+    }
+    
+    // Contact and Link
+    message += `\n*Taxi Link:* ${taxiUrl}\n\n`;
+    message += `Please confirm availability and provide any additional details. Thank you!`;
+    
+    return message;
+  };
+
+  const message = encodeURIComponent(buildWhatsAppMessage());
   // Send to taxi owner's WhatsApp number
   const whatsappUrl = `https://wa.me/${ownerPhone}?text=${message}`;
 
