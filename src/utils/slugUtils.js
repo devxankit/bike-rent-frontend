@@ -72,8 +72,8 @@ export const parseTaxiCityFromSlug = (slug) => {
 export const isValidTaxiCitySlug = (slug) => {
   if (!slug) return false;
   const city = parseTaxiCityFromSlug(slug);
-  const validCities = ["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"];
-  return validCities.includes(city.toLowerCase());
+  // Allow any city name - validation will be done by checking if the city exists in the database
+  return city && city.length > 0;
 };
 
 export const getTaxiCityFromPath = (pathname) => {
