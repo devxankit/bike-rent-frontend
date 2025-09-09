@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 export default function Contact() {
   return (
@@ -135,6 +136,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 } 

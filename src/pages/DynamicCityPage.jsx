@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import NotFound from './NotFound';
 import { CircularProgress, Box } from '@mui/material';
+import Footer from '../components/Footer';
 import api from '../utils/api';
 
 const DynamicCityPage = () => {
@@ -64,13 +65,16 @@ const DynamicCityPage = () => {
   }
 
   return (
-    <Suspense fallback={
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-        <CircularProgress />
-      </Box>
-    }>
-      <CityComponent cityData={cityData} />
-    </Suspense>
+    <>
+      <Suspense fallback={
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+          <CircularProgress />
+        </Box>
+      }>
+        <CityComponent cityData={cityData} />
+      </Suspense>
+      <Footer />
+    </>
   );
 };
 

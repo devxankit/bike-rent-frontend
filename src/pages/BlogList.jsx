@@ -19,6 +19,7 @@ import { Search, AccessTime, Visibility } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import blogAPI from '../utils/blogAPI';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
@@ -267,6 +268,7 @@ const BlogList = () => {
           </Box>
         )}
       </Container>
+      <Footer />
     </>
   );
 };

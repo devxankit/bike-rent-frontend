@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import TaxiCard from '../components/TaxiCard';
 import api from '../utils/api';
 import Navbar from '../components/Navbar';
+import FooterTaxi from '../components/FooterTaxi';
 import { useNavigate } from 'react-router-dom';
 import TaxiFilterSidebar from '../components/TaxiFilterSidebar';
 import { FiX } from 'react-icons/fi';
@@ -379,6 +380,7 @@ const DynamicTaxiCityPage = () => {
           </div>
         </main>
       </div>
+      <FooterTaxi />
     </>
   );
 };

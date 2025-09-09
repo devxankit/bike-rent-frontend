@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BikeCard from '../components/BikeCard';
 import api from '../utils/api';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import FilterSidebar from '../components/FilterSidebar';
 import { FiX } from 'react-icons/fi';
@@ -142,6 +143,9 @@ const Bikes = () => {
           </div>
         </main>
       </div>
+      
+      {/* Footer Section */}
+      <Footer />
       
     </>
   );

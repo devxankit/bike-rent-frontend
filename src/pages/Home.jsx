@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { 
   Phone, Menu, X, MapPin, Calendar, Clock, Users, DollarSign, Shield,ArrowRight, Play, Bike, Star,
-  ChevronDown, ChevronUp, Facebook, Twitter, Instagram, Youtube, Smartphone
+  ChevronDown, ChevronUp, Facebook, Twitter, Instagram, Youtube, Smartphone, HelpCircle
 } from 'lucide-react';
 
 import { FaMoneyBillWave, FaMotorcycle, FaRegClock, FaHandHoldingUsd, FaCity, FaLandmark, FaMonument, FaBuilding, FaUniversity, FaRegBuilding, FaMapMarkerAlt, FaRegHospital, FaRegSmile, FaRegSun, FaRegStar, FaRegFlag } from 'react-icons/fa';
@@ -18,6 +18,7 @@ import PromoToast from '../components/PromoToast';
 import api from '../utils/api';
 import RunningBanner from '../components/RunningBanner';
 import FeatureBar from '../components/FeatureBar';
+import Footer from '../components/Footer';
 import { generateCitySlug, generateBikesSlug } from '../utils/slugUtils';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -252,6 +253,14 @@ const Home = () => {
     {
       question: "Where is BikeRent currently operational?",
       answer: "We currently operate in major cities with 15+ rental hubs. Check our locations page for the nearest hub to you."
+    },
+    {
+      question: "How do I book a bike?",
+      answer: "Booking is simple! Select your city, choose pickup and drop-off dates/times, browse available bikes, and confirm your booking. You'll receive instant confirmation with pickup details."
+    },
+    {
+      question: "Is it safe to rent from BikeRent?",
+      answer: "Absolutely! All our bikes are regularly maintained, insured, and safety-checked. We provide helmets and safety gear, and our bikes are equipped with GPS tracking for your security."
     }
   ];
 
@@ -710,43 +719,50 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Exlore Section */}
+      {/* Explore Section */}
       <section className="relative bg-[#FDB813] overflow-hidden" data-aos="fade-up">
-        <div className="absolute inset-0 "></div>
+        <div className="absolute inset-0"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-8">
               <div className="space-y-4">
-                <h1 className="text-4xl lg:text-6xl font-bold leading-tight" data-aos="fade-up">
-                  Explore the City
-                  <span className="block text-black">Your Way</span>
+                <h1 className="text-4xl lg:text-6xl font-bold leading-tight" data-aos="fade-right" data-aos-delay="100">
+                  <span className="block" data-aos="fade-up" data-aos-delay="200">Explore the City</span>
+                  <span className="block text-black" data-aos="fade-up" data-aos-delay="300">Your Way</span>
                 </h1>
-                <p className="text-xl text-white leading-relaxed" data-aos="fade-up">
+                <p className="text-xl text-white leading-relaxed" data-aos="fade-up" data-aos-delay="400">
                   Premium bike rentals for urban adventures. Discover hidden gems, 
                   beat the traffic, and experience the city like never before.
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4" data-aos="fade-up">
-                <button className="bg-white hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
+              <div className="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="500">
+                <button 
+                  className="bg-white hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center group"
                   onClick={() => navigate('/bikes')}
+                  data-aos="zoom-in" 
+                  data-aos-delay="600"
                 >
                   Book Now
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <button className="border-2 border-white/30 hover:border-white/50 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:bg-white/10 flex items-center justify-center">
+                <button 
+                  className="border-2 border-white/30 hover:border-white/50 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:bg-white/10 flex items-center justify-center"
+                  data-aos="zoom-in" 
+                  data-aos-delay="700"
+                >
                   <Play className="mr-2 h-5 w-5" />
                   Watch Demo
                 </button>
               </div>
               
               <div className="flex items-center space-x-8 pt-4">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2" data-aos="slide-right" data-aos-delay="800">
                   <Star className="h-5 w-5 text-white fill-current" />
                   <span className="text-white font-semibold">4.9/5</span>
                   <span className="text-white-200">2,450+ reviews</span>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2" data-aos="slide-right" data-aos-delay="900">
                   <Bike className="h-5 w-5 text-white" />
                   <span className="text-white font-semibold">500+</span>
                   <span className="text-white">bikes available</span>
@@ -754,13 +770,33 @@ const Home = () => {
               </div>
             </div>
             
-            <div className="relative" data-aos="fade-up">
+            <div className="relative" data-aos="fade-left" data-aos-delay="300">
               <img 
                 src="./images/bikePoster.png" 
                 alt="Premium bike rental"
                 className="w-full h-80 lg:h-[400px] object-cover rounded-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
+              
+              {/* Floating Elements */}
+              <div className="absolute top-4 right-4 bg-white/95 text-black px-4 py-2 rounded-lg font-bold text-sm shadow-lg" data-aos="fade-in" data-aos-delay="600">
+                <div className="flex items-center">
+                  <Star className="w-4 h-4 mr-2 text-yellow-500" />
+                  Best Deals
+                </div>
+              </div>
+              
+              <div className="absolute bottom-4 left-4 bg-black/80 text-white px-4 py-2 rounded-lg font-semibold text-sm shadow-lg" data-aos="fade-in" data-aos-delay="700">
+                <div className="flex items-center">
+                  <Bike className="w-4 h-4 mr-2" />
+                  Premium Fleet
+                </div>
+              </div>
+              
+              {/* Decorative Badge */}
+              <div className="absolute -top-4 -right-4 bg-yellow-400 text-black px-4 py-2 rounded-full font-bold text-sm shadow-xl transform rotate-12" data-aos="fade-in" data-aos-delay="800">
+                50% OFF
+              </div>
             </div>
           </div>
         </div>
@@ -769,38 +805,91 @@ const Home = () => {
       {/* FAQ Section */}
       <section className="py-16 bg-white" data-aos="fade-up">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          {/* Header */}
+          <div className="text-center mb-12" data-aos="fade-up">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-4">
+              <HelpCircle className="w-8 h-8 text-yellow-600" />
+            </div>
             <h2 className="text-4xl font-bold text-gray-800 mb-4">Top FAQ's</h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-lg">
               Renting a bike made simple • Explore our FAQs for quick answers
             </p>
           </div>
 
+          {/* FAQ Items */}
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+              <div 
+                key={index} 
+                className="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-white"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+              >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                  className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-gray-50 transition-colors group"
                 >
-                  <span className="font-semibold text-gray-800">{faq.question}</span>
-                  {openFAQ === index ? (
-                    <ChevronUp className="h-5 w-5 text-gray-500" />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 text-gray-500" />
-                  )}
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
+                      {index === 0 && <DollarSign className="w-5 h-5 text-yellow-600" />}
+                      {index === 1 && <Shield className="w-5 h-5 text-yellow-600" />}
+                      {index === 2 && <Bike className="w-5 h-5 text-yellow-600" />}
+                      {index === 3 && <MapPin className="w-5 h-5 text-yellow-600" />}
+                      {index === 4 && <Calendar className="w-5 h-5 text-yellow-600" />}
+                      {index === 5 && <Shield className="w-5 h-5 text-yellow-600" />}
+                    </div>
+                    <span className="font-semibold text-gray-800 text-lg group-hover:text-yellow-600 transition-colors">
+                      {faq.question}
+                    </span>
+                  </div>
+                  <div className="flex-shrink-0 ml-4">
+                    {openFAQ === index ? (
+                      <ChevronUp className="h-6 w-6 text-yellow-600 transition-transform" />
+                    ) : (
+                      <ChevronDown className="h-6 w-6 text-gray-500 group-hover:text-yellow-600 transition-colors" />
+                    )}
+                  </div>
                 </button>
                 {openFAQ === index && (
-                  <div className="px-6 pb-4">
-                    <p className="text-gray-600">{faq.answer}</p>
+                  <div className="px-6 pb-5 border-t border-gray-100">
+                    <div className="pt-4">
+                      <p className="text-gray-600 leading-relaxed text-base">
+                        {faq.answer}
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
             ))}
           </div>
+
+          {/* Additional Help Section */}
+          <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="700">
+            <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-2xl p-8 border border-yellow-200">
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Still have questions?</h3>
+              <p className="text-gray-600 mb-4">
+                Our customer support team is here to help you 24/7
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center">
+                  <HelpCircle className="w-5 h-5 mr-2" />
+                  Contact Support
+                </button>
+                <button 
+                  className="border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-400 hover:text-black px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center"
+                  onClick={() => navigate('/home')}
+                >
+                  <Bike className="w-5 h-5 mr-2" />
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
+      {/* Footer Section */}
+      <Footer />
    
     </>
   );

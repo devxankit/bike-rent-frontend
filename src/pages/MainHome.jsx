@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/ui/card';
+import Footer from '../components/Footer';
 
 
 const MainHome = () => {
@@ -80,6 +81,7 @@ const MainHome = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -4,6 +4,12 @@ import TaxiNavBar from '../../components/taxi-components/TaxiNavBar'
 import GoogleMapsLoader from '../../components/taxi-components/GoogleMapsLoader'
 import TaxiBookingForm from '../../components/taxi-components/TaxiBookingForm'
 import TaxiRunningBanner from '../../components/taxi-components/TaxiRunningBanner'
+import WhyChooseUsTaxi from '../../components/WhyChooseUsTaxi'
+import TaxiFeatureBar from '../../components/taxi-components/TaxiFeatureBar'
+import WhyTaxiRent from '../../components/taxi-components/WhyTaxiRent'
+import ExploreTaxi from '../../components/taxi-components/ExploreTaxi'
+import TaxiFAQ from '../../components/taxi-components/TaxiFAQ'
+import FooterTaxi from '../../components/FooterTaxi'
 
 const TaxiHome = () => {
 
@@ -73,6 +79,28 @@ const TaxiHome = () => {
           </div>
         </div>
       </section>
+     
+     
+      {/* Features Section */}
+      <TaxiFeatureBar />
+
+
+      {/* Why Choose Us Section */}
+      <WhyChooseUsTaxi />
+   
+   
+      {/* Why TaxiRent Section */}
+      <WhyTaxiRent />
+
+      {/* Explore Taxi Section */}
+      <ExploreTaxi />
+
+      {/* FAQ Section */}
+      <TaxiFAQ />
+
+      {/* Footer Section */}
+      <FooterTaxi />
+
     </>
   )
 }

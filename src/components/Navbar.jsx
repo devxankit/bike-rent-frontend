@@ -105,7 +105,7 @@ const Navbar = ({ onFilterToggle }) => {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-[10000]">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/home" className="flex items-center gap-2">
           <img
             src="/images/bike-rent-logo-2.png"
             alt="Bike Rent Logo"

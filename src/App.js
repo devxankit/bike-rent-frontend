@@ -9,7 +9,6 @@ import NotFound from "./pages/NotFound";
 import { CssBaseline } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Footer from './components/Footer';
 import AdminDashboard from './pages/AdminDashboard';
 import Bikes from './pages/Bikes';
 import AllBikes from './pages/AllBikes';
@@ -31,6 +30,11 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
 import MainHome from "./pages/MainHome";
 import TaxiHome from "./pages/taxi-pages/TaxiHome";
+import TaxiLocations from "./pages/taxi-pages/TaxiLocations";
+import TaxiAbout from "./pages/taxi-pages/TaxiAbout";
+import TaxiContact from "./pages/taxi-pages/TaxiContact";
+import TaxiPrivacyPolicy from "./pages/taxi-pages/TaxiPrivacyPolicy";
+import TaxiTermsAndConditions from "./pages/taxi-pages/TaxiTermsAndConditions";
 import Tours from "./pages/Tours";
 
 
@@ -57,10 +61,15 @@ function App() {
           <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover style={{ zIndex: 999999 }} />
           <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<MainHome />} />
               <Route path="/main-home" element={<MainHome />} />
               <Route path="/taxi-home" element={<TaxiHome/>} />
               <Route path="/taxi" element={<TaxiHome/>} />
+              <Route path="/taxi/locations" element={<TaxiLocations />} />
+              <Route path="/taxi/about" element={<TaxiAbout />} />
+              <Route path="/taxi/contact" element={<TaxiContact />} />
+              <Route path="/taxi/privacy-policy" element={<TaxiPrivacyPolicy />} />
+              <Route path="/taxi/terms-and-conditions" element={<TaxiTermsAndConditions />} />
               <Route path="/tours" element={<Tours />} />
 
               <Route path="/home" element={<Home />} />
@@ -128,7 +137,6 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
-          <Footer />
         </Router>
       </HelmetProvider>
     </LocalizationProvider>

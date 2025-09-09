@@ -26,6 +26,7 @@ import {
 } from '@mui/icons-material';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import blogAPI from '../utils/blogAPI';
+import Footer from '../components/Footer';
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -146,7 +147,8 @@ const BlogDetail = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* Breadcrumbs */}
       <Breadcrumbs sx={{ mb: 3 }}>
         <MuiLink component={Link} to="/" underline="hover">
@@ -406,7 +408,9 @@ const BlogDetail = () => {
           )}
         </Grid>
       </Grid>
-    </Container>
+      </Container>
+      <Footer />
+    </>
   );
 };
 
