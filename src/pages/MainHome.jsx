@@ -5,6 +5,7 @@ import { Card } from '../components/ui/card';
 import Footer from '../components/Footer';
 import { MdDashboard, MdMenu, MdClose, MdStar, MdSecurity, MdSpeed, MdSupport } from 'react-icons/md';
 import { FaMotorcycle, FaTaxi, FaArrowRight, FaCheckCircle, FaUsers, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { MdTour } from 'react-icons/md';
 
 
 const MainHome = () => {
@@ -64,6 +65,7 @@ const MainHome = () => {
       <Link to="/" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`} onClick={() => setDrawerOpen(false)}>Home</Link>
       <Link to="/home" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`} onClick={() => setDrawerOpen(false)}>Bike Home</Link>
       <Link to="/taxi" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`} onClick={() => setDrawerOpen(false)}>Taxi Home</Link>
+      <Link to="/tours" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`} onClick={() => setDrawerOpen(false)}>Tour Home</Link>
       {isAdmin && (
         <Link to="/admin/dashboard" className={`flex items-center gap-2 text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`} onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
@@ -102,6 +104,18 @@ const MainHome = () => {
       description: 'Rent premium bikes and explore at your own pace.',
       features: ['Premium Bikes', 'Easy Booking', 'Well Maintained'],
       icon: FaMotorcycle,
+      color: 'from-yellow-400 to-yellow-500',
+      textColor: 'text-yellow-500'
+    },
+    {
+      id: 3,
+      title: 'Tour Packages',
+      subtitle: 'Explore & Discover',
+      image: '/images/tour.jpeg',
+      route: '/tours',
+      description: 'Discover amazing destinations with our curated tour packages.',
+      features: ['Guided Tours', 'Expert Guides', 'Memorable Experiences'],
+      icon: MdTour,
       color: 'from-yellow-400 to-yellow-500',
       textColor: 'text-yellow-500'
     }
@@ -165,6 +179,10 @@ const MainHome = () => {
               <FaTaxi className="w-4 h-4" />
               Taxi Home
             </Link>
+            <Link to="/tours" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`}>
+              <MdTour className="w-4 h-4" />
+              Tour Home
+            </Link>
             {isAdmin && (
               <Link to="/admin/dashboard" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`}>
                 <MdDashboard className="w-5 h-5" /> Dashboard
@@ -186,6 +204,9 @@ const MainHome = () => {
             </Link>
             <Link to="/taxi" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))} px-2 py-1 rounded transition-all`}>
               <FaTaxi className="w-4 h-4 text-yellow-500" />
+            </Link>
+            <Link to="/tours" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))} px-2 py-1 rounded transition-all`}>
+              <MdTour className="w-4 h-4 text-yellow-500" />
             </Link>
             <button
               className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -237,7 +258,7 @@ const MainHome = () => {
           </motion.div>
 
           {/* Service Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {cardData.map((card, index) => (
               <motion.div
                 key={card.id}
@@ -275,16 +296,6 @@ const MainHome = () => {
                       </div>
                     </div>
                     
-                    <p className="text-gray-200 text-sm mb-4 leading-relaxed">{card.description}</p>
-                    
-                    {/* Features */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {card.features.map((feature, idx) => (
-                        <span key={idx} className="bg-yellow-500/20 text-yellow-200 text-xs px-2 py-1 rounded-full">
-                          {feature}
-                        </span>
-                      ))}
-                    </div>
                     
                     <motion.button
                       whileHover={{ x: 5 }}
