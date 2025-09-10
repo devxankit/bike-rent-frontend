@@ -12,6 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ArticleIcon from '@mui/icons-material/Article';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import ExploreIcon from '@mui/icons-material/Explore';
 import { FaTaxi } from 'react-icons/fa';
 
 const AdminSidebar = () => {
@@ -25,6 +26,7 @@ const AdminSidebar = () => {
     { label: 'Bikes', icon: <DirectionsBikeIcon />, path: '/admin/bikes' },
     { label: 'Bookings', icon: <CalendarTodayIcon />, path: '/admin/bikes?tab=1' },
     { label: 'Taxis', icon: <DirectionsCarIcon />, path: '/admin/taxis' },
+    { label: 'Tours', icon: <ExploreIcon />, path: '/admin/tours' },
     { label: 'Customers', icon: <PeopleIcon />, path: '/admin/customers' },
     { label: 'City Pages', icon: <LocationCityIcon />, path: '/admin/city-pages' },
     { label: 'Taxi Cities', icon: <FaTaxi />, path: '/admin/taxi-cities' },
@@ -59,6 +61,8 @@ const AdminSidebar = () => {
       return location.pathname === '/admin/bikes' && (!new URLSearchParams(location.search).get('tab') || new URLSearchParams(location.search).get('tab') === '0');
     } else if (item.label === 'Taxis') {
       return location.pathname === '/admin/taxis' && (!new URLSearchParams(location.search).get('tab') || new URLSearchParams(location.search).get('tab') === '0');
+    } else if (item.label === 'Tours') {
+      return location.pathname === '/admin/tours';
     } else if (item.path) {
       return location.pathname === item.path;
     }

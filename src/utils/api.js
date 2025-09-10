@@ -18,7 +18,7 @@ export const getApiUrl = (endpoint) => {
 // Axios instance with default configuration
 const api = axios.create({
   baseURL: process.env.NODE_ENV === 'development' ? '' : API_BASE_URL,
-  timeout: 10000,
+  timeout: 60000, // Increased timeout for image uploads
   headers: {
     'Content-Type': 'application/json',
   },

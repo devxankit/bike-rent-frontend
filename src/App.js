@@ -37,6 +37,13 @@ import TaxiPrivacyPolicy from "./pages/taxi-pages/TaxiPrivacyPolicy";
 import TaxiTermsAndConditions from "./pages/taxi-pages/TaxiTermsAndConditions";
 import Tours from "./pages/Tours";
 import TourHome from "./pages/TourHome";
+import TourDetails from "./pages/TourDetails";
+import TourAbout from "./pages/taxi-pages/TourAbout";
+import TourContact from "./pages/taxi-pages/TourContact";
+import TourPrivacyPolicy from "./pages/taxi-pages/TourPrivacyPolicy";
+import TourTermsAndConditions from "./pages/taxi-pages/TourTermsAndConditions";
+import AdminTours from "./pages/AdminTours";
+import TourExplore from "./pages/TourExplore";
 
 
 function ProtectedRoute({ children, adminOnly }) {
@@ -72,6 +79,13 @@ function App() {
               <Route path="/taxi/privacy-policy" element={<TaxiPrivacyPolicy />} />
               <Route path="/taxi/terms-and-conditions" element={<TaxiTermsAndConditions />} />
               <Route path="/tours" element={<TourHome />} />
+              <Route path="/tour-home" element={<TourHome />} />
+              <Route path="/tour-explore" element={<TourExplore />} />
+              <Route path="/tour-details/:id" element={<TourDetails />} />
+              <Route path="/tours/about" element={<TourAbout />} />
+              <Route path="/tours/contact" element={<TourContact />} />
+              <Route path="/tours/privacy-policy" element={<TourPrivacyPolicy />} />
+              <Route path="/tours/terms-and-conditions" element={<TourTermsAndConditions />} />
 
               <Route path="/home" element={<Home />} />
 
@@ -129,6 +143,11 @@ function App() {
               <Route path="/admin/blogs" element={
                 <ProtectedRoute adminOnly={true}>
                   <AdminBlogs />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/tours" element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminTours />
                 </ProtectedRoute>
               } />
               <Route path="/locations" element={<Locations />} />

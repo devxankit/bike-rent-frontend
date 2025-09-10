@@ -14,8 +14,10 @@ const TaxiNavBar = ({ onFilterToggle }) => {
   const isAdmin = user && user.isAdmin;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const servicesDropdownRef = useRef(null);
+  const aboutDropdownRef = useRef(null);
   const location = useLocation();
 
   // Helper function to check if a link is active
@@ -42,22 +44,30 @@ const TaxiNavBar = ({ onFilterToggle }) => {
       : 'text-[#111518] hover:text-yellow-500';
   };
 
-  // Determine dropdown label based on current route
-  let dropdownLabel = 'Locations';
-  if (location.pathname.startsWith('/taxi/about')) dropdownLabel = 'About';
-  else if (location.pathname.startsWith('/taxi/contact')) dropdownLabel = 'Contact Us';
-  else if (location.pathname.startsWith('/taxi/locations')) dropdownLabel = 'Locations';
-  else if (location.pathname.startsWith('/taxi/privacy-policy')) dropdownLabel = 'Privacy Policy';
-  else if (location.pathname.startsWith('/taxi/terms-and-conditions')) dropdownLabel = 'Terms&Conditions';
+  // Determine dropdown labels based on current route
+  let servicesDropdownLabel = 'Services';
+  if (location.pathname.startsWith('/home')) servicesDropdownLabel = 'Bike Home';
+  else if (location.pathname.startsWith('/taxi')) servicesDropdownLabel = 'Taxi Home';
+  else if (location.pathname.startsWith('/tours') || location.pathname.startsWith('/tour-home') || location.pathname.startsWith('/tour-details')) servicesDropdownLabel = 'Tour Home';
 
-  // Close dropdown on click outside
+  let aboutDropdownLabel = 'About';
+  if (location.pathname.startsWith('/taxi/about')) aboutDropdownLabel = 'About';
+  else if (location.pathname.startsWith('/taxi/contact')) aboutDropdownLabel = 'Contact Us';
+  else if (location.pathname.startsWith('/taxi/locations')) aboutDropdownLabel = 'Locations';
+  else if (location.pathname.startsWith('/taxi/privacy-policy')) aboutDropdownLabel = 'Privacy Policy';
+  else if (location.pathname.startsWith('/taxi/terms-and-conditions')) aboutDropdownLabel = 'Terms&Conditions';
+
+  // Close dropdowns on click outside
   React.useEffect(() => {
     function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
+      if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(event.target)) {
+        setServicesDropdownOpen(false);
+      }
+      if (aboutDropdownRef.current && !aboutDropdownRef.current.contains(event.target)) {
+        setAboutDropdownOpen(false);
       }
     }
-    if (dropdownOpen) {
+    if (servicesDropdownOpen || aboutDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -65,7 +75,7 @@ const TaxiNavBar = ({ onFilterToggle }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [dropdownOpen]);
+  }, [servicesDropdownOpen, aboutDropdownOpen]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -76,8 +86,11 @@ const TaxiNavBar = ({ onFilterToggle }) => {
   // Drawer content
   const drawerLinks = (
     <nav className="flex flex-col gap-4 mt-8 z-[10000]">
-      <Link to="/taxi" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`} onClick={() => setDrawerOpen(false)}>Taxi Home</Link>
+      <Link to="/" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`} onClick={() => setDrawerOpen(false)}>Home</Link>
       {/* Dropdown links as normal links in drawer */}
+      <Link to="/home" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`} onClick={() => setDrawerOpen(false)}>Bike Home</Link>
+      <Link to="/taxi" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`} onClick={() => setDrawerOpen(false)}>Taxi Home</Link>
+      <Link to="/tours" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`} onClick={() => setDrawerOpen(false)}>Tour Home</Link>
       <Link to="/taxi/locations" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi/locations'))}`} onClick={() => setDrawerOpen(false)}>Locations</Link>
       <Link to="/taxi/about" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi/about'))}`} onClick={() => setDrawerOpen(false)}>About</Link>
       <Link to="/taxi/contact" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi/contact'))}`} onClick={() => setDrawerOpen(false)}>Contact Us</Link>
@@ -112,26 +125,48 @@ const TaxiNavBar = ({ onFilterToggle }) => {
         </Link>
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/taxi" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`}>Taxi Home</Link>
-          {/* Dropdown for Locations, About, Contact Us (click to open) */}
-          <div className="relative" ref={dropdownRef}>
+          <Link to="/" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`}>Home</Link>
+          
+          {/* Services Dropdown */}
+          <div className="relative" ref={servicesDropdownRef}>
             <button
-              className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/taxi/locations') || isActiveLink('/taxi/about') || isActiveLink('/taxi/contact') || isActiveLink('/taxi/privacy-policy') || isActiveLink('/taxi/terms-and-conditions'))} flex items-center gap-1 focus:outline-none px-3 py-1 rounded transition-all ${dropdownOpen ? 'bg-yellow-50' : ''}`}
+              className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/home') || isActiveLink('/taxi') || isActiveLink('/tours'))} flex items-center gap-1 focus:outline-none px-3 py-1 rounded transition-all ${servicesDropdownOpen ? 'bg-yellow-50' : ''}`}
               type="button"
-              onClick={() => setDropdownOpen((open) => !open)}
+              onClick={() => setServicesDropdownOpen((open) => !open)}
               aria-haspopup="true"
-              aria-expanded={dropdownOpen}
+              aria-expanded={servicesDropdownOpen}
             >
-              {dropdownLabel}
+              {servicesDropdownLabel}
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
             </button>
-            {dropdownOpen && (
+            {servicesDropdownOpen && (
               <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-lg z-20">
-                <Link to="/taxi/locations" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/locations'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>Locations</Link>
-                <Link to="/taxi/about" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/about'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>About</Link>
-                <Link to="/taxi/contact" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/contact'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>Contact Us</Link>
-                <Link to="/taxi/privacy-policy" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/privacy-policy'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>Privacy Policy</Link>
-                <Link to="/taxi/terms-and-conditions" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/terms-and-conditions'))} hover:bg-yellow-50`} onClick={() => setDropdownOpen(false)}>Terms&Conditions</Link>
+                <Link to="/home" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/home'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Bike Home</Link>
+                <Link to="/taxi" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Taxi Home</Link>
+                <Link to="/tours" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/tours'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Tour Home</Link>
+              </div>
+            )}
+          </div>
+
+          {/* About Dropdown */}
+          <div className="relative" ref={aboutDropdownRef}>
+            <button
+              className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/taxi/locations') || isActiveLink('/taxi/about') || isActiveLink('/taxi/contact') || isActiveLink('/taxi/privacy-policy') || isActiveLink('/taxi/terms-and-conditions'))} flex items-center gap-1 focus:outline-none px-3 py-1 rounded transition-all ${aboutDropdownOpen ? 'bg-yellow-50' : ''}`}
+              type="button"
+              onClick={() => setAboutDropdownOpen((open) => !open)}
+              aria-haspopup="true"
+              aria-expanded={aboutDropdownOpen}
+            >
+              {aboutDropdownLabel}
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            {aboutDropdownOpen && (
+              <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-lg z-20">
+                <Link to="/taxi/locations" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/locations'))} hover:bg-yellow-50`} onClick={() => setAboutDropdownOpen(false)}>Locations</Link>
+                <Link to="/taxi/about" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/about'))} hover:bg-yellow-50`} onClick={() => setAboutDropdownOpen(false)}>About</Link>
+                <Link to="/taxi/contact" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/contact'))} hover:bg-yellow-50`} onClick={() => setAboutDropdownOpen(false)}>Contact Us</Link>
+                <Link to="/taxi/privacy-policy" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/privacy-policy'))} hover:bg-yellow-50`} onClick={() => setAboutDropdownOpen(false)}>Privacy Policy</Link>
+                <Link to="/taxi/terms-and-conditions" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi/terms-and-conditions'))} hover:bg-yellow-50`} onClick={() => setAboutDropdownOpen(false)}>Terms&Conditions</Link>
               </div>
             )}
           </div>
@@ -160,11 +195,6 @@ const TaxiNavBar = ({ onFilterToggle }) => {
               <FiFilter className="w-5 h-5 text-yellow-500" />
             </button>
           )}
-          {/* Taxi link for mobile */}
-          <Link to="/taxi" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))} px-2 py-1 rounded transition-all`}>
-            Taxi
-            <FaTaxi className={`w-4 h-4 ${isActiveLink('/taxi') ? 'text-yellow-500' : 'text-yellow-500'}`} />
-          </Link>
           <button
             className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
             onClick={() => setDrawerOpen(true)}
