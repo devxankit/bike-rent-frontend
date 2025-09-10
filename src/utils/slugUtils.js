@@ -83,40 +83,4 @@ export const getTaxiCityFromPath = (pathname) => {
     return parseTaxiCityFromSlug(match[1]);
   }
   return '';
-};
-
-// Tour city slug utilities
-export const generateTourCitySlug = (cityName) => {
-  if (!cityName) return '';
-  const city = cityName.trim().toLowerCase();
-  return `tour-packages-in-${city}`;
-};
-
-export const parseTourCityFromSlug = (slug) => {
-  if (!slug) return '';
-  
-  // Handle full format: "tour-packages-in-city"
-  if (slug.startsWith('tour-packages-in-')) {
-    return slug.replace('tour-packages-in-', '');
-  }
-  
-  // Handle short format: "city" (for backward compatibility)
-  // This handles cases where just the city name is used
-  return slug;
-};
-
-export const isValidTourCitySlug = (slug) => {
-  if (!slug) return false;
-  const city = parseTourCityFromSlug(slug);
-  // Allow any city name - validation will be done by checking if the city exists in the database
-  return city && city.length > 0;
-};
-
-export const getTourCityFromPath = (pathname) => {
-  // Extract city from path like "/tour/tour-packages-in-indore" or "/tour/indore"
-  const match = pathname.match(/\/tour\/(.+)/);
-  if (match) {
-    return parseTourCityFromSlug(match[1]);
-  }
-  return '';
 }; 

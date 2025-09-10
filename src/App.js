@@ -21,8 +21,6 @@ import CityPages from './pages/CityPages';
 import DynamicCityPage from './pages/DynamicCityPage';
 import TaxiCityPages from './pages/TaxiCityPages';
 import DynamicTaxiCityPage from './pages/DynamicTaxiCityPage';
-import TourCityPages from './pages/TourCityPages';
-import DynamicTourCityPage from './pages/DynamicTourCityPage';
 import ScrollToTop from './components/ScrollToTop';
 import Locations from "./pages/locations";
 import BlogList from './pages/BlogList';
@@ -87,9 +85,6 @@ function App() {
               {/* Dynamic taxi city pages route - handles all taxi city slugs */}
               <Route path="/taxi/:citySlug" element={<DynamicTaxiCityPage />} />
               
-              {/* Dynamic tour city pages route - handles all tour city slugs */}
-              <Route path="/tour/:citySlug" element={<DynamicTourCityPage />} />
-              
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Auth />} />
@@ -129,11 +124,6 @@ function App() {
               <Route path="/admin/taxi-cities" element={
                 <ProtectedRoute adminOnly={true}>
                   <TaxiCityPages />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/tour-cities" element={
-                <ProtectedRoute adminOnly={true}>
-                  <TourCityPages />
                 </ProtectedRoute>
               } />
               <Route path="/admin/blogs" element={
