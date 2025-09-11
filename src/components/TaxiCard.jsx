@@ -114,13 +114,15 @@ export default function TaxiCard({ taxi }) {
       message += `\n*Booking Details:*\n`;
       message += `• City: ${formData.city || 'N/A'}\n`;
       message += `• Trip Type: ${formData.tripType || 'N/A'}\n`;
-      message += `• Vehicle Type: ${formData.vehicleType || 'N/A'}\n`;
       message += `• Pickup Location: ${formData.pickupLocation || 'N/A'}\n`;
       message += `• Drop Location: ${formData.dropLocation || 'N/A'}\n`;
       message += `• Pickup Date: ${formData.pickDate || 'N/A'}\n`;
       message += `• Pickup Time: ${formData.pickTime || 'N/A'}\n`;
-      message += `• Drop Date: ${formData.dropDate || 'N/A'}\n`;
-      message += `• Drop Time: ${formData.dropTime || 'N/A'}\n`;
+      // Only show drop date/time for round trips
+      if (formData.tripType === 'round-trip') {
+        message += `• Drop Date: ${formData.dropDate || 'N/A'}\n`;
+        message += `• Drop Time: ${formData.dropTime || 'N/A'}\n`;
+      }
       message += `• Duration: ${formData.duration || 'N/A'}\n`;
     }
     

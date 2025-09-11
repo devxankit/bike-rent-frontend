@@ -203,7 +203,7 @@ const FooterTaxi = () => {
             
             <div className="space-y-1">
               <a href="/taxi" className="block text-white hover:text-yellow-400 transition-colors text-xs">
-                Taxi Home
+                Taxi Service
               </a>
               <a href="#" className="block text-white hover:text-yellow-400 transition-colors text-xs">
                 About Us

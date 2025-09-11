@@ -4,11 +4,6 @@ import GoogleMapsAutocomplete from './GoogleMapsAutocomplete'
 import CustomDatePicker from '../CustomDatePicker'
 import CustomTimePicker from '../CustomTimePicker'
 import { 
-  FormControl, 
-  InputLabel, 
-  Select, 
-  MenuItem, 
-  InputAdornment,
   Button,
   Typography,
   Box,
@@ -16,7 +11,6 @@ import {
   ToggleButtonGroup
 } from '@mui/material'
 import { 
-  DirectionsCar as DirectionsCarIcon,
   Search as SearchIcon,
   LocationOn as LocationOnIcon
 } from '@mui/icons-material'
@@ -31,7 +25,6 @@ const TaxiBookingForm = () => {
   const [dropLocation, setDropLocation] = useState('');
   const [pickupCoordinates, setPickupCoordinates] = useState(null);
   const [dropCoordinates, setDropCoordinates] = useState(null);
-  const [vehicleType, setVehicleType] = useState('');
   const [pickDate, setPickDate] = useState(null);
   const [pickTime, setPickTime] = useState(null);
   const [dropDate, setDropDate] = useState(null);
@@ -153,7 +146,15 @@ const TaxiBookingForm = () => {
 
   // Handle form submission
   const handleFindRide = () => {
-    if (!city || !pickupLocation || !dropLocation || !vehicleType || !pickDate || !pickTime || !dropDate || !dropTime) {
+    // Check required fields based on trip type
+    const isRoundTrip = tripType === 'round-trip';
+    const requiredFields = [city, pickupLocation, dropLocation, pickDate, pickTime];
+    
+    if (isRoundTrip) {
+      requiredFields.push(dropDate, dropTime);
+    }
+    
+    if (requiredFields.some(field => !field)) {
       toast.info("Please fill in all required fields!", {
         position: "top-right",
         autoClose: 2500,
@@ -181,12 +182,11 @@ const TaxiBookingForm = () => {
       dropLocation,
       pickupCoordinates,
       dropCoordinates,
-      vehicleType,
       pickDate: pickDate.toISOString().split('T')[0],
       pickTime: pickTime.toTimeString().split(' ')[0].substring(0, 5),
-      dropDate: dropDate.toISOString().split('T')[0],
-      dropTime: dropTime.toTimeString().split(' ')[0].substring(0, 5),
-      duration: getDurationString(pickDate, pickTime, dropDate, dropTime)
+      dropDate: isRoundTrip ? dropDate.toISOString().split('T')[0] : null,
+      dropTime: isRoundTrip ? dropTime.toTimeString().split(' ')[0].substring(0, 5) : null,
+      duration: isRoundTrip ? getDurationString(pickDate, pickTime, dropDate, dropTime) : "One-way trip"
     };
 
     // Save form data to localStorage for taxi cards
@@ -210,14 +210,6 @@ const TaxiBookingForm = () => {
     { value: 'airport-pickup', label: 'Airport Pick-Up' }
   ];
 
-  // Vehicle type options
-  const vehicleTypes = [
-    { value: 'hatchback', label: 'Hatchback' },
-    { value: 'sedan', label: 'Sedan' },
-    { value: 'suv', label: 'SUV' },
-    { value: 'luxury', label: 'Luxury' },
-    { value: 'tempo-traveller', label: 'Tempo Traveller' }
-  ];
 
   return (
     <div className="bg-white rounded-lg shadow p-4 w-full max-w-md sm:max-w-lg border border-gray-100 flex flex-col gap-3 sm:p-6">
@@ -268,34 +260,6 @@ const TaxiBookingForm = () => {
         </ToggleButtonGroup>
       </Box>
 
-      {/* Vehicle Type */}
-      <FormControl fullWidth size="small" variant="outlined">
-        <InputLabel sx={{ color: '#666', fontWeight: 600, fontSize: 15 }}>Vehicle Type</InputLabel>
-        <Select
-          value={vehicleType}
-          label="Vehicle Type"
-          onChange={(e) => setVehicleType(e.target.value)}
-          IconComponent={() => null}
-          endAdornment={
-            <InputAdornment position="end">
-              <DirectionsCarIcon sx={{ color: '#FDB813', fontSize: 20 }} />
-            </InputAdornment>
-          }
-          sx={{ 
-            fontSize: 15, 
-            bgcolor: 'white', 
-            borderRadius: 2, 
-            '.MuiOutlinedInput-notchedOutline': { borderColor: '#ddd' }, 
-            height: 48 
-          }}
-        >
-          {vehicleTypes.map((vehicle) => (
-            <MenuItem key={vehicle.value} value={vehicle.value}>
-              {vehicle.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
 
       {/* City Selection */}
       <Box>
@@ -368,7 +332,10 @@ const TaxiBookingForm = () => {
       {/* Pickup Location */}
       <Box>
         <GoogleMapsAutocomplete
-          label="Pick up location"
+          label={
+            tripType === 'airport-pickup' ? 'Airport Location' : 
+            'Pick up location'
+          }
           value={pickupLocation}
           onChange={(value) => {
             setPickupLocation(value);
@@ -377,7 +344,10 @@ const TaxiBookingForm = () => {
               setPickupCoordinates(null);
             }
           }}
-          placeholder="Enter pickup location"
+          placeholder={
+            tripType === 'airport-pickup' ? 'Enter airport location' : 
+            'Enter pickup location'
+          }
           iconColor="#FDB813"
         onPlaceSelect={(place) => {
           if (place.geometry && place.geometry.location) {
@@ -409,7 +379,11 @@ const TaxiBookingForm = () => {
       {/* Drop Location */}
       <Box>
         <GoogleMapsAutocomplete
-          label="Drop location"
+          label={
+            tripType === 'round-trip' ? 'Destination' : 
+            tripType === 'airport-drop' ? 'Airport Location' : 
+            'Drop location'
+          }
           value={dropLocation}
           onChange={(value) => {
             setDropLocation(value);
@@ -418,7 +392,11 @@ const TaxiBookingForm = () => {
               setDropCoordinates(null);
             }
           }}
-          placeholder="Enter drop location"
+          placeholder={
+            tripType === 'round-trip' ? 'Enter destination' : 
+            tripType === 'airport-drop' ? 'Enter airport location' : 
+            'Enter drop location'
+          }
           iconColor="#FDB813"
         onPlaceSelect={(place) => {
           if (place.geometry && place.geometry.location) {
@@ -448,7 +426,7 @@ const TaxiBookingForm = () => {
       </Box>
 
       {/* Date and Time Section */}
-      <div className="grid grid-cols-2 gap-2 mt-1.5">
+      <div className={`grid gap-2 mt-1.5 ${tripType === 'round-trip' ? 'grid-cols-2' : 'grid-cols-2'}`}>
         <CustomDatePicker
           ref={pickDateRef}
           value={pickDate}
@@ -481,48 +459,57 @@ const TaxiBookingForm = () => {
           setOpen={setPickTimeOpen}
           placeholder={currentTimePlaceholder}
         />
-        <CustomDatePicker
-          ref={dropDateRef}
-          value={dropDate}
-          onChange={date => {
-            setDropDate(date);
-            setDropDateOpen(false);
-            if (!dropTime) setDropTimeOpen(true); // Only open if not already set
-          }}
-          label="Drop Off Date"
-          minDate={pickDate || new Date()}
-          popupDirection={dropDateDirection}
-          onFocus={handleDropDateFocus}
-          open={dropDateOpen}
-          setOpen={setDropDateOpen}
-          placeholder={currentDatePlaceholder}
-        />
-        <CustomTimePicker
-          ref={dropTimeRef}
-          value={dropTime}
-          onChange={time => {
-            setDropTime(time);
-            setDropTimeOpen(false);
-            if (!dropDate) setDropDateOpen(true); // Only open if not already set
-          }}
-          label="Drop Off Time"
-          selectedDate={dropDate}
-          popupDirection={dropTimeDirection}
-          onFocus={handleDropTimeFocus}
-          open={dropTimeOpen}
-          setOpen={setDropTimeOpen}
-          placeholder={currentTimePlaceholder}
-          minDateTime={
-            dropDate && pickDate && pickTime && dropDate.getFullYear() === pickDate.getFullYear() && dropDate.getMonth() === pickDate.getMonth() && dropDate.getDate() === pickDate.getDate()
-              ? (() => { const d = new Date(dropDate); d.setHours(pickTime.getHours(), pickTime.getMinutes(), 0, 0); return d; })()
-              : undefined
-          }
-        />
+        {tripType === 'round-trip' && (
+          <>
+            <CustomDatePicker
+              ref={dropDateRef}
+              value={dropDate}
+              onChange={date => {
+                setDropDate(date);
+                setDropDateOpen(false);
+                if (!dropTime) setDropTimeOpen(true); // Only open if not already set
+              }}
+              label="Drop Off Date"
+              minDate={pickDate || new Date()}
+              popupDirection={dropDateDirection}
+              onFocus={handleDropDateFocus}
+              open={dropDateOpen}
+              setOpen={setDropDateOpen}
+              placeholder={currentDatePlaceholder}
+            />
+            <CustomTimePicker
+              ref={dropTimeRef}
+              value={dropTime}
+              onChange={time => {
+                setDropTime(time);
+                setDropTimeOpen(false);
+                if (!dropDate) setDropDateOpen(true); // Only open if not already set
+              }}
+              label="Drop Off Time"
+              selectedDate={dropDate}
+              popupDirection={dropTimeDirection}
+              onFocus={handleDropTimeFocus}
+              open={dropTimeOpen}
+              setOpen={setDropTimeOpen}
+              placeholder={currentTimePlaceholder}
+              minDateTime={
+                dropDate && pickDate && pickTime && dropDate.getFullYear() === pickDate.getFullYear() && dropDate.getMonth() === pickDate.getMonth() && dropDate.getDate() === pickDate.getDate()
+                  ? (() => { const d = new Date(dropDate); d.setHours(pickTime.getHours(), pickTime.getMinutes(), 0, 0); return d; })()
+                  : undefined
+              }
+            />
+          </>
+        )}
       </div>
       <hr className="my-2 border-gray-200" />
       <div className="flex items-center justify-between text-[11px] text-gray-500 font-semibold">
         <span>Total Duration:</span>
-        <span>{getDurationString(pickDate, pickTime, dropDate, dropTime)}</span>
+        <span>
+          {tripType === 'round-trip' 
+            ? getDurationString(pickDate, pickTime, dropDate, dropTime)
+            : "One-way trip"
+          }
+        </span>
       </div>
 
       {/* Find Your Ride Button */}

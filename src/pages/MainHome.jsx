@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Card } from '../components/ui/card';
-import Footer from '../components/Footer';
-import { MdDashboard, MdMenu, MdClose, MdStar, MdSecurity, MdSpeed, MdSupport } from 'react-icons/md';
-import { FaMotorcycle, FaTaxi, FaArrowRight, FaCheckCircle, FaUsers, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { MdDashboard, MdMenu, MdClose } from 'react-icons/md';
+import { FaMotorcycle, FaTaxi, FaArrowRight } from 'react-icons/fa';
 import { MdTour } from 'react-icons/md';
 
 
@@ -63,9 +62,9 @@ const MainHome = () => {
   const drawerLinks = (
     <nav className="flex flex-col gap-4 mt-8 z-[10000]">
       <Link to="/" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`} onClick={() => setDrawerOpen(false)}>Home</Link>
-      <Link to="/home" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`} onClick={() => setDrawerOpen(false)}>Bike Home</Link>
-      <Link to="/taxi" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`} onClick={() => setDrawerOpen(false)}>Taxi Home</Link>
-      <Link to="/tours" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`} onClick={() => setDrawerOpen(false)}>Tour Home</Link>
+      <Link to="/home" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`} onClick={() => setDrawerOpen(false)}>Bike Rent</Link>
+      <Link to="/taxi" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`} onClick={() => setDrawerOpen(false)}>Taxi Service</Link>
+      <Link to="/tours" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`} onClick={() => setDrawerOpen(false)}>Tour Packages</Link>
       {isAdmin && (
         <Link to="/admin/dashboard" className={`flex items-center gap-2 text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`} onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
@@ -121,35 +120,6 @@ const MainHome = () => {
     }
   ];
 
-  const features = [
-    {
-      icon: MdSecurity,
-      title: 'Safe & Secure',
-      description: 'Verified drivers and well-maintained vehicles.'
-    },
-    {
-      icon: MdSpeed,
-      title: 'Quick Booking',
-      description: 'Book in seconds with our easy platform.'
-    },
-    {
-      icon: MdSupport,
-      title: '24/7 Support',
-      description: 'Round-the-clock customer assistance.'
-    },
-    {
-      icon: MdStar,
-      title: 'Premium Service',
-      description: 'Top-notch service and professional staff.'
-    }
-  ];
-
-  const stats = [
-    { number: '10K+', label: 'Happy Customers' },
-    { number: '500+', label: 'Vehicles' },
-    { number: '50+', label: 'Cities' },
-    { number: '99%', label: 'Satisfaction Rate' }
-  ];
 
   const handleCardClick = (route) => {
     navigate(route);
@@ -173,15 +143,15 @@ const MainHome = () => {
             <Link to="/" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`}>Home</Link>
             <Link to="/home" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`}>
               <FaMotorcycle className="w-4 h-4" />
-              Bike Home
+              Bike Rent
             </Link>
             <Link to="/taxi" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`}>
               <FaTaxi className="w-4 h-4" />
-              Taxi Home
+              Taxi Service
             </Link>
             <Link to="/tours" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`}>
               <MdTour className="w-4 h-4" />
-              Tour Home
+              Tour Packages
             </Link>
             {isAdmin && (
               <Link to="/admin/dashboard" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`}>
@@ -241,24 +211,22 @@ const MainHome = () => {
       </header>
 
       {/* Hero Section with Cards */}
-      <section className="relative py-16 px-6 bg-gradient-to-br from-yellow-50/30 via-white to-yellow-50/20">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
+      <section className="relative pt-4 md:pt-6 pb-0 md:pb-2  md:py-6 px-6 bg-gradient-to-br from-yellow-50/30 via-white to-yellow-50/20">
+        <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-4 md:mb-12"
+            >
+            <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-0 md:mb-4 pb-0 md:pb-2">
               Choose Your <span className="text-yellow-500">Service</span>
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Professional transportation solutions for all your needs
-            </p>
+            
           </motion.div>
 
           {/* Service Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 max-w-7xl mx-auto ">
             {cardData.map((card, index) => (
               <motion.div
                 key={card.id}
@@ -273,7 +241,7 @@ const MainHome = () => {
                 className="group cursor-pointer"
                 onClick={() => handleCardClick(card.route)}
               >
-                <Card className="relative overflow-hidden h-80 bg-white border-2 border-gray-100 hover:border-yellow-300 transition-all duration-500 shadow-lg hover:shadow-2xl">
+                <Card className="relative overflow-hidden w-[300px] h-[150px] md:w-full md:h-80 bg-white border-2 border-gray-100 hover:border-yellow-300 transition-all duration-500 shadow-lg hover:shadow-2xl mx-auto ">
                   {/* Background Image */}
                   <div className="absolute inset-0">
                     <img 
@@ -285,24 +253,28 @@ const MainHome = () => {
                   </div>
                   
                   {/* Content */}
-                  <div className="relative z-10 h-full flex flex-col justify-end p-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 rounded-full bg-yellow-500/20 backdrop-blur-sm">
-                        <card.icon className="w-6 h-6 text-yellow-500" />
+                  <div className="relative z-10 h-full flex flex-col justify-end p-4 md:p-6">
+                    <div className="flex items-end justify-between gap-3">
+                      {/* Left side - Icon, Title, Subtitle */}
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <div className="p-1.5 md:p-2 rounded-full bg-yellow-500/20 backdrop-blur-sm">
+                          <card.icon className="w-4 h-4 md:w-6 md:h-6 text-yellow-500" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm md:text-xl font-bold text-white mb-0.5 md:mb-1">{card.title}</h3>
+                          <p className="text-yellow-200 text-xs md:text-sm font-medium">{card.subtitle}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-white mb-1">{card.title}</h3>
-                        <p className="text-yellow-200 text-sm font-medium">{card.subtitle}</p>
-                      </div>
+                      
+                      {/* Right side - Explore button */}
+                      <motion.button
+                        whileHover={{ x: 5 }}
+                        className="inline-flex items-center gap-1 md:gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-2.5 md:px-5 py-1.5 md:py-2.5 rounded-full font-semibold text-xs md:text-sm shadow-lg hover:shadow-xl transition-all duration-300"
+                      >
+                        Explore
+                        <FaArrowRight className="w-2 h-2 md:w-3 md:h-3" />
+                      </motion.button>
                     </div>
-                    
-                    
-                    <motion.button
-                      whileHover={{ x: 5 }}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 w-fit"
-                    >
-                      Explore <FaArrowRight className="w-3 h-3" />
-                    </motion.button>
                   </div>
                 </Card>
               </motion.div>
@@ -310,85 +282,6 @@ const MainHome = () => {
           </div>
         </div>
       </section>
-
-
-      {/* Features Section */}
-      <section className="py-16 px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Us?</h2>
-            <p className="text-lg text-gray-600 max-w-xl mx-auto">
-              Key features that make us the best choice
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-                className="text-center group h-full"
-              >
-                <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 border border-gray-100 h-full flex flex-col items-center justify-center">
-                  <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <feature.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">{feature.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed text-center max-w-xs">{feature.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 px-6 bg-gradient-to-r from-yellow-400 to-yellow-500">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Trusted by Thousands</h2>
-            <p className="text-lg text-yellow-100 max-w-xl mx-auto">
-              Join our growing community of satisfied customers
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center h-full"
-              >
-                <div className="bg-white/20 backdrop-blur-sm p-8 rounded-xl border border-white/30 h-full flex flex-col items-center justify-center shadow-lg">
-                  <div className="text-4xl md:text-5xl font-bold text-white mb-3">{stat.number}</div>
-                  <div className="text-yellow-100 font-medium text-sm leading-tight">{stat.label}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Footer />
     </div>
   );
 };

@@ -46,9 +46,9 @@ const Navbar = ({ onFilterToggle }) => {
 
   // Determine dropdown labels based on current route
   let servicesDropdownLabel = 'Services';
-  if (location.pathname.startsWith('/home')) servicesDropdownLabel = 'Bike Home';
-  else if (location.pathname.startsWith('/taxi')) servicesDropdownLabel = 'Taxi Home';
-  else if (location.pathname.startsWith('/tours') || location.pathname.startsWith('/tour-home') || location.pathname.startsWith('/tour-details')) servicesDropdownLabel = 'Tour Home';
+  if (location.pathname.startsWith('/home')) servicesDropdownLabel = 'Bike Rent';
+  else if (location.pathname.startsWith('/taxi')) servicesDropdownLabel = 'Taxi Service';
+  else if (location.pathname.startsWith('/tours') || location.pathname.startsWith('/tour-home') || location.pathname.startsWith('/tour-details')) servicesDropdownLabel = 'Tour Packages';
 
   let aboutDropdownLabel = 'About';
   if (location.pathname.startsWith('/about')) aboutDropdownLabel = 'About';
@@ -88,9 +88,9 @@ const Navbar = ({ onFilterToggle }) => {
     <nav className="flex flex-col gap-4 mt-8 z-[10000]">
       <Link to="/" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`} onClick={() => setDrawerOpen(false)}>Home</Link>
       {/* Dropdown links as normal links in drawer */}
-      <Link to="/home" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`} onClick={() => setDrawerOpen(false)}>Bike Home</Link>
-      <Link to="/taxi" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`} onClick={() => setDrawerOpen(false)}>Taxi Home</Link>
-      <Link to="/tours" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`} onClick={() => setDrawerOpen(false)}>Tour Home</Link>
+      <Link to="/home" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`} onClick={() => setDrawerOpen(false)}>Bike Rent</Link>
+      <Link to="/taxi" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`} onClick={() => setDrawerOpen(false)}>Taxi Service</Link>
+      <Link to="/tours" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`} onClick={() => setDrawerOpen(false)}>Tour Packages</Link>
       <Link to="/locations" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`} onClick={() => setDrawerOpen(false)}>Locations</Link>
       <Link to="/about" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/about'))}`} onClick={() => setDrawerOpen(false)}>About</Link>
       <Link to="/contact" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/contact'))}`} onClick={() => setDrawerOpen(false)}>Contact Us</Link>
@@ -143,9 +143,9 @@ const Navbar = ({ onFilterToggle }) => {
             </button>
             {servicesDropdownOpen && (
               <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-lg z-20">
-                <Link to="/home" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/home'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Bike Home</Link>
-                <Link to="/taxi" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Taxi Home</Link>
-                <Link to="/tours" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/tours'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Tour Home</Link>
+                <Link to="/home" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/home'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Bike Rent</Link>
+                <Link to="/taxi" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/taxi'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Taxi Service</Link>
+                <Link to="/tours" className={`block px-4 py-2 text-sm ${getActiveLinkStyles(isActiveLink('/tours'))} hover:bg-yellow-50`} onClick={() => setServicesDropdownOpen(false)}>Tour Packages</Link>
               </div>
             )}
           </div>
