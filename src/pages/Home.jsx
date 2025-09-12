@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { 
   Phone, Menu, X, MapPin, Calendar, Clock, Users, DollarSign, Shield,ArrowRight, Play, Bike, Star,
@@ -163,38 +163,62 @@ const Home = () => {
     }
   }, [cityPopupOpen]);
 
-  // Close popup on outside click
+  // Close popup on outside click - optimized with useCallback
+  const handleClickOutside = useCallback((e) => {
+    if (cityPopupRef.current && !cityPopupRef.current.contains(e.target)) {
+      setCityPopupOpen(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (!cityPopupOpen) return;
-    function handleClick(e) {
-      if (cityPopupRef.current && !cityPopupRef.current.contains(e.target)) {
-        setCityPopupOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClick);
-    document.addEventListener('touchstart', handleClick);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClick);
-      document.removeEventListener('touchstart', handleClick);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [cityPopupOpen]);
+  }, [cityPopupOpen, handleClickOutside]);
 
-  // Fetch cities from backend API
+  // Fetch cities from backend API with caching
   useEffect(() => {
-    api.get('/api/cities').then(res => {
-      const cities = res.data || [];
-      // Filter active cities only
-      const activeCities = cities.filter(city => city.isActive);
-      setBackendCities(activeCities);
-      // Also set legacy allCities for compatibility
-      setAllCities(activeCities.map(city => city.name));
-    }).catch(err => {
-      console.error('Error fetching cities:', err);
-      // Fallback to hardcoded cities if API fails
-      const fallbackCities = ["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"];
-      setAllCities(fallbackCities);
-      setBackendCities(fallbackCities.map(name => ({ name, image: '', slug: name.toLowerCase() })));
-    });
+    const fetchCities = async () => {
+      // Check if cities are already cached
+      const cachedCities = localStorage.getItem('cachedCities');
+      const cacheTimestamp = localStorage.getItem('citiesCacheTimestamp');
+      const now = Date.now();
+      const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
+      if (cachedCities && cacheTimestamp && (now - parseInt(cacheTimestamp)) < CACHE_DURATION) {
+        // Use cached data
+        const cities = JSON.parse(cachedCities);
+        setBackendCities(cities);
+        setAllCities(cities.map(city => city.name));
+        return;
+      }
+
+      // Fetch fresh data
+      try {
+        const res = await api.get('/api/cities');
+        const cities = res.data || [];
+        // Filter active cities only
+        const activeCities = cities.filter(city => city.isActive);
+        setBackendCities(activeCities);
+        setAllCities(activeCities.map(city => city.name));
+        
+        // Cache the data
+        localStorage.setItem('cachedCities', JSON.stringify(activeCities));
+        localStorage.setItem('citiesCacheTimestamp', now.toString());
+      } catch (err) {
+        console.error('Error fetching cities:', err);
+        // Fallback to hardcoded cities if API fails
+        const fallbackCities = ["Indore", "Bhopal", "Mumbai", "Goa", "Haldwani", "Kathgodam", "Pithoragarh", "Dehradun"];
+        setAllCities(fallbackCities);
+        setBackendCities(fallbackCities.map(name => ({ name, image: '', slug: name.toLowerCase() })));
+      }
+    };
+
+    fetchCities();
   }, []);
 
   const features = [
@@ -336,10 +360,28 @@ const Home = () => {
   const currentTimePlaceholder = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   useEffect(() => {
-    AOS.init({
-      duration: 800, // animation duration in ms
-      once: true,    // only animate once
-    });
+    // Small delay to ensure DOM is fully rendered
+    const timer = setTimeout(() => {
+      // Initialize AOS for this page
+      AOS.init({
+        duration: 800, // Restored original duration for smooth animations
+        once: true,    // only animate once
+        offset: 100,   // Start animation at proper distance
+        delay: 100,    // Small delay for better visual effect
+        easing: 'ease-out-cubic', // Smooth easing
+      });
+      
+      // Multiple refreshes to ensure animations work properly
+      AOS.refresh();
+      setTimeout(() => AOS.refresh(), 200);
+      setTimeout(() => AOS.refresh(), 500);
+    }, 100);
+    
+    // Cleanup on unmount
+    return () => {
+      clearTimeout(timer);
+      AOS.refresh();
+    };
   }, []);
 
   return (

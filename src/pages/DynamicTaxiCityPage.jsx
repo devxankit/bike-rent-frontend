@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TaxiCard from '../components/TaxiCard';
 import api from '../utils/api';
-import Navbar from '../components/Navbar';
+import TaxiNavBar from '../components/taxi-components/TaxiNavBar';
 import FooterTaxi from '../components/FooterTaxi';
 import { useNavigate } from 'react-router-dom';
 import TaxiFilterSidebar from '../components/TaxiFilterSidebar';
@@ -127,7 +127,7 @@ const DynamicTaxiCityPage = () => {
   if (loading) {
     return (
       <>
-        <Navbar onFilterToggle={() => setFilterOpen(true)} />
+        <TaxiNavBar onFilterToggle={() => setFilterOpen(true)} />
         <div className="flex min-h-screen bg-gray-50 items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
@@ -141,7 +141,7 @@ const DynamicTaxiCityPage = () => {
   if (error) {
     return (
       <>
-        <Navbar onFilterToggle={() => setFilterOpen(true)} />
+        <TaxiNavBar onFilterToggle={() => setFilterOpen(true)} />
         <div className="flex min-h-screen bg-gray-50 items-center justify-center">
           <div className="text-center">
             <div className="text-6xl mb-4">🚕</div>
@@ -161,7 +161,7 @@ const DynamicTaxiCityPage = () => {
 
   return (
     <>
-      <Navbar onFilterToggle={() => setFilterOpen(true)} />
+      <TaxiNavBar onFilterToggle={() => setFilterOpen(true)} />
       <div className="flex min-h-screen bg-gray-50">
         {/* Filters - Left Sidebar */}
         <aside className="w-80 p-4 bg-white border-r hidden md:block sticky top-0 h-screen shadow-lg rounded-r-3xl" style={{ alignSelf: 'flex-start' }}>
@@ -180,16 +180,16 @@ const DynamicTaxiCityPage = () => {
         
         {/* Mobile Filter Popup */}
         {filterOpen && (
-         <div className="fixed inset-0 z-[100010] flex md:hidden">
-         {/* Overlay */}
-         <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
-         {/* Popup - always slide in from left */}
-           <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
+          <div className="fixed inset-0 z-[100010] flex md:hidden">
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
+            {/* Popup - always slide in from left */}
+            <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-base font-bold text-yellow-500">Taxi Filters</h2>
-                 <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
-                   <FiX className="w-5 h-5 text-yellow-500" />
-                  </button>
+                <h2 className="text-base font-bold text-yellow-500">Filters</h2>
+                <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
+                  <FiX className="w-5 h-5 text-yellow-500" />
+                </button>
               </div>
               <TaxiFilterSidebar
                 location={location}

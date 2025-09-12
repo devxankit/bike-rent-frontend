@@ -155,20 +155,20 @@ const TaxiLocations = () => {
               {taxiCities.map(city => (
                 <div
                   key={city._id || city.slug || city.name}
-                  className="flex flex-col items-center bg-white rounded-lg shadow p-2 border border-gray-100 hover:bg-yellow-50 transition cursor-pointer"
+                  className="flex flex-col items-center bg-white rounded-lg shadow p-2 border border-gray-100 hover:bg-yellow-50 transition cursor-pointer aspect-square min-h-[80px]"
                   style={{ opacity: showCities ? 1 : 0, transition: 'opacity 0.7s' }}
                   onClick={() => navigate(`/taxi/${city.slug || city.name.toLowerCase().replace(/\s+/g, '-')}`)}
                 >
                   <img
                     src={city.image || `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iI0YzRjRGNiIvPgo8cGF0aCBkPSJNMTIgMTZIMjhWMTJIMTJWMjRIMjhWMjBIMTJWMjRIMjgiIHN0cm9rZT0iIzk5QTNBRiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=`}
                     alt={city.name}
-                    className="w-10 h-10 object-cover rounded-lg shadow"
+                    className="w-10 h-10 object-cover rounded-lg shadow flex-shrink-0"
                     onError={e => { 
                       e.target.onerror = null; 
                       e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iI0YzRjRGNiIvPgo8cGF0aCBkPSJNMTIgMTZIMjhWMTJIMTJWMjRIMjhWMjBIMTJWMjRIMjgiIHN0cm9rZT0iIzk5QTNBRiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo='; 
                     }}
                   />
-                  <span className="text-xs font-semibold text-gray-700 mt-1 text-center whitespace-nowrap">{city.name}</span>
+                  <span className="text-xs font-semibold text-gray-700 mt-1 text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{city.name}</span>
                 </div>
               ))}
             </div>

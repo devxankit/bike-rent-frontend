@@ -25,6 +25,9 @@ const Navbar = ({ onFilterToggle }) => {
     if (path === '/') {
       return location.pathname === '/' || location.pathname === '/home';
     }
+    if (path === '/home') {
+      return location.pathname === '/home';
+    }
     if (path === '/bikes') {
       return location.pathname.startsWith('/bikes');
     }
@@ -173,7 +176,6 @@ const Navbar = ({ onFilterToggle }) => {
             )}
           </div>
           
-          <Link to="/locations" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/locations'))}`}>Bikes</Link>
           <Link to="/blogs" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`}>Blog</Link>
           {isAdmin && (
             <Link to="/admin/dashboard" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`}>

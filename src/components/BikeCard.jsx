@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import PropTypes from 'prop-types';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 // BikeCard displays a single bike's info
 export default function BikeCard({ bike }) {
@@ -41,6 +42,8 @@ export default function BikeCard({ bike }) {
   );
   // Send to bike owner's WhatsApp number
   const whatsappUrl = `https://wa.me/${ownerPhone}?text=${message}`;
+  // Call bike owner's phone number
+  const callUrl = `tel:${ownerPhone}`;
 
 
 
@@ -63,78 +66,80 @@ export default function BikeCard({ bike }) {
           <h3 className="font-bold text-xl text-gray-900 leading-tight">{bike.name}</h3>
         </div>
         
-        {/* Information Grid */}
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        {/* Two-Column Information Grid */}
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="space-y-2">
             {bike.ownerPhone && (
               <div className="text-sm">
-                <span className="text-gray-500 font-medium">Owner</span>
-                <p className="text-gray-800 font-semibold">{bike.ownerPhone}</p>
+                <span className="text-gray-600">Owner</span>
+                <p className="text-gray-900 font-bold">{bike.ownerPhone}</p>
               </div>
             )}
             <div className="text-sm">
-              <span className="text-gray-500 font-medium">Location</span>
-              <p className="text-gray-800 font-semibold">{bike.location}</p>
+              <span className="text-gray-600">Location</span>
+              <p className="text-gray-900 font-bold">{bike.location}</p>
             </div>
+            
+            {/* Features Section in Left Column */}
             {bike.features && bike.features.length > 0 && (
               <div className="text-sm">
-                <span className="text-gray-500 font-medium">Features</span>
-                <ul className="mt-0.5 space-y-0.5">
-                  {bike.features.map((f, i) => (
-                    <li key={i} className="text-gray-800 font-medium">
-                      {f.replace(/,/g, '')}
-                    </li>
-                  ))}
-                </ul>
+                <span className="text-gray-600">Features</span>
+                <p className="text-gray-900">{bike.features.map(f => f.replace(/,/g, '')).join(' ')}</p>
               </div>
             )}
-            <div className="text-sm">
-              <span className="text-gray-500 font-medium">Price</span>
-              <p className="text-blue-600 font-bold text-lg">₹{bike.price}<span className="text-sm font-normal text-gray-600">/day</span></p>
+            
+            {/* Price below features in left column */}
+            <div className="mt-3">
+              <p className="text-black font-bold text-lg">₹{bike.price}/day</p>
             </div>
           </div>
           
           <div className="space-y-2">
             {bike.fuelType && (
               <div className="text-sm">
-                <span className="text-gray-500 font-medium">Fuel</span>
-                <p className="text-gray-800 font-semibold capitalize">{bike.fuelType}</p>
+                <span className="text-gray-600">Fuel</span>
+                <p className="text-gray-900 font-bold capitalize">{bike.fuelType}</p>
               </div>
             )}
             {bike.seat && (
               <div className="text-sm">
-                <span className="text-gray-500 font-medium">Seats</span>
-                <p className="text-gray-800 font-semibold">{bike.seat}</p>
+                <span className="text-gray-600">Seats</span>
+                <p className="text-gray-900 font-bold">{bike.seat}</p>
               </div>
             )}
-            {bike.year && (
-              <div className="text-sm">
-                <span className="text-gray-500 font-medium">Listed</span>
-                <p className="text-gray-800 font-semibold">{new Date(bike.year).toLocaleDateString()}</p>
-              </div>
-            )}
-            {bike.payAtPickup && (
-              <div className="text-sm">
-                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                  Pay at Pickup
-                </span>
-              </div>
-            )}
+            <div className="text-sm">
+              <span className="text-gray-600">Listed</span>
+              <p className="text-gray-900 font-bold">{new Date(bike.createdAt).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })}</p>
+            </div>
+            <div className="mt-3">
+              <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Pay at Pickup</span>
+            </div>
           </div>
         </div>
         
-        {/* Action Button */}
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Book on WhatsApp"
-          className="w-full inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg px-4 py-2.5 transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-          style={{ textDecoration: 'none' }}
-        >
-          <WhatsAppIcon sx={{ color: 'white', fontSize: 18, mr: 1.5 }} />
-          Book on WhatsApp
-        </a>
+        {/* Action Buttons */}
+        <div className="space-y-2">
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Book on WhatsApp"
+            className="w-full inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg px-4 py-2.5 transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            style={{ textDecoration: 'none' }}
+          >
+            <WhatsAppIcon sx={{ color: 'white', fontSize: 18, mr: 1.5 }} />
+            Book on WhatsApp
+          </a>
+          <a
+            href={callUrl}
+            title="Book on Call"
+            className="w-full inline-flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg px-4 py-2.5 transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            style={{ textDecoration: 'none' }}
+          >
+            <PhoneIcon sx={{ color: 'white', fontSize: 18, mr: 1.5 }} />
+            Book on Call
+          </a>
+        </div>
       </div>
     </motion.div>
   );

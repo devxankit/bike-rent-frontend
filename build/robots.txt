@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.bookyourride.in/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /contact
+Allow: /locations
+Allow: /bikes
+Allow: /blogs
+Allow: /PrivacyPolicy
+Allow: /TermsAndConditions
+
+# Crawl delay (optional)
+Crawl-delay: 1 

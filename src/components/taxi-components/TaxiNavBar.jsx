@@ -25,6 +25,12 @@ const TaxiNavBar = ({ onFilterToggle }) => {
     if (path === '/') {
       return location.pathname === '/' || location.pathname === '/home';
     }
+    if (path === '/home') {
+      return location.pathname === '/home';
+    }
+    if (path === '/bikes') {
+      return location.pathname.startsWith('/bikes');
+    }
     if (path === '/taxi') {
       return location.pathname.startsWith('/taxi');
     }
@@ -189,7 +195,7 @@ const TaxiNavBar = ({ onFilterToggle }) => {
         </nav>
         {/* Hamburger Icon for Mobile */}
         <div className="md:hidden flex items-center gap-2">
-          {location.pathname.startsWith('/taxi') && (
+          {location.pathname.startsWith('/taxi/') && location.pathname !== '/taxi' && (
             <button
               className="flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
               onClick={onFilterToggle}
