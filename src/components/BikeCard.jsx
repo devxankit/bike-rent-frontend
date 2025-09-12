@@ -52,13 +52,8 @@ export default function BikeCard({ bike }) {
       transition={{ duration: 0.5 }}
       className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
     >
-      {/* Image Section */}
-      <div className="relative w-full h-48 bg-gray-50 flex items-center justify-center overflow-hidden">
-        <img 
-          src={bike.image} 
-          alt={bike.name} 
-          className="object-contain w-full h-full transition-transform duration-300 hover:scale-105" 
-        />
+      <div className="w-full h-44 flex items-center justify-center mb-2">
+        <img src={bike.image} alt={bike.name} className="object-contain w-full h-full" />
       </div>
       
       {/* Content Section */}
@@ -86,9 +81,8 @@ export default function BikeCard({ bike }) {
                 <span className="text-gray-500 font-medium">Features</span>
                 <ul className="mt-0.5 space-y-0.5">
                   {bike.features.map((f, i) => (
-                    <li key={i} className="text-gray-800 font-medium flex items-center">
-                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 flex-shrink-0"></span>
-                      {f}
+                    <li key={i} className="text-gray-800 font-medium">
+                      {f.replace(/,/g, '')}
                     </li>
                   ))}
                 </ul>
