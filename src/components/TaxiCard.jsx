@@ -144,7 +144,7 @@ export default function TaxiCard({ taxi }) {
           <p className="text-gray-700 mb-3 text-sm line-clamp-1">{taxi.seatingCapacity || 4} + Driver</p>
 
           {/* Primary Price - Prominent */}
-          <div className="text-lg font-bold text-black mb-4">
+          <div className="text-lg text-black mb-4">
             {getPrimaryPrice()}
           </div>
 
