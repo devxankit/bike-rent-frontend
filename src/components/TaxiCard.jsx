@@ -1,57 +1,13 @@
 import { motion } from "framer-motion";
 import PropTypes from 'prop-types';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { useState, useEffect } from 'react';
+import PhoneIcon from '@mui/icons-material/Phone';
+import { useState } from 'react';
 import { X } from 'lucide-react';
-import { getDistance, calculateTaxiPrice } from '../utils/distanceCalculator';
 
 // TaxiCard displays a single taxi's info
 export default function TaxiCard({ taxi }) {
   const [showDialog, setShowDialog] = useState(false);
-  const [calculatedPrice, setCalculatedPrice] = useState(null);
-  const [priceCalculation, setPriceCalculation] = useState(null);
-  const [isCalculating, setIsCalculating] = useState(false);
-
-  // Calculate distance-based pricing when component mounts
-  useEffect(() => {
-    const calculatePricing = async () => {
-      try {
-        // Get form data from localStorage
-        const formData = JSON.parse(localStorage.getItem('taxiRentFormData') || '{}');
-        
-        if (!formData.pickupCoordinates || !formData.dropCoordinates || !taxi.pricePerKm) {
-          return;
-        }
-
-        setIsCalculating(true);
-        
-        // Calculate distance
-        const distanceData = await getDistance(
-          formData.pickupCoordinates,
-          formData.dropCoordinates
-        );
-
-        // Calculate price
-        const priceData = calculateTaxiPrice(
-          distanceData.distance,
-          taxi.pricePerKm,
-          formData.tripType || 'one-way'
-        );
-
-        setCalculatedPrice(priceData);
-        setPriceCalculation(priceData);
-        
-      } catch (error) {
-        // Fallback to fixed pricing
-        setCalculatedPrice(null);
-        setPriceCalculation(null);
-      } finally {
-        setIsCalculating(false);
-      }
-    };
-
-    calculatePricing();
-  }, [taxi.pricePerKm]);
 
   // Safety check to prevent rendering if taxi is not an object
   if (!taxi || typeof taxi !== 'object' || Array.isArray(taxi)) {
@@ -95,18 +51,14 @@ export default function TaxiCard({ taxi }) {
     
     // Pricing Information
     message += `\n*Pricing:*\n`;
-    if (calculatedPrice && !isCalculating) {
-      message += `• Distance: ${calculatedPrice.distance}km\n`;
-      message += `• Price per km: ₹${calculatedPrice.pricePerKm}\n`;
-      message += `• Trip Type: ${calculatedPrice.tripTypeLabel}\n`;
-      message += `• Total Price: ₹${calculatedPrice.totalPrice}\n`;
-      message += `• Calculation: ${calculatedPrice.calculation}\n`;
-    } else {
-      message += `• Price per km: ₹${taxi.pricePerKm || 0}\n`;
-      message += `• Price per trip: ₹${taxi.pricePerTrip || 0}\n`;
-      if (taxi.rentalPricePerDay > 0) {
-        message += `• Rental per day: ₹${taxi.rentalPricePerDay}\n`;
-      }
+    if (taxi.rentalPricePerDay > 0) {
+      message += `• Rental per day: ₹${taxi.rentalPricePerDay}\n`;
+    }
+    if (taxi.pricePerKm > 0) {
+      message += `• Price per km: ₹${taxi.pricePerKm}\n`;
+    }
+    if (taxi.pricePerTrip > 0) {
+      message += `• Price per trip: ₹${taxi.pricePerTrip}\n`;
     }
     
     // Booking Details (if form data available)
@@ -144,23 +96,14 @@ export default function TaxiCard({ taxi }) {
   const message = encodeURIComponent(buildWhatsAppMessage());
   // Send to taxi owner's WhatsApp number
   const whatsappUrl = `https://wa.me/${ownerPhone}?text=${message}`;
+  // Call taxi owner's phone number
+  const callUrl = `tel:${ownerPhone}`;
 
   // Get the primary price to display
   const getPrimaryPrice = () => {
-    // Show calculated price if available
-    if (calculatedPrice && !isCalculating) {
-      return `₹${calculatedPrice.totalPrice} (${calculatedPrice.distance}km × ₹${calculatedPrice.pricePerKm}/km${calculatedPrice.multiplier > 1 ? ' - Return Trip' : ''})`;
-    }
-    
-    // Show loading state
-    if (isCalculating) {
-      return 'Calculating...';
-    }
-    
-    // Fallback to fixed pricing
-    if (taxi.pricePerTrip > 0) return `₹${taxi.pricePerTrip}/trip`;
-    if (taxi.rentalPricePerDay > 0) return `₹${taxi.rentalPricePerDay}/day`;
-    if (taxi.pricePerKm > 0) return `₹${taxi.pricePerKm}/km`;
+    if (taxi.rentalPricePerDay > 0) return `Starting Price ₹${taxi.rentalPricePerDay}/day + Toll & Parking`;
+    if (taxi.pricePerTrip > 0) return `Starting Price ₹${taxi.pricePerTrip}/trip + Toll & Parking`;
+    if (taxi.pricePerKm > 0) return `Starting Price ₹${taxi.pricePerKm}/km + Toll & Parking`;
     return 'Price on request';
   };
 
@@ -197,8 +140,8 @@ export default function TaxiCard({ taxi }) {
           
          
 
-          {/* City/Location */}
-          <p className="text-gray-600 mb-3 text-sm line-clamp-1">{taxi.location || 'Location not specified'}</p>
+          {/* Seating Capacity */}
+          <p className="text-gray-700 mb-3 text-sm line-clamp-1">{taxi.seatingCapacity || 4} + Driver</p>
 
           {/* Primary Price - Prominent */}
           <div className="text-lg font-bold text-blue-600 mb-4">
@@ -223,6 +166,15 @@ export default function TaxiCard({ taxi }) {
             >
               <WhatsAppIcon sx={{ color: 'white', fontSize: 18, mr: 1 }} />
               Book Now (WhatsApp)
+            </a>
+            <a
+              href={callUrl}
+              title="Book on Call"
+              className="w-full inline-flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg px-4 py-2 transition-all duration-200 shadow-sm hover:shadow-lg text-sm"
+              style={{ textDecoration: 'none' }}
+            >
+              <PhoneIcon sx={{ color: 'white', fontSize: 18, mr: 1 }} />
+              Book Now on Call
             </a>
           </div>
         </div>
@@ -318,68 +270,33 @@ export default function TaxiCard({ taxi }) {
                   </h3>
                   
                   <div className="space-y-3">
-                    {/* Show calculated pricing if available */}
-                    {calculatedPrice && !isCalculating ? (
-                      <div className="space-y-3">
-                        <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                          <div className="flex justify-between items-center py-1 mb-2">
-                            <span className="font-medium text-gray-700 text-sm">Calculated Price:</span>
-                            <span className="text-xl font-bold text-blue-600">₹{calculatedPrice.totalPrice}</span>
-                          </div>
-                          <div className="text-xs text-gray-600 space-y-1">
-                            <div>Distance: {calculatedPrice.distance}km</div>
-                            <div>Price per km: ₹{calculatedPrice.pricePerKm}</div>
-                            <div>Trip type: {calculatedPrice.tripTypeLabel}</div>
-                            {calculatedPrice.multiplier > 1 && (
-                              <div>Total distance: {calculatedPrice.totalDistance}km (Return Trip)</div>
-                            )}
-                            <div className="font-medium text-gray-800 mt-2">
-                              Calculation: {calculatedPrice.calculation}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {taxi.payAtPickup && (
-                          <div className="bg-green-50 border border-green-200 p-3 rounded-lg text-center">
-                            <span className="text-green-700 font-semibold text-sm">✓ Pay at Pickup Available</span>
-                          </div>
-                        )}
-                      </div>
-                    ) : isCalculating ? (
-                      <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg text-center">
-                        <span className="text-yellow-700 font-semibold text-sm">Calculating price based on your route...</span>
-                      </div>
-                    ) : (
-                      /* Show fixed pricing as fallback */
-                      <div className="space-y-3">
-                        {taxi.pricePerTrip > 0 && (
-                          <div className="flex justify-between items-center py-1">
-                            <span className="font-medium text-gray-700 text-sm">Per Trip:</span>
-                            <span className="text-lg font-bold text-green-600">₹{taxi.pricePerTrip}</span>
-                          </div>
-                        )}
-                        
-                        {taxi.rentalPricePerDay > 0 && (
-                          <div className="flex justify-between items-center py-1">
-                            <span className="font-medium text-gray-700 text-sm">Rental:</span>
-                            <span className="text-lg font-bold text-green-600">₹{taxi.rentalPricePerDay}/day</span>
-                          </div>
-                        )}
-                        
-                        {taxi.pricePerKm > 0 && (
-                          <div className="flex justify-between items-center py-1">
-                            <span className="font-medium text-gray-700 text-sm">Per KM:</span>
-                            <span className="text-lg font-bold text-green-600">₹{taxi.pricePerKm}</span>
-                          </div>
-                        )}
-
-                        {taxi.payAtPickup && (
-                          <div className="bg-green-50 border border-green-200 p-3 rounded-lg text-center">
-                            <span className="text-green-700 font-semibold text-sm">✓ Pay at Pickup Available</span>
-                          </div>
-                        )}
+                    {taxi.rentalPricePerDay > 0 && (
+                      <div className="flex justify-between items-center py-1">
+                        <span className="font-medium text-gray-700 text-sm">Per Day:</span>
+                        <span className="text-xl font-bold text-green-600">₹{taxi.rentalPricePerDay}</span>
                       </div>
                     )}
+
+                    {taxi.payAtPickup && (
+                      <div className="bg-green-50 border border-green-200 p-3 rounded-lg text-center">
+                        <span className="text-green-700 font-semibold text-sm">✓ Pay at Pickup Available</span>
+                      </div>
+                    )}
+
+                    {/* Price Benefits */}
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-600">💰</span>
+                        <span className="text-gray-700 text-sm">Transparent pricing with no hidden charges</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-600">⭐</span>
+                        <span className="text-gray-700 text-sm">Best value with competitive rates</span>
+                      </div>
+                      
+                      
+                    </div>
                   </div>
                 </div>
               </div>
@@ -403,6 +320,20 @@ export default function TaxiCard({ taxi }) {
                 </div>
               )}
 
+              {/* Additional Information */}
+              {taxi.additionalInformation && (
+                <div className="mt-5">
+                  <h3 className="text-base font-semibold text-gray-900 border-b-2 border-orange-200 pb-2 mb-3">
+                    Additional Information
+                  </h3>
+                  <div className="bg-orange-50 border border-orange-200 p-4 rounded-lg">
+                    <div className="text-sm text-gray-700 whitespace-pre-line">
+                      {taxi.additionalInformation}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Owner Information */}
               {taxi.ownerPhone && (
                 <div className="mt-5 p-4 bg-gray-50 rounded-xl border border-gray-200">
@@ -413,17 +344,11 @@ export default function TaxiCard({ taxi }) {
                 </div>
               )}
 
-              {/* Additional Info */}
-              {taxi.tripsCount && (
-                <div className="mt-4 text-center text-xs text-gray-500 bg-gray-50 py-2 rounded-lg">
-                  Total Trips: {taxi.tripsCount}
-                </div>
-              )}
             </div>
 
             {/* Dialog Footer - Fixed at Bottom */}
             <div className="p-5 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => setShowDialog(false)}
                   className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-xl px-4 py-3 transition-all duration-200 text-sm shadow-sm hover:shadow-md"
@@ -437,8 +362,16 @@ export default function TaxiCard({ taxi }) {
                   className="flex-1 inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-4 py-3 transition-all duration-200 shadow-sm hover:shadow-lg text-sm"
                   style={{ textDecoration: 'none' }}
                 >
-                  <WhatsAppIcon sx={{ color: 'white', fontSize: 18, mr: 2 }} />
-                  Book on WhatsApp
+                  <WhatsAppIcon sx={{ color: 'white', fontSize: 18, mr: 1 }} />
+                  WhatsApp
+                </a>
+                <a
+                  href={callUrl}
+                  className="flex-1 inline-flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl px-4 py-3 transition-all duration-200 shadow-sm hover:shadow-lg text-sm"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <PhoneIcon sx={{ color: 'white', fontSize: 18, mr: 1 }} />
+                  Call
                 </a>
               </div>
             </div>
@@ -467,5 +400,6 @@ TaxiCard.propTypes = {
     ownerPhone: PropTypes.string,
     tripsCount: PropTypes.number,
     payAtPickup: PropTypes.bool,
+    additionalInformation: PropTypes.string,
   }).isRequired,
 };

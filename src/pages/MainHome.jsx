@@ -257,12 +257,11 @@ const MainHome = () => {
                     <div className="flex items-end justify-between gap-3">
                       {/* Left side - Icon, Title, Subtitle */}
                       <div className="flex items-center gap-2 md:gap-3">
-                        <div className="p-1.5 md:p-2 rounded-full bg-yellow-500/20 backdrop-blur-sm">
-                          <card.icon className="w-4 h-4 md:w-6 md:h-6 text-yellow-500" />
+                        <div className="p-2 md:p-2 rounded-full bg-yellow-500/20 backdrop-blur-sm">
+                          <card.icon className="w-8 h-8 md:w-6 md:h-6 text-yellow-500" />
                         </div>
                         <div>
-                          <h3 className="text-sm md:text-xl font-bold text-white mb-0.5 md:mb-1">{card.title}</h3>
-                          <p className="text-yellow-200 text-xs md:text-sm font-medium">{card.subtitle}</p>
+                          <h3 className="text-xl md:text-xl font-bold text-white">{card.title}</h3>
                         </div>
                       </div>
                       

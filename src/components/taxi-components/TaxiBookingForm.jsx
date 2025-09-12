@@ -214,13 +214,11 @@ const TaxiBookingForm = () => {
   return (
     <div className="bg-white rounded-lg shadow p-4 w-full max-w-md sm:max-w-lg border border-gray-100 flex flex-col gap-3 sm:p-6">
       <h2 className="text-2xl font-bold text-gray-900 text-center mb-1">Book a Taxi in Your City</h2>
-      <p className="text-xs text-gray-500 text-center mb-1">Quickly find the best taxi for your journey needs.</p>
+    
       
       {/* Trip Type Selection */}
       <Box>
-        <Typography variant="subtitle2" fontWeight={600} color="#333" mb={1.5} fontSize={15}>
-          Trip Type
-        </Typography>
+        
         <ToggleButtonGroup
           value={tripType}
           exclusive
@@ -263,9 +261,7 @@ const TaxiBookingForm = () => {
 
       {/* City Selection */}
       <Box>
-        <Typography variant="subtitle2" fontWeight={600} color="#333" mb={1.5} fontSize={15}>
-          Select City
-        </Typography>
+        
         <div className="relative">
           <button
             type="button"

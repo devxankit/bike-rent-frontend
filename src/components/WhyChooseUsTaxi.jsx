@@ -6,9 +6,9 @@ import 'aos/dist/aos.css';
 const WhyChooseUsTaxi = () => {
   // Carousel state
   const carouselImages = [
-    './images/taxi-bg-1.png',
-    './images/taxi-bg-2.png',
-    './images/bike-banner-1.png'
+    './images/car-poster-1.png',
+    './images/car-poster-2.png',
+    './images/car-poster-3.png'
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 

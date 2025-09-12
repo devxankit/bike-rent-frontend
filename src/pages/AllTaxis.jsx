@@ -29,6 +29,7 @@ const initialForm = {
   ownerPhone: '',
   tripsCount: '',
   payAtPickup: false,
+  additionalInformation: '',
 };
 
 export default function AllTaxis({ cityOverride }) {
@@ -101,6 +102,7 @@ export default function AllTaxis({ cityOverride }) {
       ownerPhone: taxi.ownerPhone || '',
       tripsCount: taxi.tripsCount || '',
       payAtPickup: !!taxi.payAtPickup,
+      additionalInformation: taxi.additionalInformation || '',
     });
     setImagePreview(taxi.image || '');
     setTaxiFormOpen(true);
@@ -124,6 +126,7 @@ export default function AllTaxis({ cityOverride }) {
     formData.append('ownerPhone', form.ownerPhone);
     formData.append('tripsCount', form.tripsCount);
     formData.append('payAtPickup', form.payAtPickup);
+    formData.append('additionalInformation', form.additionalInformation);
     if (form.image && form.image instanceof File) {
       formData.append('image', form.image);
     } else if (editId && typeof form.image === 'string') {
@@ -461,6 +464,24 @@ export default function AllTaxis({ cityOverride }) {
               <TextField label="Price per Trip" name="pricePerTrip" value={form.pricePerTrip} onChange={handleChange} type="number" helperText="Fixed price per trip" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
               <TextField label="Rental Price per Day" name="rentalPricePerDay" value={form.rentalPricePerDay} onChange={handleChange} type="number" helperText="Daily rental price" size="small" sx={{ fontSize: 12 }} InputProps={{ style: { fontSize: 12 } }} InputLabelProps={{ style: { fontSize: 12 } }} FormHelperTextProps={{ style: { fontSize: 11 } }} />
               <FormControlLabel control={<Checkbox checked={form.payAtPickup} onChange={handleChange} name="payAtPickup" size="small" sx={{ p: 0.2 }} />} label={<span style={{ fontSize: 11 }}>Pay at Pickup</span>} sx={{ ml: 0 }} />
+            </Box>
+            {/* Additional Information Section */}
+            <Typography variant="subtitle2" mt={0.2} mb={0.2} sx={{ fontWeight: 600, fontSize: 12 }}>Additional Information</Typography>
+            <Box mb={0.7}>
+              <TextField 
+                label="Additional Information" 
+                name="additionalInformation" 
+                value={form.additionalInformation} 
+                onChange={handleChange} 
+                multiline 
+                rows={4}
+                helperText="Enter pricing terms, exclusions, or any additional information (e.g., Extra KM charges, Night allowance, Tolls, etc.)" 
+                size="small" 
+                sx={{ fontSize: 12, width: '100%' }} 
+                InputProps={{ style: { fontSize: 12 } }} 
+                InputLabelProps={{ style: { fontSize: 12 } }} 
+                FormHelperTextProps={{ style: { fontSize: 11 } }} 
+              />
             </Box>
             <Box display="flex" gap={0.5} mt={1}>
               <Button type="submit" variant="contained" color="primary" disabled={loading} size="small" sx={{ minWidth: 70, fontSize: 12, py: 0.2, height: 28 }}>
