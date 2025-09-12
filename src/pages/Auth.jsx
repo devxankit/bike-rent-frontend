@@ -116,7 +116,7 @@ export default function Auth() {
                   Don't have an account?{' '}
                   <Link
                     to="/signup"
-                    className="text-blue-600 hover:underline font-medium"
+                    className="text-yellow-600 hover:underline font-medium"
                     onClick={() => setTab(1)}
                   >
                     Sign up here
@@ -130,7 +130,7 @@ export default function Auth() {
                   Already have an account?{' '}
                   <Link
                     to="/login"
-                    className="text-blue-600 hover:underline font-medium"
+                    className="text-yellow-600 hover:underline font-medium"
                     onClick={() => setTab(0)}
                   >
                     Sign in here
@@ -154,7 +154,7 @@ export default function Auth() {
                     value={login.email}
                     onChange={handleLoginChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition bg-white text-gray-900 shadow-sm text-base"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition bg-white text-gray-900 shadow-sm text-base"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -167,18 +167,18 @@ export default function Auth() {
                       value={login.password}
                       onChange={handleLoginChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition bg-white text-gray-900 shadow-sm text-base pr-11"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition bg-white text-gray-900 shadow-sm text-base pr-11"
                       placeholder="Enter your password"
                     />
                     <button
                       type="button"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center p-0 m-0 text-gray-400 hover:text-blue-600 focus:outline-none"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center p-0 m-0 text-gray-400 hover:text-yellow-600 focus:outline-none"
                       onClick={() => setShowPassword((s) => !s)}
                       tabIndex={-1}
                       style={{height: '24px', width: '24px'}}
                     >
                       {showPassword ? (
-                        <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <svg className="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                           <ellipse cx="12" cy="12" rx="8" ry="5" />
                           <circle cx="12" cy="12" r="2" />
                         </svg>
@@ -197,11 +197,11 @@ export default function Auth() {
                     <input type="checkbox" className="rounded border-gray-300" />
                     Remember me
                   </label>
-                  <button type="button" className="text-blue-600 text-sm hover:underline font-medium">Forgot your password?</button>
+                  <button type="button" className="text-yellow-600 text-sm hover:underline font-medium">Forgot your password?</button>
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 mt-2 rounded-md font-bold text-white bg-blue-600 hover:bg-blue-700 transition text-base shadow"
+                  className="w-full py-2.5 mt-2 rounded-md font-bold text-white bg-yellow-500 hover:bg-yellow-600 transition text-base shadow"
                 >
                   Sign in
                 </button>
@@ -219,7 +219,7 @@ export default function Auth() {
                       value={signup.name}
                       onChange={handleSignupChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition bg-white text-gray-900 shadow-sm text-base"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition bg-white text-gray-900 shadow-sm text-base"
                       placeholder="Full name"
                     />
                   </div>
@@ -231,7 +231,7 @@ export default function Auth() {
                       value={signup.phone}
                       onChange={handleSignupChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition bg-white text-gray-900 shadow-sm text-base"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition bg-white text-gray-900 shadow-sm text-base"
                       placeholder="Phone number"
                     />
                   </div>
@@ -244,7 +244,7 @@ export default function Auth() {
                     value={signup.email}
                     onChange={handleSignupChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition bg-white text-gray-900 shadow-sm text-base"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition bg-white text-gray-900 shadow-sm text-base"
                     placeholder="Email address"
                   />
                 </div>
@@ -258,18 +258,18 @@ export default function Auth() {
                         value={signup.password}
                         onChange={handleSignupChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition bg-white text-gray-900 shadow-sm text-base pr-11"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition bg-white text-gray-900 shadow-sm text-base pr-11"
                         placeholder="Password"
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center p-0 m-0 text-gray-400 hover:text-blue-600 focus:outline-none"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center p-0 m-0 text-gray-400 hover:text-yellow-600 focus:outline-none"
                         onClick={() => setShowPassword((s) => !s)}
                         tabIndex={-1}
                         style={{height: '24px', width: '24px'}}
                       >
                         {showPassword ? (
-                          <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <svg className="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <ellipse cx="12" cy="12" rx="8" ry="5" />
                             <circle cx="12" cy="12" r="2" />
                           </svg>
@@ -292,18 +292,18 @@ export default function Auth() {
                         value={signup.confirmPassword}
                         onChange={handleSignupChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition bg-white text-gray-900 shadow-sm text-base pr-11"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition bg-white text-gray-900 shadow-sm text-base pr-11"
                         placeholder="Confirm password"
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center p-0 m-0 text-gray-400 hover:text-blue-600 focus:outline-none"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center p-0 m-0 text-gray-400 hover:text-yellow-600 focus:outline-none"
                         onClick={() => setShowConfirmPassword((s) => !s)}
                         tabIndex={-1}
                         style={{height: '24px', width: '24px'}}
                       >
                         {showConfirmPassword ? (
-                          <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <svg className="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <ellipse cx="12" cy="12" rx="8" ry="5" />
                             <circle cx="12" cy="12" r="2" />
                           </svg>
@@ -320,7 +320,7 @@ export default function Auth() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 mt-2 rounded-md font-bold text-white bg-blue-600 hover:bg-blue-700 transition text-base shadow"
+                  className="w-full py-2.5 mt-2 rounded-md font-bold text-white bg-yellow-500 hover:bg-yellow-600 transition text-base shadow"
                 >
                   Sign up
                 </button>

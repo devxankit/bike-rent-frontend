@@ -27,6 +27,9 @@ const TourNavbar = () => {
     if (path === '/tours') {
       return location.pathname.startsWith('/tours') || location.pathname.startsWith('/tour-home') || location.pathname.startsWith('/tour-details');
     }
+    if (path === '/blogs') {
+      return location.pathname.startsWith('/blogs');
+    }
     if (path === '/admin/dashboard') {
       return location.pathname.startsWith('/admin');
     }
@@ -90,6 +93,7 @@ const TourNavbar = () => {
       <Link to="/tours/contact" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours/contact'))}`} onClick={() => setDrawerOpen(false)}>Contact Us</Link>
       <Link to="/tours/privacy-policy" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours/privacy-policy'))}`} onClick={() => setDrawerOpen(false)}>Privacy Policy</Link>
       <Link to="/tours/terms-and-conditions" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours/terms-and-conditions'))}`} onClick={() => setDrawerOpen(false)}>Terms&Conditions</Link>
+      <Link to="/blogs" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`} onClick={() => setDrawerOpen(false)}>Blog</Link>
       {isAdmin && (
         <Link to="/admin/dashboard" className={`flex items-center gap-2 text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`} onClick={() => setDrawerOpen(false)}>
           <MdDashboard className="w-5 h-5" /> Dashboard
@@ -164,6 +168,8 @@ const TourNavbar = () => {
               </div>
             )}
           </div>
+          
+          <Link to="/blogs" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/blogs'))}`}>Blog</Link>
           {isAdmin && (
             <Link to="/admin/dashboard" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/admin/dashboard'))}`}>
               <MdDashboard className="w-5 h-5" /> Dashboard

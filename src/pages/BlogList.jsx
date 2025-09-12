@@ -150,7 +150,16 @@ const BlogList = () => {
               type="submit"
               variant="contained"
               size="large"
-              sx={{ minWidth: 120 }}
+              sx={{ 
+                minWidth: 120,
+                backgroundColor: '#FDB813',
+                '&:hover': {
+                  backgroundColor: '#E6A612'
+                },
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
             >
               Search
             </Button>

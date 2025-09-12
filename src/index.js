@@ -30,4 +30,14 @@ root.render(
       <App />
     </ErrorBoundary>
   </React.StrictMode>
-); 
+);
+
+// Register service worker for caching
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .catch(() => {
+        // Silently fail in production
+      });
+  });
+} 

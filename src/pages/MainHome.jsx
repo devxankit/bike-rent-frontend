@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Card } from '../components/ui/card';
@@ -6,34 +6,43 @@ import { MdDashboard, MdMenu, MdClose } from 'react-icons/md';
 import { FaMotorcycle, FaTaxi, FaArrowRight } from 'react-icons/fa';
 import { MdTour } from 'react-icons/md';
 
+// Lazy load heavy components
+const LazyImage = lazy(() => import('../components/LazyImage'));
 
-const MainHome = () => {
+
+const MainHome = React.memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Check login state from localStorage
-  let user = null;
-  try {
-    user = JSON.parse(localStorage.getItem('user'));
-  } catch (e) {}
-  const isLoggedIn = !!user;
-  const isAdmin = user && user.isAdmin;
+  // Memoize user state to prevent unnecessary re-renders
+  const userState = useMemo(() => {
+    let user = null;
+    try {
+      user = JSON.parse(localStorage.getItem('user'));
+    } catch (e) {}
+    return {
+      user,
+      isLoggedIn: !!user,
+      isAdmin: user && user.isAdmin
+    };
+  }, []);
+
+  const { isLoggedIn, isAdmin } = userState;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Helper function to check if a link is active
-  const isActiveLink = (path) => {
+  // Memoize helper functions
+  const isActiveLink = useCallback((path) => {
     return location.pathname === path;
-  };
+  }, [location.pathname]);
 
-  // Helper function to get active link styles
-  const getActiveLinkStyles = (isActive) => {
+  const getActiveLinkStyles = useCallback((isActive) => {
     return isActive 
       ? 'text-yellow-500 font-bold' 
       : 'text-[#111518] hover:text-yellow-500';
-  };
+  }, []);
 
   // Close dropdown on click outside
   React.useEffect(() => {
@@ -52,11 +61,11 @@ const MainHome = () => {
     };
   }, [dropdownOpen]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     window.location.reload();
-  };
+  }, []);
 
   // Drawer content
   const drawerLinks = (
@@ -81,7 +90,8 @@ const MainHome = () => {
     </nav>
   );
 
-  const cardData = [
+  // Memoize card data to prevent recreation on every render
+  const cardData = useMemo(() => [
     {
       id: 1,
       title: 'Taxi Service',
@@ -118,12 +128,12 @@ const MainHome = () => {
       color: 'from-yellow-400 to-yellow-500',
       textColor: 'text-yellow-500'
     }
-  ];
+  ], []);
 
 
-  const handleCardClick = (route) => {
+  const handleCardClick = useCallback((route) => {
     navigate(route);
-  };
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -136,6 +146,9 @@ const MainHome = () => {
               src="/images/bike-rent-logo-2.png"
               alt="Bike Rent Logo"
               className="w-20 h-20 object-contain"
+              loading="eager"
+              width="80"
+              height="80"
             />
           </Link>
           {/* Desktop Nav Links */}
@@ -214,9 +227,9 @@ const MainHome = () => {
       <section className="relative pt-4 md:pt-6 pb-0 md:pb-2  md:py-6 px-6 bg-gradient-to-br from-yellow-50/30 via-white to-yellow-50/20">
         <div className="max-w-6xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
               className="text-center mb-4 md:mb-12"
             >
             <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-0 md:mb-4 pb-0 md:pb-2">
@@ -230,13 +243,13 @@ const MainHome = () => {
             {cardData.map((card, index) => (
               <motion.div
                 key={card.id}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
                 whileHover={{ 
-                  scale: 1.03,
-                  y: -8,
-                  transition: { duration: 0.3 }
+                  scale: 1.02,
+                  y: -4,
+                  transition: { duration: 0.2 }
                 }}
                 className="group cursor-pointer"
                 onClick={() => handleCardClick(card.route)}
@@ -244,11 +257,19 @@ const MainHome = () => {
                 <Card className="relative overflow-hidden w-[300px] h-[150px] md:w-full md:h-80 bg-white border-2 border-gray-100 hover:border-yellow-300 transition-all duration-500 shadow-lg hover:shadow-2xl mx-auto ">
                   {/* Background Image */}
                   <div className="absolute inset-0">
-                    <img 
-                      src={card.image} 
-                      alt={card.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
+                    <Suspense fallback={
+                      <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
+                        <div className="text-gray-400">Loading...</div>
+                      </div>
+                    }>
+                      <LazyImage 
+                        src={card.image} 
+                        alt={card.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        width="400"
+                        height="320"
+                      />
+                    </Suspense>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                   </div>
                   
@@ -267,8 +288,9 @@ const MainHome = () => {
                       
                       {/* Right side - Explore button */}
                       <motion.button
-                        whileHover={{ x: 5 }}
-                        className="inline-flex items-center gap-1 md:gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-2.5 md:px-5 py-1.5 md:py-2.5 rounded-full font-semibold text-xs md:text-sm shadow-lg hover:shadow-xl transition-all duration-300"
+                        whileHover={{ x: 3 }}
+                        transition={{ duration: 0.2 }}
+                        className="inline-flex items-center gap-1 md:gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-2.5 md:px-5 py-1.5 md:py-2.5 rounded-full font-semibold text-xs md:text-sm shadow-lg hover:shadow-xl transition-all duration-200"
                       >
                         Explore
                         <FaArrowRight className="w-2 h-2 md:w-3 md:h-3" />
@@ -283,6 +305,8 @@ const MainHome = () => {
       </section>
     </div>
   );
-};
+});
+
+MainHome.displayName = 'MainHome';
 
 export default MainHome;
