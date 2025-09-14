@@ -54,12 +54,6 @@ export default function TaxiCard({ taxi }) {
     if (taxi.rentalPricePerDay > 0) {
       message += `• Rental per day: ₹${taxi.rentalPricePerDay}\n`;
     }
-    if (taxi.pricePerKm > 0) {
-      message += `• Price per km: ₹${taxi.pricePerKm}\n`;
-    }
-    if (taxi.pricePerTrip > 0) {
-      message += `• Price per trip: ₹${taxi.pricePerTrip}\n`;
-    }
     
     // Booking Details (if form data available)
     if (formData) {

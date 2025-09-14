@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Card } from './ui/card';
 import { MdAccessTime, MdLocationOn } from 'react-icons/md';
-import { FaWhatsapp, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
+import { FaWhatsapp, FaMapMarkerAlt, FaUsers, FaPhoneAlt } from 'react-icons/fa';
 
 const TourCard = ({ tour, index }) => {
   const navigate = useNavigate();
@@ -14,7 +14,21 @@ const TourCard = ({ tour, index }) => {
     window.open(whatsappUrl, '_blank');
   };
 
+  const handleCallBooking = () => {
+    const phoneNumber = '919876543210'; // You can make this dynamic based on tour data
+    const callUrl = `tel:${phoneNumber}`;
+    window.location.href = callUrl;
+  };
+
   const handleDetailsClick = () => {
+    navigate(`/tour-details/${tour._id || tour.id}`);
+  };
+
+  const handleCardClick = (e) => {
+    // Prevent navigation if clicking on buttons
+    if (e.target.closest('button')) {
+      return;
+    }
     navigate(`/tour-details/${tour._id || tour.id}`);
   };
 
@@ -28,6 +42,7 @@ const TourCard = ({ tour, index }) => {
       className="group cursor-pointer"
       data-aos="fade-up"
       data-aos-delay={index * 100}
+      onClick={handleCardClick}
     >
       <Card className="overflow-hidden bg-white border border-gray-200 hover:border-yellow-400 transition-all duration-500 shadow-lg hover:shadow-2xl h-full rounded-xl">
         {/* Image Container */}
@@ -86,24 +101,34 @@ const TourCard = ({ tour, index }) => {
           </div>
           
           {/* Action Buttons */}
-          <div className="flex gap-2">
+          <div className="space-y-2">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleWhatsAppBooking}
-              className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-2 rounded-lg font-semibold text-xs shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-1"
+              className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-2 rounded-lg font-semibold text-xs shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-1"
             >
               <FaWhatsapp className="w-3 h-3" />
-              Book Now
+              Book on WhatsApp
+            </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleCallBooking}
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-2 rounded-lg font-semibold text-xs shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-1"
+            >
+              <FaPhoneAlt className="w-3 h-3" />
+              Book on Call
             </motion.button>
             
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleDetailsClick}
-              className="flex-1 border-2 border-yellow-400 text-yellow-600 rounded-lg font-semibold text-xs hover:bg-yellow-400 hover:text-white transition-all duration-300"
+              className="w-full border-2 border-yellow-400 text-yellow-600 rounded-lg font-semibold text-xs hover:bg-yellow-400 hover:text-white transition-all duration-300 py-2"
             >
-              Details
+              View Details
             </motion.button>
           </div>
         </div>

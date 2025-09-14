@@ -5,7 +5,7 @@ import FooterTaxi from '../../components/FooterTaxi';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 
-const taxiGif = process.env.PUBLIC_URL + '/images/bike.gif';
+const taxiGif = process.env.PUBLIC_URL + '/images/car-animation.gif';
 
 const TaxiLocations = () => {
   const [start, setStart] = useState(false);
@@ -23,7 +23,7 @@ const TaxiLocations = () => {
     window.addEventListener('resize', handleResize);
     setStart(true);
     // Show cities after taxi animation duration (desktop), or immediately (mobile)
-    const timer = setTimeout(() => setShowCities(true), isMobile ? 0 : 2000);
+    const timer = setTimeout(() => setShowCities(true), isMobile ? 0 : 4000);
     return () => {
       window.removeEventListener('resize', handleResize);
       clearTimeout(timer);
@@ -50,8 +50,8 @@ const TaxiLocations = () => {
       ? (isMobile ? '100vw' : '100vw')
       : (isMobile ? '-120px' : '-400px'),
     transition: isMobile
-      ? 'left 3.2s cubic-bezier(0.77,0,0.175,1)'
-      : 'left 2.5s cubic-bezier(0.77,0,0.175,1)',
+      ? 'left 5.5s cubic-bezier(0.77,0,0.175,1)'
+      : 'left 4.5s cubic-bezier(0.77,0,0.175,1)',
     zIndex: 2,
     display: showCities ? 'none' : 'block',
   };
@@ -208,7 +208,7 @@ const TaxiLocations = () => {
           {/* Full-width banner image below city cards and taxi animation */}
           <div className={`w-full flex justify-center mt-8 pt-[450px] md:pt-[350px] lg:pt-[300px] transition-opacity duration-700 ${showCities ? 'opacity-100' : 'opacity-0'}`}>
             <img
-              src={process.env.PUBLIC_URL + '/images/bike-banner-4.jpg'}
+              src={process.env.PUBLIC_URL + '/images/taxi-location.png'}
               alt="Taxi Service Banner"
               className="w-full max-w-7xl object-cover rounded-lg shadow-lg"
               style={{

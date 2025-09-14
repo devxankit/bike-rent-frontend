@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import TourNavbar from '../components/TourNavbar';
 import TourFooter from '../components/TourFooter';
 import TourCard from '../components/TourCard';
+import CustomTourPackage from '../components/CustomTourPackage';
 import WhyChooseUsTour from '../components/WhyChooseUsTour';
 import { FaMapMarkerAlt, FaStar, FaUsers, FaClock } from 'react-icons/fa';
 import { MdExplore, MdLocalActivity, MdRestaurant, MdHotel } from 'react-icons/md';
@@ -100,7 +101,7 @@ const TourHome = () => {
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 md:pt-16 lg:pt-20 pb-16">
           <div className="text-center text-white">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -173,9 +174,6 @@ const TourHome = () => {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <WhyChooseUsTour />
-
       {/* Featured Tour Packages Section */}
       <section id="featured-tours" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -219,6 +217,12 @@ const TourHome = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Custom Tour Package Section */}
+      <CustomTourPackage />
+
+      {/* Why Choose Us Section */}
+      <WhyChooseUsTour />
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-800">

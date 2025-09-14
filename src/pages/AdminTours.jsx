@@ -89,6 +89,8 @@ const initialForm = {
   fitnessLevel: '',
   category: '',
   tags: '',
+  termsAndConditions: '',
+  guidelines: '',
   ownerPhone: '',
   payAtPickup: false,
   isFeatured: false,
@@ -419,6 +421,8 @@ export default function AdminTours() {
       fitnessLevel: tour.fitnessLevel || '',
       category: tour.category || '',
       tags: tour.tags ? tour.tags.join(', ') : '',
+      termsAndConditions: tour.termsAndConditions ? tour.termsAndConditions.join(', ') : '',
+      guidelines: tour.guidelines ? tour.guidelines.join(', ') : '',
       ownerPhone: tour.ownerPhone || '',
       payAtPickup: !!tour.payAtPickup,
       isFeatured: !!tour.isFeatured,
@@ -1179,6 +1183,32 @@ export default function AdminTours() {
                               fullWidth
                               variant="outlined"
                               helperText="Comma separated list of items to bring"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <TextField
+                              label="Terms & Conditions"
+                              name="termsAndConditions"
+                              value={form.termsAndConditions}
+                              onChange={handleChange}
+                              multiline
+                              rows={4}
+                              fullWidth
+                              variant="outlined"
+                              helperText="Comma separated terms and conditions"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <TextField
+                              label="Travel Guidelines"
+                              name="guidelines"
+                              value={form.guidelines}
+                              onChange={handleChange}
+                              multiline
+                              rows={4}
+                              fullWidth
+                              variant="outlined"
+                              helperText="Comma separated travel guidelines"
                             />
                           </Grid>
                           <Grid item xs={12}>

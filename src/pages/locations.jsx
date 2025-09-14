@@ -21,7 +21,7 @@ const Locations = () => {
     window.addEventListener('resize', handleResize);
     setStart(true);
     // Show cities after bike animation duration (desktop), or immediately (mobile)
-    const timer = setTimeout(() => setShowCities(true), isMobile ? 0 : 2000);
+    const timer = setTimeout(() => setShowCities(true), isMobile ? 0 : 4000);
     return () => {
       window.removeEventListener('resize', handleResize);
       clearTimeout(timer);
@@ -48,8 +48,8 @@ const Locations = () => {
       ? (isMobile ? '100vw' : '100vw')
       : (isMobile ? '-120px' : '-400px'),
     transition: isMobile
-      ? 'left 3.2s cubic-bezier(0.77,0,0.175,1)'
-      : 'left 2.5s cubic-bezier(0.77,0,0.175,1)',
+      ? 'left 5.5s cubic-bezier(0.77,0,0.175,1)'
+      : 'left 4.5s cubic-bezier(0.77,0,0.175,1)',
     zIndex: 2,
     display: showCities ? 'none' : 'block',
   };

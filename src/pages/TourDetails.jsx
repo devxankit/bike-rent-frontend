@@ -703,304 +703,21 @@ const TourDetails = () => {
                  </motion.p>
                </motion.div>
 
-               {/* Animated Icons Carousel */}
+               {/* Key Highlights */}
                <motion.div
                  initial={{ opacity: 0, x: 15 }}
                  whileInView={{ opacity: 1, x: 0 }}
-                 transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+                 transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
                  viewport={{ once: true }}
                  className="bg-white rounded-2xl p-6 shadow-lg"
                  data-aos="fade-left"
-                 data-aos-delay="300"
+                 data-aos-delay="200"
                >
                  <motion.h3 
-                   className="text-xl font-semibold text-gray-900 mb-6 text-center"
+                   className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 "
                    initial={{ opacity: 0, y: 10 }}
                    whileInView={{ opacity: 1, y: 0 }}
-                   transition={{ duration: 0.3, delay: 0.3 }}
-                   viewport={{ once: true }}
-                 >
-                   Experience Highlights
-                 </motion.h3>
-                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                   {[
-                     { icon: <MdExplore className="w-6 h-6 sm:w-8 sm:h-8 text-white" />, label: "Adventure", color: "from-yellow-400 to-yellow-500" },
-                     { icon: <MdLocalActivity className="w-6 h-6 sm:w-8 sm:h-8 text-white" />, label: "Activities", color: "from-yellow-300 to-yellow-400" },
-                     { icon: <MdRestaurant className="w-6 h-6 sm:w-8 sm:h-8 text-white" />, label: "Cuisine", color: "from-yellow-500 to-yellow-400" },
-                     { icon: <MdHotel className="w-6 h-6 sm:w-8 sm:h-8 text-white" />, label: "Accommodation", color: "from-yellow-300 to-yellow-500" }
-                   ].map((item, index) => (
-                     <motion.div 
-                       key={index}
-                       className={`relative overflow-hidden rounded-lg sm:rounded-xl bg-gradient-to-br ${item.color} p-3 sm:p-4 text-center`}
-                       initial={{ opacity: 0, scale: 0.95, rotate: -5 }}
-                       whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                       transition={{ duration: 0.3, delay: 0.4 + index * 0.05, type: "spring", stiffness: 300 }}
-                       viewport={{ once: true }}
-                       whileHover={{ scale: 1.02, rotate: 1 }}
-                       whileTap={{ scale: 0.98 }}
-                     >
-                       <motion.div
-                         initial={{ y: -10, opacity: 0 }}
-                         whileInView={{ y: 0, opacity: 1 }}
-                         transition={{ duration: 0.2, delay: 0.5 + index * 0.05 }}
-                         viewport={{ once: true }}
-                         className="mb-2 flex justify-center"
-                       >
-                         {item.icon}
-                       </motion.div>
-                       <motion.span 
-                         className="text-white font-semibold text-xs sm:text-sm"
-                         initial={{ y: 10, opacity: 0 }}
-                         whileInView={{ y: 0, opacity: 1 }}
-                         transition={{ duration: 0.2, delay: 0.6 + index * 0.05 }}
-                         viewport={{ once: true }}
-                       >
-                         {item.label}
-                       </motion.span>
-                       <motion.div
-                         className="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity duration-300"
-                         whileHover={{ scale: 1.05 }}
-                       />
-                     </motion.div>
-                   ))}
-                 </div>
-               </motion.div>
-
-               {/* Floating Animation Elements */}
-               <motion.div
-                 initial={{ opacity: 0, x: 15 }}
-                 whileInView={{ opacity: 1, x: 0 }}
-                 transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
-                 viewport={{ once: true }}
-                 className="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl p-6 shadow-lg relative overflow-hidden"
-                 data-aos="fade-left"
-                 data-aos-delay="400"
-               >
-                 <motion.div
-                   className="absolute top-0 left-0 w-full h-full"
-                   initial={{ opacity: 0 }}
-                   whileInView={{ opacity: 1 }}
-                   transition={{ duration: 0.5, delay: 0.4 }}
-                   viewport={{ once: true }}
-                 >
-                   {/* Floating circles */}
-                   <motion.div
-                     className="absolute w-4 h-4 bg-white rounded-full opacity-30"
-                     style={{ top: '20%', left: '10%' }}
-                     animate={{ 
-                       y: [-5, 5, -5],
-                       x: [-2, 2, -2],
-                       scale: [1, 1.1, 1]
-                     }}
-                     transition={{ 
-                       duration: 4, 
-                       repeat: Infinity, 
-                       ease: "easeInOut" 
-                     }}
-                   />
-                   <motion.div
-                     className="absolute w-6 h-6 bg-white rounded-full opacity-20"
-                     style={{ top: '60%', right: '15%' }}
-                     animate={{ 
-                       y: [5, -5, 5],
-                       x: [2, -2, 2],
-                       scale: [1, 0.9, 1]
-                     }}
-                     transition={{ 
-                       duration: 5, 
-                       repeat: Infinity, 
-                       ease: "easeInOut",
-                       delay: 1
-                     }}
-                   />
-                   <motion.div
-                     className="absolute w-3 h-3 bg-white rounded-full opacity-40"
-                     style={{ bottom: '30%', left: '20%' }}
-                     animate={{ 
-                       y: [-4, 4, -4],
-                       x: [-2, 2, -2],
-                       scale: [1, 1.1, 1]
-                     }}
-                     transition={{ 
-                       duration: 3, 
-                       repeat: Infinity, 
-                       ease: "easeInOut",
-                       delay: 0.5
-                     }}
-                   />
-                 </motion.div>
-                 
-                 <motion.div className="relative z-10 text-center">
-                 <motion.h3 
-                   className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4"
-                   initial={{ opacity: 0, y: 10 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   transition={{ duration: 0.3, delay: 0.5 }}
-                   viewport={{ once: true }}
-                 >
-                   🎯 Premium Experience
-                 </motion.h3>
-                 <motion.p 
-                   className="text-white/95 text-xs sm:text-sm"
-                   initial={{ opacity: 0, y: 10 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   transition={{ duration: 0.3, delay: 0.6 }}
-                   viewport={{ once: true }}
-                 >
-                   Unforgettable memories await you on this amazing journey
-                 </motion.p>
-                 </motion.div>
-               </motion.div>
-
-               {/* Enhanced Tour Statistics & Progress */}
-               <motion.div
-                 initial={{ opacity: 0, x: 15 }}
-                 whileInView={{ opacity: 1, x: 0 }}
-                 transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
-                 viewport={{ once: true }}
-                 className="bg-white rounded-2xl p-6 shadow-lg"
-                 data-aos="fade-left"
-                 data-aos-delay="500"
-               >
-                 <motion.h3 
-                   className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center"
-                   initial={{ opacity: 0, y: 10 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   transition={{ duration: 0.3, delay: 0.5 }}
-                   viewport={{ once: true }}
-                 >
-                   Tour Statistics
-                 </motion.h3>
-                 
-                 {/* Progress Ring */}
-                 <div className="flex justify-center mb-6">
-                   <motion.div 
-                     className="relative w-20 h-20 sm:w-24 sm:h-24"
-                     initial={{ scale: 0.8 }}
-                     whileInView={{ scale: 1 }}
-                     transition={{ duration: 0.4, delay: 0.6, type: "spring", stiffness: 300 }}
-                     viewport={{ once: true }}
-                   >
-                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                       <path
-                         className="text-gray-200"
-                         stroke="currentColor"
-                         strokeWidth="3"
-                         fill="none"
-                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                       />
-                       <motion.path
-                         className="text-yellow-500"
-                         stroke="currentColor"
-                         strokeWidth="3"
-                         fill="none"
-                         strokeLinecap="round"
-                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                         initial={{ pathLength: 0 }}
-                         whileInView={{ pathLength: 0.75 }}
-                         transition={{ duration: 1, delay: 0.7, ease: "easeInOut" }}
-                         viewport={{ once: true }}
-                       />
-                     </svg>
-                     <motion.div 
-                       className="absolute inset-0 flex items-center justify-center"
-                       initial={{ opacity: 0, scale: 0.8 }}
-                       whileInView={{ opacity: 1, scale: 1 }}
-                       transition={{ duration: 0.3, delay: 0.8 }}
-                       viewport={{ once: true }}
-                     >
-                       <div className="text-center">
-                         <div className="text-sm sm:text-base font-bold text-gray-900">75%</div>
-                         <div className="text-xs text-gray-600">Booked</div>
-                       </div>
-                     </motion.div>
-                   </motion.div>
-                 </div>
-
-                 {/* Tour Stats Grid */}
-                 <div className="grid grid-cols-2 gap-3 mb-4">
-                   <motion.div 
-                     className="bg-gradient-to-br from-blue-50 to-blue-100 p-3 rounded-lg text-center"
-                     initial={{ opacity: 0, y: 10 }}
-                     whileInView={{ opacity: 1, y: 0 }}
-                     transition={{ duration: 0.3, delay: 0.9 }}
-                     viewport={{ once: true }}
-                   >
-                     <div className="text-lg font-bold text-blue-600">{currentTour.reviewCount || 127}</div>
-                     <div className="text-xs text-blue-700">Reviews</div>
-                   </motion.div>
-                   <motion.div 
-                     className="bg-gradient-to-br from-green-50 to-green-100 p-3 rounded-lg text-center"
-                     initial={{ opacity: 0, y: 10 }}
-                     whileInView={{ opacity: 1, y: 0 }}
-                     transition={{ duration: 0.3, delay: 1.0 }}
-                     viewport={{ once: true }}
-                   >
-                     <div className="text-lg font-bold text-green-600">{currentTour.rating || 4.8}</div>
-                     <div className="text-xs text-green-700">Rating</div>
-                   </motion.div>
-                 </div>
-
-                 {/* Tour Duration & Difficulty */}
-                 <div className="space-y-3 mb-4">
-                   <motion.div 
-                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                     initial={{ opacity: 0, x: -10 }}
-                     whileInView={{ opacity: 1, x: 0 }}
-                     transition={{ duration: 0.3, delay: 1.1 }}
-                     viewport={{ once: true }}
-                   >
-                     <div className="flex items-center gap-2">
-                       <FaClock className="w-4 h-4 text-yellow-500" />
-                       <span className="text-sm text-gray-600">Duration</span>
-                     </div>
-                     <span className="text-sm font-semibold text-gray-900">{currentTour.duration}</span>
-                   </motion.div>
-                   
-                   <motion.div 
-                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                     initial={{ opacity: 0, x: -10 }}
-                     whileInView={{ opacity: 1, x: 0 }}
-                     transition={{ duration: 0.3, delay: 1.2 }}
-                     viewport={{ once: true }}
-                   >
-                     <div className="flex items-center gap-2">
-                       <MdDirections className="w-4 h-4 text-yellow-500" />
-                       <span className="text-sm text-gray-600">Difficulty</span>
-                     </div>
-                     <span className="text-sm font-semibold text-gray-900">{currentTour.difficulty}</span>
-                   </motion.div>
-                 </div>
-
-                 {/* Category Badge */}
-                 <motion.div 
-                   className="text-center"
-                   initial={{ opacity: 0, y: 10 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   transition={{ duration: 0.3, delay: 1.3 }}
-                   viewport={{ once: true }}
-                 >
-                   <span className="inline-block px-4 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white text-sm font-semibold rounded-full shadow-lg">
-                     {currentTour.category || 'Adventure'}
-                   </span>
-                 </motion.div>
-               </motion.div>
-
-               {/* Tour Highlights & Features */}
-               <motion.div
-                 initial={{ opacity: 0, x: 15 }}
-                 whileInView={{ opacity: 1, x: 0 }}
-                 transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
-                 viewport={{ once: true }}
-                 className="bg-white rounded-2xl p-6 shadow-lg"
-                 data-aos="fade-left"
-                 data-aos-delay="600"
-               >
-                 <motion.h3 
-                   className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center"
-                   initial={{ opacity: 0, y: 10 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   transition={{ duration: 0.3, delay: 0.6 }}
+                   transition={{ duration: 0.3, delay: 0.2 }}
                    viewport={{ once: true }}
                  >
                    Key Highlights
@@ -1014,14 +731,14 @@ const TourDetails = () => {
                        className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg"
                        initial={{ opacity: 0, x: -10 }}
                        whileInView={{ opacity: 1, x: 0 }}
-                       transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
+                       transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
                        viewport={{ once: true }}
                        whileHover={{ x: 2, scale: 1.01 }}
                      >
                        <motion.div
                          initial={{ scale: 0.8, rotate: -45 }}
                          whileInView={{ scale: 1, rotate: 0 }}
-                         transition={{ duration: 0.2, delay: 0.8 + index * 0.1, type: "spring", stiffness: 400 }}
+                         transition={{ duration: 0.2, delay: 0.4 + index * 0.1, type: "spring", stiffness: 400 }}
                          viewport={{ once: true }}
                        >
                          <FaCheck className="w-4 h-4 text-green-500" />
@@ -1039,14 +756,14 @@ const TourDetails = () => {
                        className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg"
                        initial={{ opacity: 0, x: -10 }}
                        whileInView={{ opacity: 1, x: 0 }}
-                       transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
+                       transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
                        viewport={{ once: true }}
                        whileHover={{ x: 2, scale: 1.01 }}
                      >
                        <motion.div
                          initial={{ scale: 0.8, rotate: -45 }}
                          whileInView={{ scale: 1, rotate: 0 }}
-                         transition={{ duration: 0.2, delay: 0.8 + index * 0.1, type: "spring", stiffness: 400 }}
+                         transition={{ duration: 0.2, delay: 0.4 + index * 0.1, type: "spring", stiffness: 400 }}
                          viewport={{ once: true }}
                        >
                          <FaCheck className="w-4 h-4 text-green-500" />
@@ -1062,7 +779,7 @@ const TourDetails = () => {
                      className="flex items-center justify-between p-3 bg-purple-50 rounded-lg"
                      initial={{ opacity: 0, x: -10 }}
                      whileInView={{ opacity: 1, x: 0 }}
-                     transition={{ duration: 0.3, delay: 1.1 }}
+                     transition={{ duration: 0.3, delay: 0.7 }}
                      viewport={{ once: true }}
                    >
                      <div className="flex items-center gap-2">
@@ -1073,6 +790,50 @@ const TourDetails = () => {
                    </motion.div>
                  </div>
                </motion.div>
+
+              {/* Terms & Conditions */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl p-6 shadow-lg"
+                data-aos="fade-left"
+                data-aos-delay="250"
+              >
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">Terms & Conditions</h4>
+                <ul className="list-disc pl-5 space-y-2 text-sm text-gray-600">
+                  {currentTour.termsAndConditions && currentTour.termsAndConditions.length > 0 ? (
+                    currentTour.termsAndConditions.map((term, index) => (
+                      <li key={index}>{term}</li>
+                    ))
+                  ) : (
+                    <li className="text-gray-500 italic">No terms and conditions specified for this tour.</li>
+                  )}
+                </ul>
+              </motion.div>
+
+              {/* Travel Guidelines */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.25 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl p-6 shadow-lg"
+                data-aos="fade-left"
+                data-aos-delay="300"
+              >
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">Guidelines</h4>
+                <ul className="list-disc pl-5 space-y-2 text-sm text-gray-600">
+                  {currentTour.guidelines && currentTour.guidelines.length > 0 ? (
+                    currentTour.guidelines.map((guideline, index) => (
+                      <li key={index}>{guideline}</li>
+                    ))
+                  ) : (
+                    <li className="text-gray-500 italic">No travel guidelines specified for this tour.</li>
+                  )}
+                </ul>
+              </motion.div>
 
             </motion.div>
           </div>

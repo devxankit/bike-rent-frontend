@@ -12,6 +12,7 @@ const TourExplore = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Popular');
+  const [availableCategories, setAvailableCategories] = useState([]);
 
   useEffect(() => {
     // Initialize AOS
@@ -28,6 +29,8 @@ const TourExplore = () => {
   }, []);
 
   useEffect(() => {
+    // Extract available categories from tours
+    extractAvailableCategories();
     // Filter tours based on search and category
     filterTours();
   }, [tours, searchTerm, selectedCategory]);
@@ -144,6 +147,33 @@ const TourExplore = () => {
     }
   };
 
+  const extractAvailableCategories = () => {
+    if (tours.length === 0) return;
+
+    // Get unique categories from tours and count tours in each category
+    const categoryMap = new Map();
+    
+    tours.forEach(tour => {
+      if (tour.category) {
+        const category = tour.category;
+        categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
+      }
+    });
+
+    // Convert to array and sort by count (descending)
+    const categories = Array.from(categoryMap.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+
+    // Add "Popular" at the beginning
+    const availableCategories = [
+      { name: 'Popular', count: tours.length },
+      ...categories
+    ];
+
+    setAvailableCategories(availableCategories);
+  };
+
   const filterTours = () => {
     let filtered = tours;
 
@@ -172,8 +202,6 @@ const TourExplore = () => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
-
-  const categories = ['Popular', 'Adventure', 'Cultural', 'Beach', 'Wildlife', 'Spiritual', 'More'];
 
   return (
     <div className="min-h-screen bg-white">
@@ -215,18 +243,24 @@ const TourExplore = () => {
 
             {/* Category Filters */}
             <div className="flex flex-wrap gap-4 mb-8">
-              {categories.map((category) => (
+              {availableCategories.map((category) => (
                 <button
-                  key={category}
-                  onClick={() => handleCategoryChange(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 flex items-center gap-1 ${
-                    selectedCategory === category
+                  key={category.name}
+                  onClick={() => handleCategoryChange(category.name)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 flex items-center gap-2 ${
+                    selectedCategory === category.name
                       ? 'bg-yellow-400 text-black'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {category}
-                  {category === 'More' && <FaChevronDown className="w-3 h-3" />}
+                  {category.name}
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    selectedCategory === category.name
+                      ? 'bg-black/20 text-black'
+                      : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    {category.count}
+                  </span>
                 </button>
               ))}
             </div>
