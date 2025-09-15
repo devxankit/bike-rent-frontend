@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Customers from './pages/Customers';
 import Analytics from './pages/Analytics';
 import CityPages from './pages/CityPages';
+import ErrorBoundary from './components/ErrorBoundary';
 import DynamicCityPage from './pages/DynamicCityPage';
 import TaxiCityPages from './pages/TaxiCityPages';
 import DynamicTaxiCityPage from './pages/DynamicTaxiCityPage';
@@ -61,14 +62,15 @@ function ProtectedRoute({ children, adminOnly }) {
 
 function App() {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <HelmetProvider>
-        <Router>
-          <ScrollToTop />
-          <CssBaseline />
-          <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover style={{ zIndex: 999999 }} />
-          <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
-            <Routes>
+    <ErrorBoundary>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <HelmetProvider>
+          <Router>
+            <ScrollToTop />
+            <CssBaseline />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover style={{ zIndex: 999999 }} />
+            <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
+              <Routes>
               <Route path="/" element={<MainHome />} />
               <Route path="/main-home" element={<MainHome />} />
               <Route path="/taxi-home" element={<TaxiHome/>} />
@@ -155,11 +157,12 @@ function App() {
               <Route path="/blogs" element={<BlogList />} />
               <Route path="/blogs/:slug" element={<BlogDetail />} />
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-        </Router>
-      </HelmetProvider>
-    </LocalizationProvider>
+              </Routes>
+            </div>
+          </Router>
+        </HelmetProvider>
+      </LocalizationProvider>
+    </ErrorBoundary>
   );
 }
 export default App; 
