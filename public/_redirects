@@ -1,0 +1,21 @@
+# Netlify/Vercel redirects for SPA
+/static/* /static/:splat 200
+/images/* /images/:splat 200
+/bikes/* /index.html 200
+/taxi/* /index.html 200
+/tours/* /index.html 200
+/admin/* /index.html 200
+/blogs/* /index.html 200
+/locations /index.html 200
+/about /index.html 200
+/contact /index.html 200
+/login /index.html 200
+/signup /index.html 200
+/PrivacyPolicy /index.html 200
+/TermsAndConditions /index.html 200
+/home /index.html 200
+/main-home /index.html 200
+/taxi-home /index.html 200
+/tour-home /index.html 200
+/tour-explore /index.html 200
+/* /index.html 200

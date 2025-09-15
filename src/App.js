@@ -18,20 +18,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import Customers from './pages/Customers';
 import Analytics from './pages/Analytics';
 import CityPages from './pages/CityPages';
+import ErrorBoundary from './components/ErrorBoundary';
 import DynamicCityPage from './pages/DynamicCityPage';
 import TaxiCityPages from './pages/TaxiCityPages';
 import DynamicTaxiCityPage from './pages/DynamicTaxiCityPage';
 import ScrollToTop from './components/ScrollToTop';
-
-// Import city page components
-import DehradunBikesPage from './pages/cities-pages/Dehradun';
-import NainitalBikesPage from './pages/cities-pages/Nainital';
-import RishikeshBikesPage from './pages/cities-pages/Rishikesh';
-import HaldwaniBikesPage from './pages/cities-pages/Haldwani';
-import KathgodamBikesPage from './pages/cities-pages/Kathgodam';
-import PithoragarhBikesPage from './pages/cities-pages/Pithoragarh';
-import HaridwarBikesPage from './pages/cities-pages/Haridwar';
-import AlmoraBikesPage from './pages/cities-pages/Almora';
 import Locations from "./pages/locations";
 import BlogList from './pages/BlogList';
 import BlogDetail from './pages/BlogDetail';
@@ -71,14 +62,15 @@ function ProtectedRoute({ children, adminOnly }) {
 
 function App() {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <HelmetProvider>
-        <Router>
-          <ScrollToTop />
-          <CssBaseline />
-          <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover style={{ zIndex: 999999 }} />
-          <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
-            <Routes>
+    <ErrorBoundary>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <HelmetProvider>
+          <Router>
+            <ScrollToTop />
+            <CssBaseline />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover style={{ zIndex: 999999 }} />
+            <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
+              <Routes>
               <Route path="/" element={<MainHome />} />
               <Route path="/main-home" element={<MainHome />} />
               <Route path="/taxi-home" element={<TaxiHome/>} />
@@ -99,21 +91,11 @@ function App() {
 
               <Route path="/home" element={<Home />} />
 
-              {/* Main bikes page */}
+              {/* Main bikes page with slug */}
               <Route path="/bikes" element={<Bikes />} />
               <Route path="/bikes/rent-bike-in-all-cities" element={<Bikes />} />
               
-              {/* Static city pages - specific routes for each city */}
-              <Route path="/bikes/bike-rent-in-dehradun" element={<DehradunBikesPage />} />
-              <Route path="/bikes/bike-rent-in-nainital" element={<NainitalBikesPage />} />
-              <Route path="/bikes/bike-rent-in-rishikesh" element={<RishikeshBikesPage />} />
-              <Route path="/bikes/bike-rent-in-haldwani" element={<HaldwaniBikesPage />} />
-              <Route path="/bikes/bike-rent-in-kathgodam" element={<KathgodamBikesPage />} />
-              <Route path="/bikes/bike-rent-in-pithoragarh" element={<PithoragarhBikesPage />} />
-              <Route path="/bikes/bike-rent-in-haridwar" element={<HaridwarBikesPage />} />
-              <Route path="/bikes/bike-rent-in-almora" element={<AlmoraBikesPage />} />
-              
-              {/* Fallback for any other city routes */}
+              {/* Dynamic city pages route - handles all city slugs */}
               <Route path="/bikes/:citySlug" element={<DynamicCityPage />} />
               
               {/* Dynamic taxi city pages route - handles all taxi city slugs */}
@@ -175,11 +157,12 @@ function App() {
               <Route path="/blogs" element={<BlogList />} />
               <Route path="/blogs/:slug" element={<BlogDetail />} />
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-        </Router>
-      </HelmetProvider>
-    </LocalizationProvider>
+              </Routes>
+            </div>
+          </Router>
+        </HelmetProvider>
+      </LocalizationProvider>
+    </ErrorBoundary>
   );
 }
 export default App; 
