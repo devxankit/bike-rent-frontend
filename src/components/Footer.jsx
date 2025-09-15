@@ -39,35 +39,43 @@ const Footer = () => {
       const cityLocations = {
         'haldwani': {
           label: 'Haldwani Location',
-          address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139'
+          address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139',
+          phone: '+91 9368584334'
         },
         'kathgodam': {
           label: 'Kathgodam Location',
-          address: 'NH-87, Bareilly - Nainital Rd, Near Kathgodam Railway station, Kathgodam, Haldwani, Uttarakhand 263139'
+          address: 'NH-87, Bareilly - Nainital Rd, Near Kathgodam Railway station, Kathgodam, Haldwani, Uttarakhand 263139',
+          phone: '+91 9368584334'
         },
         'pithoragarh': {
           label: 'Pithoragarh Location',
-          address: 'Tankpur road, near bus station, Pithoragarh, Uttarakhand 262501'
+          address: 'Tankpur road, near bus station, Pithoragarh, Uttarakhand 262501',
+          phone: '+91 8630791810'
         },
         'rishikesh': {
           label: 'Rishikesh Location',
-          address: 'Bus stand, ISBT Rd, Adarsh Gram, Rishikesh, Dehradun, Uttarakhand 249201'
+          address: 'Bus stand, ISBT Rd, Adarsh Gram, Rishikesh, Dehradun, Uttarakhand 249201',
+          phone: '+91 9368584334'
         },
         'haridwar': {
           label: 'Haridwar Location',
-          address: 'Near railway station Devpura, Haridwar, Uttarakhand 249401'
+          address: 'Near railway station Devpura, Haridwar, Uttarakhand 249401',
+          phone: '+91 9368584334'
         },
         'dehradun': {
           label: 'Dehradun Location',
-          address: 'Gandhi Rd, Govind Nagar, Railway Station, Dehradun, Uttarakhand 248001'
+          address: 'Gandhi Rd, Govind Nagar, Railway Station, Dehradun, Uttarakhand 248001',
+          phone: '+91 9368584334'
         },
         'almora': {
           label: 'Almora Location',
-          address: 'Mall Rd, Paltan Bazar, Dharanaula, Almora, Uttarakhand 263601'
+          address: 'Mall Rd, Paltan Bazar, Dharanaula, Almora, Uttarakhand 263601',
+          phone: '+91 9368584334'
         },
         'nainital': {
           label: 'Nainital Location',
-          address: 'Near bus stand, Tallital, Nainital, Uttarakhand 263001'
+          address: 'Near bus stand, Tallital, Nainital, Uttarakhand 263001',
+          phone: '+91 9368584334'
         },
         
       };
@@ -75,14 +83,16 @@ const Footer = () => {
       // Return city-specific location or default
       return cityLocations[cityName.toLowerCase()] || {
         label: 'Location',
-        address: 'Indore, Madhya Pradesh, India'
+        address: 'Indore, Madhya Pradesh, India',
+        phone: '+91 9368584334'
       };
     }
     
     // Default location for home page and other pages
     return {
       label: 'Head Office',
-      address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139'
+      address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139',
+      phone: '+91 9368584334'
     };
   };
 
@@ -173,7 +183,7 @@ const Footer = () => {
                 <Phone className="h-4 w-4 text-white flex-shrink-0" />
                 <div>
                   <p className="text-xs text-white">Call Us</p>
-                  <p className="text-white font-medium text-xs">+91 9368584334</p>
+                  <p className="text-white font-medium text-xs">{locationInfo.phone}</p>
                 </div>
               </div>
               

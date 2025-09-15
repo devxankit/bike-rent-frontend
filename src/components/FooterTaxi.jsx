@@ -30,53 +30,71 @@ const FooterTaxi = () => {
         cityName = citySlug.replace('taxi-service-in-', '');
       }
       
+      
       // Define location information for each taxi city
       const cityLocations = {
         'indore': {
           label: 'Indore Taxi Location',
-          address: 'Rajwada Palace Area, Indore, Madhya Pradesh 452001'
+          address: 'Rajwada Palace Area, Indore, Madhya Pradesh 452001',
+          phone: '+91 9368584334'
         },
         'bhopal': {
           label: 'Bhopal Taxi Location',
-          address: 'New Market, Bhopal, Madhya Pradesh 462001'
+          address: 'New Market, Bhopal, Madhya Pradesh 462001',
+          phone: '+91 9368584334'
         },
         'mumbai': {
           label: 'Mumbai Taxi Location',
-          address: 'Gateway of India, Mumbai, Maharashtra 400001'
+          address: 'Gateway of India, Mumbai, Maharashtra 400001',
+          phone: '+91 9368584334'
         },
         'goa': {
           label: 'Goa Taxi Location',
-          address: 'Panaji, Goa 403001'
+          address: 'Panaji, Goa 403001',
+          phone: '+91 9368584334'
         },
         'dehradun': {
           label: 'Dehradun Taxi Location',
-          address: 'Clock Tower, Dehradun, Uttarakhand 248001'
+          address: 'Clock Tower, Dehradun, Uttarakhand 248001',
+          phone: '+91 9368584334'
         },
         'haldwani': {
           label: 'Haldwani Taxi Location',
-          address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139'
+          address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139',
+          phone: '+91 0000000000'
         },
         'kathgodam': {
           label: 'Kathgodam Taxi Location',
-          address: 'NH-87, Near Kathgodam Railway station, Kathgodam, Uttarakhand 263139'
+          address: 'NH-87, Near Kathgodam Railway station, Kathgodam, Uttarakhand 263139',
+          phone: '+91 8979743443'
         },
         'pithoragarh': {
           label: 'Pithoragarh Taxi Location',
-          address: 'Tankpur road, near bus station, Pithoragarh, Uttarakhand 262501'
+          address: 'Tankpur road, near bus station, Pithoragarh, Uttarakhand 262501',
+          phone: '+91 9368584334'
+        },
+        'dewas': {
+          label: 'Dewas Taxi Location',
+          address: 'Industrial Area, Dewas, Madhya Pradesh 455001',
+          phone: '+91 0000000000'
         }
       };
       
       // Return city-specific location or default
-      return cityLocations[cityName.toLowerCase()] || {
-        label: 'Taxi Location',
-        address: 'Indore, Madhya Pradesh, India'
+      const locationInfo = cityLocations[cityName.toLowerCase()] || {
+        label: `${cityName.charAt(0).toUpperCase() + cityName.slice(1)} Taxi Location`,
+        address: `${cityName.charAt(0).toUpperCase() + cityName.slice(1)}, India`,
+        phone: '+91 9368584334'
       };
+      
+      return locationInfo;
     }
     
     // Default location for taxi home page and other pages
     return {
       label: 'Head Office',
-      address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139'
+      address: 'Malla Gorakhpur, Heera Nagar, Haldwani, Uttarakhand 263139',
+      phone: '+91 9368584334'
     };
   };
 
@@ -167,7 +185,7 @@ const FooterTaxi = () => {
                 <Phone className="h-4 w-4 text-white flex-shrink-0" />
                 <div>
                   <p className="text-xs text-white">Call Us</p>
-                  <p className="text-white font-medium text-xs">+91 9368584334</p>
+                  <p className="text-white font-medium text-xs">{locationInfo.phone}</p>
                 </div>
               </div>
               

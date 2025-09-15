@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TaxiCard from '../../components/TaxiCard';
 import api from '../../utils/api';
-import TaxiNavBar from '../../components/taxi-components/TaxiNavBar';
+import Navbar from '../../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import TaxiFilterSidebar from '../../components/TaxiFilterSidebar';
 import { FiX } from 'react-icons/fi';
@@ -9,11 +9,11 @@ import { generateTaxiCitySlug } from '../../utils/slugUtils';
 import { Box, Typography } from '@mui/material';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
-const DewasTaxiPage = ({ cityData }) => {
+const HaldwaniTaxiPage = ({ cityData }) => {
   const [taxis, setTaxis] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState('Dewas');
+  const [location, setLocation] = useState('Haldwani');
   const [allLocations, setAllLocations] = useState([]);
   const [taxiName, setTaxiName] = useState("");
   const [price, setPrice] = useState(0);
@@ -31,7 +31,7 @@ const DewasTaxiPage = ({ cityData }) => {
         setAllLocations(cityNames);
       } catch (err) {
         console.error('Failed to fetch cities:', err);
-        setAllLocations(['Dewas']); // Fallback
+        setAllLocations(['Haldwani']); // Fallback
       }
     };
     fetchCities();
@@ -41,7 +41,7 @@ const DewasTaxiPage = ({ cityData }) => {
     const fetchTaxis = async () => {
       try {
         setLoading(true);
-        const res = await api.get('/api/taxis', { params: { isAvailable: true, location: 'Dewas' } });
+        const res = await api.get('/api/taxis', { params: { isAvailable: true, location: 'Haldwani' } });
         setTaxis(res.data);
       } catch (err) {
         setError('Failed to load taxis.');
@@ -76,7 +76,7 @@ const DewasTaxiPage = ({ cityData }) => {
 
   // Redirect to city route on city change
   useEffect(() => {
-    if (location && location.toLowerCase() !== 'dewas') {
+    if (location && location.toLowerCase() !== 'haldwani') {
       const city = location.trim().toLowerCase();
       if (city) {
         const slug = generateTaxiCitySlug(city);
@@ -89,7 +89,7 @@ const DewasTaxiPage = ({ cityData }) => {
 
   return (
     <>
-      <TaxiNavBar onFilterToggle={() => setFilterOpen(true)} />
+      <Navbar onFilterToggle={() => setFilterOpen(true)} />
       <div className="flex min-h-screen bg-gray-50">
         {/* Filters - Left Sidebar */}
         <aside className="w-80 p-4 bg-white border-r hidden md:block sticky top-0 h-screen shadow-lg rounded-r-3xl" style={{ alignSelf: 'flex-start' }}>
@@ -108,16 +108,16 @@ const DewasTaxiPage = ({ cityData }) => {
         
         {/* Mobile Filter Popup */}
         {filterOpen && (
-          <div className="fixed inset-0 z-[100010] flex md:hidden">
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
-            {/* Popup - always slide in from left */}
-            <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
+         <div className="fixed inset-0 z-[100010] flex md:hidden">
+         {/* Overlay */}
+         <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
+         {/* Popup - always slide in from left */}
+           <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-base font-bold text-yellow-500">Filters</h2>
-                <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
-                  <FiX className="w-5 h-5 text-yellow-500" />
-                </button>
+                <h2 className="text-base font-bold text-yellow-500">Taxi Filters</h2>
+                 <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
+                   <FiX className="w-5 h-5 text-yellow-500" />
+                  </button>
               </div>
               <TaxiFilterSidebar
                 location={location}
@@ -139,8 +139,8 @@ const DewasTaxiPage = ({ cityData }) => {
         <main className="flex-1 overflow-y-auto">
           <div className="p-6">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Taxis in Dewas</h1>
-              <p className="text-gray-600">Find the perfect taxi for your journey in Dewas</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Taxis in Haldwani</h1>
+              <p className="text-gray-600">Find the perfect taxi for your journey in Haldwani</p>
             </div>
             
             {/* Taxi Listings */}
@@ -152,7 +152,7 @@ const DewasTaxiPage = ({ cityData }) => {
               <div className="text-center text-red-500">{error}</div>
             ) : sortedTaxis.length === 0 ? (
               <div className="text-center text-gray-500 py-8">
-                <p>No taxis available in Dewas at the moment.</p>
+                <p>No taxis available in Haldwani at the moment.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -312,4 +312,4 @@ const DewasTaxiPage = ({ cityData }) => {
   );
 };
 
-export default DewasTaxiPage;
+export default HaldwaniTaxiPage;

@@ -101,7 +101,7 @@ const TourHome = () => {
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 md:pt-16 lg:pt-20 pb-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-12 md:pt-16 lg:pt-20 pb-16">
           <div className="text-center text-white">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -109,7 +109,7 @@ const TourHome = () => {
               transition={{ duration: 0.8 }}
               data-aos="fade-up"
             >
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+              <h1 className="text-3xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
                 Discover Amazing <span className='text-yellow-400'>Adventures</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-4xl mx-auto leading-relaxed">

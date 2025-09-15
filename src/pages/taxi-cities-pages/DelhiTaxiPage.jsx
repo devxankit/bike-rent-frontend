@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TaxiCard from '../../components/TaxiCard';
 import api from '../../utils/api';
 import TaxiNavBar from '../../components/taxi-components/TaxiNavBar';
+import FooterTaxi from '../../components/FooterTaxi';
 import { useNavigate } from 'react-router-dom';
 import TaxiFilterSidebar from '../../components/TaxiFilterSidebar';
 import { FiX } from 'react-icons/fi';
@@ -9,11 +10,11 @@ import { generateTaxiCitySlug } from '../../utils/slugUtils';
 import { Box, Typography } from '@mui/material';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
-const IndoreTaxiPage = ({ cityData }) => {
+const DelhiTaxiPage = ({ cityData }) => {
   const [taxis, setTaxis] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState('Indore');
+  const [location, setLocation] = useState('Delhi');
   const [allLocations, setAllLocations] = useState([]);
   const [taxiName, setTaxiName] = useState("");
   const [price, setPrice] = useState(0);
@@ -31,7 +32,7 @@ const IndoreTaxiPage = ({ cityData }) => {
         setAllLocations(cityNames);
       } catch (err) {
         console.error('Failed to fetch cities:', err);
-        setAllLocations(['Indore']); // Fallback
+        setAllLocations(['Delhi']); // Fallback
       }
     };
     fetchCities();
@@ -41,13 +42,9 @@ const IndoreTaxiPage = ({ cityData }) => {
     const fetchTaxis = async () => {
       try {
         setLoading(true);
-        console.log('🔍 Fetching taxis for Indore...');
-        const res = await api.get('/api/taxis', { params: { isAvailable: true, location: 'Indore' } });
-        console.log('📡 API Response:', res.data);
-        console.log('📊 Number of taxis received:', res.data.length);
+        const res = await api.get('/api/taxis', { params: { isAvailable: true, location: 'Delhi' } });
         setTaxis(res.data);
       } catch (err) {
-        console.error('❌ Error fetching taxis:', err);
         setError('Failed to load taxis.');
       } finally {
         setLoading(false);
@@ -64,13 +61,9 @@ const IndoreTaxiPage = ({ cityData }) => {
         const params = { isAvailable: true, location };
         if (taxiName) params.name = taxiName;
         if (price > 0) params.rentalPricePerDay = price;
-        console.log('🔍 Fetching filtered taxis with params:', params);
         const res = await api.get('/api/taxis', { params });
-        console.log('📡 Filtered API Response:', res.data);
-        console.log('📊 Number of filtered taxis received:', res.data.length);
         setTaxis(res.data);
       } catch (err) {
-        console.error('❌ Error fetching filtered taxis:', err);
         setError('Failed to load taxis.');
       } finally {
         setLoading(false);
@@ -81,16 +74,10 @@ const IndoreTaxiPage = ({ cityData }) => {
 
   // Sort taxis so newest appear first (descending by createdAt)
   const sortedTaxis = [...taxis].sort((a, b) => new Date(b.year || b.createdAt) - new Date(a.year || a.createdAt));
-  
-  // Debug logging
-  console.log('🚗 Current taxis state:', taxis);
-  console.log('📋 Current sortedTaxis:', sortedTaxis);
-  console.log('📊 Loading state:', loading);
-  console.log('❌ Error state:', error);
 
   // Redirect to city route on city change
   useEffect(() => {
-    if (location && location.toLowerCase() !== 'indore') {
+    if (location && location.toLowerCase() !== 'delhi') {
       const city = location.trim().toLowerCase();
       if (city) {
         const slug = generateTaxiCitySlug(city);
@@ -122,16 +109,16 @@ const IndoreTaxiPage = ({ cityData }) => {
         
         {/* Mobile Filter Popup */}
         {filterOpen && (
-          <div className="fixed inset-0 z-[100010] flex md:hidden">
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
-            {/* Popup - always slide in from left */}
-            <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
+         <div className="fixed inset-0 z-[100010] flex md:hidden">
+         {/* Overlay */}
+         <div className="absolute inset-0 bg-black bg-opacity-30" onClick={() => setFilterOpen(false)} />
+         {/* Popup - always slide in from left */}
+           <div className="absolute left-0 top-0 bg-white w-10/12 max-w-xs h-full shadow-xl p-2 animate-slide-in-left flex flex-col">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-base font-bold text-yellow-500">Filters</h2>
-                <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
-                  <FiX className="w-5 h-5 text-yellow-500" />
-                </button>
+                <h2 className="text-base font-bold text-yellow-500">Taxi Filters</h2>
+                 <button onClick={() => setFilterOpen(false)} aria-label="Close filter" className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400">
+                   <FiX className="w-5 h-5 text-yellow-500" />
+                  </button>
               </div>
               <TaxiFilterSidebar
                 location={location}
@@ -152,10 +139,10 @@ const IndoreTaxiPage = ({ cityData }) => {
         {/* Main Content - Right Side */}
         <main className="flex-1 overflow-y-auto">
           <div className="p-6">
-                <div className="mb-6">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">Taxis in Indore</h1>
-                  <p className="text-gray-600">Find the perfect taxi for your journey in Indore</p>
-                </div>
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Taxis in Delhi</h1>
+              <p className="text-gray-600">Find the perfect taxi for your journey in Delhi</p>
+            </div>
             
             {/* Taxi Listings */}
             {loading ? (
@@ -166,7 +153,7 @@ const IndoreTaxiPage = ({ cityData }) => {
               <div className="text-center text-red-500">{error}</div>
             ) : sortedTaxis.length === 0 ? (
               <div className="text-center text-gray-500 py-8">
-                <p>No taxis available in Indore at the moment.</p>
+                <p>No taxis available in Delhi at the moment.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -322,8 +309,9 @@ const IndoreTaxiPage = ({ cityData }) => {
           </div>
         </main>
       </div>
+      <FooterTaxi />
     </>
   );
 };
 
-export default IndoreTaxiPage;
+export default DelhiTaxiPage;
