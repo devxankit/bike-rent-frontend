@@ -28,7 +28,11 @@ export const parseCityFromSlug = (slug) => {
 export const isValidCitySlug = (slug) => {
   if (!slug) return false;
   const city = parseCityFromSlug(slug);
-  const validCities = ["indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", "pithoragarh", "dehradun"];
+  const validCities = [
+    "indore", "bhopal", "mumbai", "goa", "haldwani", "kathgodam", 
+    "pithoragarh", "dehradun", "nainital", "rishikesh", "haridwar", 
+    "almora", "mussoorie", "ranikhet", "chamoli", "uttarkashi"
+  ];
   return validCities.includes(city.toLowerCase());
 };
 

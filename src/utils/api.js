@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 // API configuration for both development and production
-const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://bookyourride.in';
 
 // Helper function to get the full API URL
 export const getApiUrl = (endpoint) => {

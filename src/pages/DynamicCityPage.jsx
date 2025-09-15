@@ -35,10 +35,17 @@ const DynamicCityPage = () => {
         }
         
         // Dynamically import the city component
-        const cityModule = await import(`./cities-pages/${componentName}.jsx`);
-        const Component = cityModule.default;
-
-        setCityComponent(() => Component);
+        try {
+          const cityModule = await import(`./cities-pages/${componentName}.jsx`);
+          const Component = cityModule.default;
+          setCityComponent(() => Component);
+        } catch (importError) {
+          console.error(`Failed to import city component for ${componentName}:`, importError);
+          // Try to import a fallback component or show a generic city page
+          const fallbackModule = await import(`./cities-pages/Dehradun.jsx`);
+          const FallbackComponent = fallbackModule.default;
+          setCityComponent(() => FallbackComponent);
+        }
       } catch (err) {
         console.error('Failed to load city component:', err);
         setError(true);
@@ -61,7 +68,20 @@ const DynamicCityPage = () => {
   }
 
   if (error || !CityComponent) {
-    return <NotFound />;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">City Page Not Found</h1>
+          <p className="text-gray-600 mb-6">The city page you're looking for doesn't exist or is temporarily unavailable.</p>
+          <button 
+            onClick={() => window.history.back()} 
+            className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
