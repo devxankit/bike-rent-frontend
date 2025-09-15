@@ -7,39 +7,10 @@
     <meta name="theme-color" content="#FDB813" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="%PUBLIC_URL%/static/js/bundle.js" as="script" />
-    <link rel="preload" href="%PUBLIC_URL%/static/css/main.css" as="style" />
-    
-    <!-- Base tag to ensure correct asset paths -->
-    <base href="%PUBLIC_URL%/" />
-    
     <title>BookYourRide - Best Bike Rental Service in Uttarakhand</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    
-    <!-- Error boundary script -->
-    <script>
-      window.addEventListener('error', function(e) {
-        if (e.message && e.message.includes('Loading chunk')) {
-          console.warn('Chunk loading error detected, reloading page...');
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        }
-      });
-      
-      window.addEventListener('unhandledrejection', function(e) {
-        if (e.reason && e.reason.message && e.reason.message.includes('Loading chunk')) {
-          console.warn('Chunk loading promise rejection detected, reloading page...');
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        }
-      });
-    </script>
   </body>
 </html>
