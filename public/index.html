@@ -8,9 +8,8 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="%PUBLIC_URL%/static/js/bundle.js" as="script" />
-    <link rel="preload" href="%PUBLIC_URL%/static/css/main.css" as="style" />
+    <!-- Preload critical resources - only in production builds -->
+    <!-- These will be automatically injected by React build process in production -->
     
     <!-- Base tag to ensure correct asset paths -->
     <base href="%PUBLIC_URL%/" />
