@@ -109,7 +109,7 @@ const MainHome = React.memo(() => {
       id: 2,
       title: 'Bike Rental',
       subtitle: 'Freedom to Explore',
-      image: '/images/bg-3.png',
+      image: '/images/bike-banner-main-home.png',
       route: '/home',
       description: 'Rent premium bikes and explore at your own pace.',
       features: ['Premium Bikes', 'Easy Booking', 'Well Maintained'],
