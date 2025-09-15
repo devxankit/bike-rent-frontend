@@ -92,7 +92,7 @@ const TourCard = ({ tour, index }) => {
           <div className="flex flex-wrap gap-1 mb-4">
             {tour.features?.slice(0, 2).map((feature, idx) => (
               <span 
-                key={idx}
+                key={`${tour.id || tour._id || 'tour'}-feature-${idx}`}
                 className="px-2 py-1 bg-yellow-50 text-yellow-700 text-xs font-medium rounded-full border border-yellow-200"
               >
                 {feature}

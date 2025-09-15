@@ -8,8 +8,10 @@ import 'aos/dist/aos.css';
 const TourTermsAndConditions = () => {
   React.useEffect(() => {
     AOS.init({
-      duration: 800,
+      duration: 600,
       once: true,
+      offset: 50,
+      disable: window.innerWidth < 768 ? true : false, // Disable on mobile for better performance
     });
   }, []);
 
@@ -136,7 +138,7 @@ const TourTermsAndConditions = () => {
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6" data-aos="fade-up">
               Terms & <span className="text-yellow-400">Conditions</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto" data-aos="fade-up" >
               Please read these terms and conditions carefully before using our tour services. 
               By booking a tour, you agree to be bound by these terms.
             </p>
@@ -154,7 +156,7 @@ const TourTermsAndConditions = () => {
               </p>
             </div>
             
-            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-12" data-aos="fade-up" data-aos-delay="200">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-12" data-aos="fade-up" >
               <div className="flex items-start">
                 <div className="flex-shrink-0">
                   <svg className="w-6 h-6 text-yellow-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +184,6 @@ const TourTermsAndConditions = () => {
                   key={index} 
                   className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
                   data-aos="fade-up"
-                  data-aos-delay={index * 100}
                 >
                   <div className="flex items-start mb-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
@@ -212,7 +213,7 @@ const TourTermsAndConditions = () => {
             </div>
             
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-gray-50 rounded-xl p-8" data-aos="fade-right">
+              <div className="bg-gray-50 rounded-xl p-8" data-aos="fade-up">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center mr-4">
                     <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -228,7 +229,7 @@ const TourTermsAndConditions = () => {
                 </p>
               </div>
               
-              <div className="bg-gray-50 rounded-xl p-8" data-aos="fade-left">
+              <div className="bg-gray-50 rounded-xl p-8" data-aos="fade-up">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center mr-4">
                     <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,11 +253,11 @@ const TourTermsAndConditions = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-black mb-6" data-aos="fade-up">
               Questions About Our Terms?
             </h2>
-            <p className="text-lg text-black mb-8" data-aos="fade-up" data-aos-delay="200">
+            <p className="text-lg text-black mb-8" data-aos="fade-up" >
               If you have any questions or need clarification about these terms and conditions, 
               our customer service team is here to help.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="300">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" >
               <a 
                 href="mailto:support@tourrent.com"
                 className="bg-black text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
@@ -283,7 +284,7 @@ const TourTermsAndConditions = () => {
                 day: 'numeric' 
               })}
             </p>
-            <p className="text-sm text-gray-500 mt-2" data-aos="fade-up" data-aos-delay="100">
+            <p className="text-sm text-gray-500 mt-2" data-aos="fade-up" >
               These terms and conditions are effective immediately upon posting and apply to all tour services provided by BookYourRide.
             </p>
           </div>

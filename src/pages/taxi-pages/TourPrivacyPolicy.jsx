@@ -12,8 +12,10 @@ const TourPrivacyPolicy = () => {
 
   useEffect(() => {
     AOS.init({
-      duration: 800,
+      duration: 600,
       once: true,
+      offset: 50,
+      disable: window.innerWidth < 768 ? true : false, // Disable on mobile for better performance
     });
   }, []);
 
@@ -80,7 +82,7 @@ const TourPrivacyPolicy = () => {
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6" data-aos="fade-up">
               Privacy <span className="text-yellow-400">Policy</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto" data-aos="fade-up" >
               Your privacy is important to us. This policy explains how we collect, use, and protect your information when you use our tour services.
             </p>
           </div>
@@ -91,7 +93,7 @@ const TourPrivacyPolicy = () => {
             {/* Table of Contents */}
             <div className="lg:col-span-1">
               <div className="sticky top-8">
-                <div className="bg-white rounded-xl shadow-lg p-6" data-aos="fade-right">
+                <div className="bg-white rounded-xl shadow-lg p-6" data-aos="fade-up">
                   <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
                     <FileText className="w-5 h-5 mr-2 text-yellow-600" />
                     Table of Contents
@@ -121,7 +123,7 @@ const TourPrivacyPolicy = () => {
 
             {/* Main Content */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-xl shadow-lg p-8" data-aos="fade-left">
+              <div className="bg-white rounded-xl shadow-lg p-8" data-aos="fade-up">
                 
                 {/* Introduction */}
                 <div className="mb-8" data-aos="fade-up">

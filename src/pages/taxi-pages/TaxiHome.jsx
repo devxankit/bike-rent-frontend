@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Helmet } from 'react-helmet-async'
+import SEOHead from '../../components/SEOHead'
 import TaxiNavBar from '../../components/taxi-components/TaxiNavBar'
 import GoogleMapsLoader from '../../components/taxi-components/GoogleMapsLoader'
 import TaxiBookingForm from '../../components/taxi-components/TaxiBookingForm'
@@ -24,36 +24,16 @@ const TaxiHome = () => {
 
   return (
     <>
-      <Helmet>
-        {/* Primary Meta Tags */}
-        <title>Book a Taxi in Your City | BookYourRide - Best Taxi Service</title>
-        <meta name="title" content="Book a Taxi in Your City | BookYourRide - Best Taxi Service" />
-        <meta name="description" content="BookYourRide.in offers reliable taxi services for local and outstation travel. Book your ride with our premium taxi service featuring comfortable vehicles, professional drivers, and transparent pricing." />
-        <meta name="keywords" content="taxi booking, cab service, taxi rental, taxi hire, outstation taxi, airport taxi, local taxi service" />
-        <meta name="robots" content="index, follow" />
-        <meta name="language" content="English" />
-        <meta name="author" content="BookYourRide" />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.bookyourride.in/taxi" />
-        <meta property="og:title" content="Book a Taxi in Your City | BookYourRide - Best Taxi Service" />
-        <meta property="og:description" content="BookYourRide.in offers reliable taxi services for local and outstation travel. Book your ride with our premium taxi service featuring comfortable vehicles, professional drivers, and transparent pricing." />
-        <meta property="og:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
-        <meta property="og:site_name" content="BookYourRide" />
-        
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://www.bookyourride.in/taxi" />
-        <meta property="twitter:title" content="Book a Taxi in Your City | BookYourRide - Best Taxi Service" />
-        <meta property="twitter:description" content="BookYourRide.in offers reliable taxi services for local and outstation travel. Book your ride with our premium taxi service featuring comfortable vehicles, professional drivers, and transparent pricing." />
-        <meta property="twitter:image" content="https://www.bookyourride.in/images/bike-rent-logo-2.png" />
-        
-        {/* Additional SEO Meta Tags */}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#FDB813" />
-        <link rel="canonical" href="https://www.bookyourride.in/taxi" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title="Book a Taxi in Your City | BookYourRide - Best Taxi Service"
+        description="BookYourRide.in offers reliable taxi services for local and outstation travel. Book your ride with our premium taxi service featuring comfortable vehicles, professional drivers, and transparent pricing."
+        keywords="taxi booking, cab service, taxi rental, taxi hire, outstation taxi, airport taxi, local taxi service"
+        url="https://www.bookyourride.in/taxi"
+        image="https://www.bookyourride.in/images/taxi-bg-1.png"
+        type="website"
+        schemaType="TaxiService"
+      />
       
       <GoogleMapsLoader />
       <TaxiNavBar />

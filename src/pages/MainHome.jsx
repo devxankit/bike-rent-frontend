@@ -5,6 +5,7 @@ import { Card } from '../components/ui/card';
 import { MdDashboard, MdMenu, MdClose } from 'react-icons/md';
 import { FaMotorcycle, FaTaxi, FaArrowRight } from 'react-icons/fa';
 import { MdTour } from 'react-icons/md';
+import SEOHead from '../components/SEOHead';
 
 // Lazy load heavy components
 const LazyImage = lazy(() => import('../components/LazyImage'));
@@ -137,6 +138,17 @@ const MainHome = React.memo(() => {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title="Book Your Taxi, Bike & Tour Packages | BookyourRide.Com"
+        description="Book taxis, bikes, and custom tour packages with transparent pricing, 24/7 support, and easy online booking at BookyourRide.com. Reserve now."
+        keywords="taxi booking, bike rental, tour packages, online booking, 24/7 support, transparent pricing, BookyourRide"
+        url="https://www.bookyourride.in/"
+        image="https://www.bookyourride.in/images/bike-rent-logo-2.png"
+        type="website"
+        schemaType="WebSite"
+      />
+      
       {/* Navigation Bar */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-[10000] shadow-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">

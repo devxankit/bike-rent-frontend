@@ -8,8 +8,10 @@ import 'aos/dist/aos.css';
 export default function TaxiAbout() {
   React.useEffect(() => {
     AOS.init({
-      duration: 800,
+      duration: 600,
       once: true,
+      offset: 50,
+      disable: window.innerWidth < 768 ? true : false, // Disable on mobile for better performance
     });
   }, []);
 
@@ -81,13 +83,13 @@ export default function TaxiAbout() {
         <TaxiNavBar />
         
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-20">
+        <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-12 md:py-20">
           <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: "url('/images/taxi-bg-1.png')" }}></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6" data-aos="fade-up">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 md:mb-6" data-aos="fade-up">
               About <span className="text-yellow-400">BookYourRide</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto px-4" data-aos="fade-up">
               Your trusted partner for comfortable, reliable, and affordable taxi services across multiple cities. 
               We're committed to making your journey safe, convenient, and memorable.
             </p>
@@ -95,11 +97,11 @@ export default function TaxiAbout() {
         </section>
 
         {/* Our Story Section */}
-        <section className="py-16 bg-white">
+        <section className="py-12 md:py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div data-aos="fade-right">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Our Story</h2>
+            <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+              <div data-aos="fade-up">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 md:mb-6">Our Story</h2>
                 <p className="text-lg text-gray-600 mb-6">
                   BookYourRide started with a simple vision: to make transportation accessible, 
                   comfortable, and reliable for everyone. What began as a local taxi service has 
@@ -110,16 +112,16 @@ export default function TaxiAbout() {
                   an airport transfer, or a long-distance trip. That's why we've built our 
                   service around your comfort, safety, and convenience.
                 </p>
-                <div className="flex items-center space-x-4">
-                  <div className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold">
+                <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                  <div className="bg-yellow-400 text-black px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold text-sm md:text-base">
                     5+ Years Experience
                   </div>
-                  <div className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold">
+                  <div className="bg-yellow-400 text-black px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold text-sm md:text-base">
                     15K+ Happy Customers
                   </div>
                 </div>
               </div>
-              <div data-aos="fade-left">
+              <div data-aos="fade-up">
                 <img 
                   src="/images/taxi-bg-2.png" 
                   alt="Our Taxi Service" 
@@ -131,17 +133,17 @@ export default function TaxiAbout() {
         </section>
 
         {/* Our Values Section */}
-        <section className="py-16 bg-gray-50">
+        <section className="py-12 md:py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12" data-aos="fade-up">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Values</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <div className="text-center mb-8 md:mb-12" data-aos="fade-up">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Our Values</h2>
+              <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
                 These core values guide everything we do and shape the experience we provide to our customers.
               </p>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-white p-8 rounded-xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="100">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center" data-aos="fade-up">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -154,7 +156,7 @@ export default function TaxiAbout() {
                 </p>
               </div>
               
-              <div className="bg-white p-8 rounded-xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="200">
+              <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center" data-aos="fade-up">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -167,7 +169,7 @@ export default function TaxiAbout() {
                 </p>
               </div>
               
-              <div className="bg-white p-8 rounded-xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="300">
+              <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center" data-aos="fade-up">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -180,7 +182,7 @@ export default function TaxiAbout() {
                 </p>
               </div>
               
-              <div className="bg-white p-8 rounded-xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="400">
+              <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center" data-aos="fade-up">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
@@ -193,7 +195,7 @@ export default function TaxiAbout() {
                 </p>
               </div>
               
-              <div className="bg-white p-8 rounded-xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="500">
+              <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center" data-aos="fade-up">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -206,7 +208,7 @@ export default function TaxiAbout() {
                 </p>
               </div>
               
-              <div className="bg-white p-8 rounded-xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="600">
+              <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center" data-aos="fade-up">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -233,7 +235,7 @@ export default function TaxiAbout() {
             </div>
             
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div data-aos="fade-right">
+              <div data-aos="fade-up">
                 <div className="space-y-8">
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center">
@@ -273,7 +275,7 @@ export default function TaxiAbout() {
                 </div>
               </div>
               
-              <div data-aos="fade-left">
+              <div data-aos="fade-up">
                 <img 
                   src="/images/taxi-bg-1.png" 
                   alt="Why Choose Us" 
@@ -288,19 +290,19 @@ export default function TaxiAbout() {
         <section className="py-16 bg-gradient-to-r from-yellow-400 to-yellow-500">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div data-aos="fade-up" data-aos-delay="100">
+              <div data-aos="fade-up" >
                 <div className="text-4xl md:text-5xl font-extrabold text-black mb-2">15K+</div>
                 <div className="text-lg text-black font-semibold">Happy Customers</div>
               </div>
-              <div data-aos="fade-up" data-aos-delay="200">
+              <div data-aos="fade-up" >
                 <div className="text-4xl md:text-5xl font-extrabold text-black mb-2">5+</div>
                 <div className="text-lg text-black font-semibold">Years Experience</div>
               </div>
-              <div data-aos="fade-up" data-aos-delay="300">
+              <div data-aos="fade-up" >
                 <div className="text-4xl md:text-5xl font-extrabold text-black mb-2">50+</div>
                 <div className="text-lg text-black font-semibold">Cities Covered</div>
               </div>
-              <div data-aos="fade-up" data-aos-delay="400">
+              <div data-aos="fade-up" >
                 <div className="text-4xl md:text-5xl font-extrabold text-black mb-2">4.9/5</div>
                 <div className="text-lg text-black font-semibold">Customer Rating</div>
               </div>

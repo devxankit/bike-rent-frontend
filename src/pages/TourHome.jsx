@@ -5,13 +5,12 @@ import TourFooter from '../components/TourFooter';
 import TourCard from '../components/TourCard';
 import CustomTourPackage from '../components/CustomTourPackage';
 import WhyChooseUsTour from '../components/WhyChooseUsTour';
-import { FaMapMarkerAlt, FaStar, FaUsers, FaClock } from 'react-icons/fa';
-import { MdExplore, MdLocalActivity, MdRestaurant, MdHotel } from 'react-icons/md';
+import { MdExplore } from 'react-icons/md';
 import api from '../utils/api';
+import SEOHead from '../components/SEOHead';
 
 const TourHome = () => {
   const [tourPackages, setTourPackages] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   // Function to scroll to featured tours section
   const scrollToFeaturedTours = () => {
@@ -43,41 +42,8 @@ const TourHome = () => {
       setTourPackages(response.data);
     } catch (error) {
       console.error('Failed to fetch featured tours:', error);
-      // Fallback to mock data if API fails
-      setTourPackages([
-        {
-          id: 1,
-          name: 'Mountain Adventure',
-          duration: '3 Days / 2 Nights',
-          price: '₹8,999',
-          image: '/images/bg.png',
-          description: 'Explore the beautiful mountain ranges with our guided tour package. Experience breathtaking views, local culture, and adventure activities.',
-          rating: 4.8,
-          features: ['Guided Tours', 'Mountain Hiking', 'Local Cuisine', 'Photography']
-        },
-        {
-          id: 2,
-          name: 'City Explorer',
-          duration: '2 Days / 1 Night',
-          price: '₹5,999',
-          image: '/images/bg-3.png',
-          description: 'Discover the hidden gems of the city with our expert guides. Visit historical sites, taste local cuisine, and shop for souvenirs.',
-          rating: 4.6,
-          features: ['City Tours', 'Historical Sites', 'Local Markets', 'Cultural Experience']
-        },
-        {
-          id: 3,
-          name: 'Beach Paradise',
-          duration: '4 Days / 3 Nights',
-          price: '₹12,999',
-          image: '/images/bike-banner-1.png',
-          description: 'Relax and unwind at the most beautiful beaches. Enjoy water sports, sunset views, and beachside dining experiences.',
-          rating: 4.9,
-          features: ['Beach Activities', 'Water Sports', 'Sunset Views', 'Seafood Dining']
-        }
-      ]);
-    } finally {
-      setLoading(false);
+      // Set empty array if API fails - data comes from database
+      setTourPackages([]);
     }
   };
 
@@ -92,6 +58,17 @@ const TourHome = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title="Tour Packages & Travel Deals | BookyourRide.Com"
+        description="Discover amazing tour packages and travel deals with BookyourRide.com. Expert guides, memorable experiences, and custom tour packages for unforgettable adventures. Book now!"
+        keywords="tour packages, travel deals, guided tours, custom tours, adventure travel, travel booking, tour guides, vacation packages"
+        url="https://www.bookyourride.in/tours"
+        image="https://www.bookyourride.in/images/tour-banner.jpeg"
+        type="website"
+        schemaType="TravelAgency"
+      />
+      
       {/* Navigation */}
       <TourNavbar />
 
@@ -193,7 +170,7 @@ const TourHome = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {tourPackages.map((tour, index) => (
-              <TourCard key={tour.id} tour={tour} index={index} />
+              <TourCard key={tour.id || tour._id || `tour-${index}`} tour={tour} index={index} />
             ))}
           </div>
 
