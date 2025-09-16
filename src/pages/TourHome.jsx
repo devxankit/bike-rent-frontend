@@ -60,9 +60,8 @@ const TourHome = () => {
     <div className="min-h-screen bg-white">
       {/* SEO Meta Tags */}
       <SEOHead
-        title="Tour Packages & Travel Deals | BookyourRide.Com"
-        description="Discover amazing tour packages and travel deals with BookyourRide.com. Expert guides, memorable experiences, and custom tour packages for unforgettable adventures. Book now!"
-        keywords="tour packages, travel deals, guided tours, custom tours, adventure travel, travel booking, tour guides, vacation packages"
+        title="Tour Packages & Travel Deals | BookyourRide.in"
+        description="Discover amazing tour packages and travel deals with BookyourRide.in. Expert guides, memorable experiences, and custom tour packages for unforgettable adventures. Book now!"
         url="https://www.bookyourride.in/tours"
         image="https://www.bookyourride.in/images/tour-banner.jpeg"
         type="website"

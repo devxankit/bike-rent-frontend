@@ -140,9 +140,8 @@ const MainHome = React.memo(() => {
     <div className="min-h-screen bg-white">
       {/* SEO Meta Tags */}
       <SEOHead
-        title="Book Your Taxi, Bike & Tour Packages | BookyourRide.Com"
-        description="Book taxis, bikes, and custom tour packages with transparent pricing, 24/7 support, and easy online booking at BookyourRide.com. Reserve now."
-        keywords="taxi booking, bike rental, tour packages, online booking, 24/7 support, transparent pricing, BookyourRide"
+        title="Book Your Taxi, Bike & Tour Packages | BookyourRide.in"
+        description="Book taxis, bikes, and custom tour packages with transparent pricing, 24/7 support, and easy online booking at BookyourRide.in. Reserve now."
         url="https://www.bookyourride.in/"
         image="https://www.bookyourride.in/images/bike-rent-logo-2.png"
         type="website"

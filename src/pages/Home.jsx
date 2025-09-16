@@ -390,7 +390,6 @@ const Home = () => {
       <SEOHead
         title="Rent a Bike in Your City | BookYourRide - Best Bike Rental Service"
         description="BookYourRide.in is a convenient online platform designed to simplify vehicle booking for local and outstation travel. Whether you need a cab for daily commuting, airport transfers, or weekend getaways, BookYourRide.in offers a streamlined booking experience with reliable service, transparent pricing, and a user-friendly interface."
-        keywords="bike rental, motorcycle rental, scooter rental, bike rent online, bike booking, two wheeler rental, bike hire, motorcycle hire, scooter hire"
         url="https://www.bookyourride.in/home"
         image="https://www.bookyourride.in/images/bike-rent-logo-2.png"
         type="website"

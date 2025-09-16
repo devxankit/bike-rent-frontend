@@ -28,7 +28,6 @@ const TaxiHome = () => {
       <SEOHead
         title="Book a Taxi in Your City | BookYourRide - Best Taxi Service"
         description="BookYourRide.in offers reliable taxi services for local and outstation travel. Book your ride with our premium taxi service featuring comfortable vehicles, professional drivers, and transparent pricing."
-        keywords="taxi booking, cab service, taxi rental, taxi hire, outstation taxi, airport taxi, local taxi service"
         url="https://www.bookyourride.in/taxi"
         image="https://www.bookyourride.in/images/taxi-bg-1.png"
         type="website"

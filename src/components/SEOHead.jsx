@@ -11,8 +11,6 @@ const SEOHead = ({
   schemaType = "WebPage",
   robots = "index, follow"
 }) => {
-  const defaultKeywords = "bike rental, motorcycle rental, scooter rental, bike rent online, bike booking, two wheeler rental, bike hire, motorcycle hire, scooter hire, taxi service, tour packages, BookYourRide, BookyourRide";
-  const finalKeywords = keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords;
 
   return (
     <Helmet>
@@ -20,7 +18,6 @@ const SEOHead = ({
       <title>{title}</title>
       <meta name="title" content={title} />
       <meta name="description" content={description} />
-      <meta name="keywords" content={finalKeywords} />
       <meta name="robots" content={robots} />
       <meta name="language" content="English" />
       <meta name="author" content="BookYourRide" />
