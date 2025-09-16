@@ -89,7 +89,7 @@ function App() {
               <Route path="/tours/privacy-policy" element={<TourPrivacyPolicy />} />
               <Route path="/tours/terms-and-conditions" element={<TourTermsAndConditions />} />
 
-              <Route path="/home" element={<Home />} />
+              <Route path="/bike-rent" element={<Home />} />
 
               {/* Main bikes page with slug */}
               <Route path="/bikes" element={<Bikes />} />
