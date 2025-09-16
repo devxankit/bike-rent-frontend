@@ -72,7 +72,7 @@ const MainHome = React.memo(() => {
   const drawerLinks = (
     <nav className="flex flex-col gap-4 mt-8 z-[10000]">
       <Link to="/" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`} onClick={() => setDrawerOpen(false)}>Home</Link>
-      <Link to="/home" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`} onClick={() => setDrawerOpen(false)}>Bike Rent</Link>
+      <Link to="/bike-rent" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/bike-rent'))}`} onClick={() => setDrawerOpen(false)}>Bike Rent</Link>
       <Link to="/taxi" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))}`} onClick={() => setDrawerOpen(false)}>Taxi Service</Link>
       <Link to="/tours" className={`text-lg font-semibold ${getActiveLinkStyles(isActiveLink('/tours'))}`} onClick={() => setDrawerOpen(false)}>Tour Packages</Link>
       {isAdmin && (
@@ -110,7 +110,7 @@ const MainHome = React.memo(() => {
       title: 'Bike Rental',
       subtitle: 'Freedom to Explore',
       image: '/images/bike-banner-main-home.png',
-      route: '/home',
+      route: '/bike-rent',
       description: 'Rent premium bikes and explore at your own pace.',
       features: ['Premium Bikes', 'Easy Booking', 'Well Maintained'],
       icon: FaMotorcycle,
@@ -165,7 +165,7 @@ const MainHome = React.memo(() => {
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-6">
             <Link to="/" className={`text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/'))}`}>Home</Link>
-            <Link to="/home" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/home'))}`}>
+            <Link to="/bike-rent" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/bike-rent'))}`}>
               <FaMotorcycle className="w-4 h-4" />
               Bike Rent
             </Link>
@@ -193,7 +193,7 @@ const MainHome = React.memo(() => {
           </nav>
           {/* Hamburger Icon for Mobile */}
           <div className="md:hidden flex items-center gap-2">
-            <Link to="/home" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/home'))} px-2 py-1 rounded transition-all`}>
+            <Link to="/bike-rent" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/bike-rent'))} px-2 py-1 rounded transition-all`}>
               <FaMotorcycle className="w-4 h-4 text-yellow-500" />
             </Link>
             <Link to="/taxi" className={`flex items-center gap-1 text-sm font-semibold ${getActiveLinkStyles(isActiveLink('/taxi'))} px-2 py-1 rounded transition-all`}>

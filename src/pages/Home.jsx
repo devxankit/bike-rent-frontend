@@ -871,7 +871,7 @@ const Home = () => {
                 </button>
                 <button 
                   className="border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-400 hover:text-black px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center"
-                  onClick={() => navigate('/home')}
+                  onClick={() => navigate('/bike-rent')}
                 >
                   <Bike className="w-5 h-5 mr-2" />
                   Book Now

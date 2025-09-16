@@ -56,7 +56,7 @@ const TourFooter = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/home" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">
+                <Link to="/bike-rent" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">
                   Bike Rental
                 </Link>
               </li>
